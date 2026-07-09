@@ -1,8 +1,10 @@
 name: SOX PROTOCOL
 
 on:
+  # 日本時間12時に自動実行（UTC 3時）
   schedule:
-    - cron: "0 3 * * *"  # 日本時間12時に自動実行
+    - cron: "0 3 * * *"
+  # 手動実行ボタン（Run workflow）を有効化
   workflow_dispatch:
 
 jobs:
@@ -10,22 +12,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: リポジトリをチェックアウト
+      # リポジトリをチェックアウト
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Python をセットアップ
+      # Pythonセットアップ
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: 必要なライブラリをインストール
+      # 必要ライブラリのインストール
+      - name: Install dependencies
         run: |
           pip install yfinance
           pip install pandas
           pip install numpy
           pip install requests
 
-      - name: SOX PROTOCOL を実行
+      # SOX PROTOCOL 実行（Secrets を環境変数として渡す）
+      - name: Run SOX PROTOCOL
         env:
           SOX_MOTOMOTO: ${{ secrets.SOX_MOTOMOTO }}
           SOX_HYOKA: ${{ secrets.SOX_HYOKA }}
