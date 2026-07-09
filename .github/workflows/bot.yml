@@ -2,7 +2,7 @@ name: SOX PROTOCOL
 
 on:
   schedule:
-    - cron: "0 3 * * *"  # 毎日3時に実行
+    - cron: "0 3 * * *"  # 日本時間12時に自動実行
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,11 @@ jobs:
           pip install yfinance
           pip install pandas
           pip install numpy
-          pip install discord.py
+          pip install requests
 
       - name: SOX PROTOCOL を実行
+        env:
+          SOX_MOTOMOTO: ${{ secrets.SOX_MOTOMOTO }}
+          SOX_HYOKA: ${{ secrets.SOX_HYOKA }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python sox_protocol.py
