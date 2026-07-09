@@ -123,11 +123,9 @@ def detect_cycle(today_mmdd):
 # ================================
 def execute_sox_protocol():
 
-    # ★ 毎朝あなたが GitHub Secrets に入力する値
     SOX_MOTOMOTO = int(os.getenv("SOX_MOTOMOTO"))
     SOX_HYOKA = int(os.getenv("SOX_HYOKA"))
 
-    # ★ 今日のSOX基準価額（自動取得）
     soxx = yf.Ticker("SOXX")
     hist = soxx.history(period="5d")
     SOX_TODAY = int(hist["Close"].dropna().iloc[-1])
@@ -143,7 +141,6 @@ def execute_sox_protocol():
     batting_count = len(log["batting"])
     anomaly_factor = ANOMALY_FACTOR.get(CURRENT_CYCLE, 1.0)
 
-    # ===== 市場データ =====
     sox = yf.download("^SOX", period="180d", interval="1d", auto_adjust=False)["Close"]
     vix = yf.download("^VIX", period="30d", interval="1d", auto_adjust=False)["Close"]
     sox_f = yf.download("SOX=F", period="5d", interval="1h", auto_adjust=False)["Close"]
@@ -195,9 +192,8 @@ def execute_sox_protocol():
 
     # ===== 最終判定 =====
     if crash_zone and is_my_bottom and not is_overpriced:
-        return "🟣【暴落ゾーン買い】反発期待値高い。"
-
-    if (
+        result = "🟣【暴落ゾーン買い】反発期待値高い。"
+    elif (
         is_my_bottom and
         is_market_bottom and
         not pm_overheat and
@@ -206,15 +202,31 @@ def execute_sox_protocol():
     ):
         log["batting"].append(str(today))
         save_log(log)
-        return "🔥【買いGO強化】反発10％ゾーン。（打席記録済み）"
+        result = "🔥【買いGO強化】反発10％ゾーン。（打席記録済み）"
+    elif MA5 < MA25:
+        result = "⚠️【買い弱化】日足DC。静観。"
+    elif is_overpriced:
+        result = "⚠️【買い見送り】割高ライン超え。静観。"
+    else:
+        result = "➔【静観】まだ買いラインに未達。"
 
-    if MA5 < MA25:
-        return "⚠️【買い弱化】日足DC。静観。"
+    # ===== 根拠数字まとめ =====
+    details = f"""
+【根拠データ】
+SOX指数: {SOX_INDEX}
+MA5: {MA5}
+MA25: {MA25}
+RSI14: {RSI_14}
+SOX先物: {SOX_F}（{round(sox_f_move,2)}%）
+NASDAQ: {NASDAQ_SPOT}
+NASDAQ先物: {NASDAQ_F}（{round(nasdaq_f_move,2)}%）
+VIX: {VIX}
+円: {JPY}（{round(jpy_move,2)}%）
+反発期待値: {round(rebound_expect,2)}%
+割高判定ライン: {REAL_OVERPRICE_LINE}
+"""
 
-    if is_overpriced:
-        return "⚠️【買い見送り】割高ライン超え。静観。"
-
-    return "➔【静観】まだ買いラインに未達。"
+    return result + "\n" + details
 
 # ================================
 # 実行
@@ -222,5 +234,3 @@ def execute_sox_protocol():
 message = execute_sox_protocol()
 print(message)
 send_discord(message)
-
-
