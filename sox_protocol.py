@@ -220,5 +220,25 @@ def execute_sox_protocol():
 # 実行
 # ================================
 result = execute_sox_protocol()
+
+# 根拠数字まとめ
+details = f"""
+【根拠データ】
+SOX指数: {SOX_INDEX}
+MA5: {MA5}
+MA25: {MA25}
+RSI14: {RSI_14}
+SOX先物: {SOX_F}（{round(sox_f_move,2)}%）
+NASDAQ: {NASDAQ_SPOT}
+NASDAQ先物: {NASDAQ_F}（{round(nasdaq_f_move,2)}%）
+VIX: {VIX}
+円: {JPY}（{round(jpy_move,2)}%）
+反発期待値: {round(rebound_expect,2)}%
+割高判定ライン: {REAL_OVERPRICE_LINE}
+"""
+
+# Discord送信（判定＋根拠）
+send_discord(result + "\n" + details)
+
 print(result)
-send_discord(result)
+
