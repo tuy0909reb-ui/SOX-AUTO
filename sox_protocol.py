@@ -42,5 +42,5 @@ SOX PROTOCOL 自動版
 print(message)
 
 # ===== Discord送信 =====
-WEBHOOK_URL = "https://discord.com/channels/1524165216038945018/1524413729201062029"
+WEBHOOK_URL = "https://discord.com/api/webhooks/1524413853293871106/sQWYe04jZnQXB5b2UsEvbrt2SbWiKwAB79zeuOO7ZZX5_6xV0ZbX5XAX0tcW_crdRyH3"
 requests.post(WEBHOOK_URL, json={"content": message})
