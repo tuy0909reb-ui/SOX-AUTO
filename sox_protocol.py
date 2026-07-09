@@ -4,10 +4,14 @@ import numpy as np
 
 # ===== 完全自動版 =====
 
-# 今日のSOX基準価額をSOXXから自動取得
+# 今日のSOX基準価額をSOXXから安定取得
 soxx = yf.Ticker("SOXX")
-today_price = soxx.history(period="1d")["Close"][0]
-SOX_TODAY = int(today_price)
+hist = soxx.history(period="5d")
+
+if hist.empty or "Close" not in hist.columns:
+    raise ValueError("SOXXの価格データが取得できませんでした。")
+
+SOX_TODAY = int(hist["Close"].dropna().iloc[-1])
 
 # あなたの取得単価・現在評価額（必要なら書き換える）
 SOX_MOTOMOTO = 14000
@@ -16,7 +20,7 @@ SOX_HYOKA    = 13333
 # 季節補正係数（あなたの元コードの値）
 SEASON_COEF = {1: 0.93, 2: 0.52, 3: 0.99, 4: 0.98}
 
-# ===== 以下にあなたの元の計算ロジックをそのまま貼る =====
+# ===== 判定ロジック =====
 
 diff = SOX_TODAY - SOX_MOTOMOTO
 ratio = SOX_TODAY / SOX_MOTOMOTO
@@ -30,6 +34,9 @@ SOX PROTOCOL 自動版
 
 差額: {diff}
 倍率: {ratio:.2f}倍
+
+季節補正係数: {SEASON_COEF}
 """
 
 print(message)
+
