@@ -1,6 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import numpy as np
+import requests
 
 # ===== 完全自動版 =====
 
@@ -40,3 +41,6 @@ SOX PROTOCOL 自動版
 
 print(message)
 
+# ===== Discord送信 =====
+WEBHOOK_URL = "ここにあなたのDiscord Webhook URLを入れる"
+requests.post(WEBHOOK_URL, json={"content": message})
