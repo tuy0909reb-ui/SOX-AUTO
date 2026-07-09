@@ -2,7 +2,7 @@ name: SOX PROTOCOL
 
 on:
   schedule:
-    - cron: "0 0 * * *"  # 毎日0時に実行
+    - cron: "0 3 * * *"  # 毎日3時に実行
   workflow_dispatch:
 
 jobs:
