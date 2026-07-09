@@ -210,8 +210,18 @@ def execute_sox_protocol():
     else:
         result = "➔【静観】まだ買いラインに未達。"
 
+    # ===== 基準比較 =====
+    base_diff_today = SOX_TODAY - SOX_MOTOMOTO
+    base_diff_index = SOX_INDEX - SOX_MOTOMOTO
+    base_diff_hyoka = SOX_HYOKA - SOX_MOTOMOTO
+
     # ===== 根拠数字まとめ =====
     details = f"""
+【基準比較】
+今日のSOX基準価額との差: {base_diff_today}
+SOX指数との差: {base_diff_index}
+評価額との差: {base_diff_hyoka}
+
 【根拠データ】
 SOX指数: {SOX_INDEX}
 MA5: {MA5}
