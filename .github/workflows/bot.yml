@@ -1,22 +1,29 @@
-name: Run Discord Bot
+name: SOX PROTOCOL
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: "0 0 * * *"  # 毎日0時に実行
+  workflow_dispatch:
 
 jobs:
-  run-bot:
+  run-python:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Python をセットアップ
+        uses: actions/setup-python@v5
         with:
-          node-version: 24
-      - name: Install dependencies
-        run: npm install
-      - name: Run bot
-        env:
-          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
-        run: node index.js
+          python-version: "3.11"
+
+      - name: 必要なライブラリをインストール
+        run: |
+          pip install yfinance
+          pip install pandas
+          pip install numpy
+          pip install discord.py
+
+      - name: SOX PROTOCOL を実行
+        run: python sox_protocol.py
