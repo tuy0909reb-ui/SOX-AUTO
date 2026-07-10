@@ -3,7 +3,7 @@ name: SOX PROTOCOL
 on:
   # 日本時間12時に自動実行（UTC 3時）
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "0 3 * * *"
   # 手動実行ボタン（Run workflow）を有効化
   workflow_dispatch:
 
