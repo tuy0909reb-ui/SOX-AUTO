@@ -1,4 +1,5 @@
-name: SOX PROTOCOL
+name: name: SOX PROTOCOL AUTO
+
 
 on:
   # 日本時間12時に自動実行（UTC 3時）
