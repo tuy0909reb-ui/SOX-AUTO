@@ -134,6 +134,29 @@ def execute_sox_protocol():
     today_mmdd = today.strftime("%m-%d")
 
     CURRENT_CYCLE, cycle_name, cycle_phase = detect_cycle(today_mmdd)
+
+    # 季節サイクル別の売り買いライン（毅さん最終版）
+    BUY_DROP_RATE = {
+        1: -0.05,
+        2: -0.07,
+        3: -0.05,
+        4: -0.09,
+        5: -0.06,
+        6: -0.05,
+    }
+
+    SELL_RISE_RATE = {
+        1: 0.08,
+        2: 0.07,
+        3: 0.05,
+        4: 0.09,
+        5: 0.06,
+        6: 0.05,
+    }
+
+    buy_line = BUY_DROP_RATE.get(CURRENT_CYCLE, -0.06)
+    sell_line = SELL_RISE_RATE.get(CURRENT_CYCLE, 0.06)
+
     log = load_log()
     if log["year"] != today.year:
         log = {"batting": [], "year": today.year}
@@ -178,8 +201,10 @@ def execute_sox_protocol():
     is_overpriced = SOX_HYOKA > REAL_OVERPRICE_LINE
 
     SOX_MOVE_RATE = (SOX_HYOKA - SOX_MOTOMOTO) / SOX_MOTOMOTO
-    BOTTOM_THRESHOLD = -0.06 * anomaly_factor
-    is_my_bottom = SOX_MOVE_RATE <= BOTTOM_THRESHOLD
+
+    # 季節サイクル別の買い・売り判定
+    is_my_bottom = SOX_MOVE_RATE <= buy_line
+    is_my_takeprofit = SOX_MOVE_RATE >= sell_line
 
     is_market_bottom = (
         RSI_14 <= 45 and
@@ -189,6 +214,10 @@ def execute_sox_protocol():
     )
 
     rebound_expect = ((MA25 - SOX_INDEX) / SOX_INDEX) * anomaly_factor * 100
+
+    # 季節サイクル売り判定
+    if is_my_takeprofit:
+        return "💰【利確GO】季節サイクル売りライン突破。即利確圏。"
 
     # ===== 最終判定 =====
     if crash_zone and is_my_bottom and not is_overpriced:
