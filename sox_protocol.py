@@ -243,12 +243,6 @@ else:
 if sox_sell_zone:
     decision_sell = "💰【利確GO】あなたSOXが売り場帯"
 
-       # ===== 売り判定 =====
-if sox_sell_zone:
-    decision_sell = "💰【利確GO】あなたSOXが売り場帯"
-
-elif MA5 < MA25:
-    result = "⚠ [買い弱化] 日足Dc。静観。"
 elif is_overpriced:
     result = "⚠ [買い見送り] 割高ライン超え。静観。"
 
