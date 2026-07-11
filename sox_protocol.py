@@ -242,16 +242,6 @@ else:
 # ===== 売り判定 =====
 if sox_sell_zone:
     decision_sell = "💰【利確GO】あなたSOXが売り場帯"
-elif is_overpriced:
-    result = "⚠️ [買い見送り] 割高ライン超え。静観。"
-
-elif MA5 < MA25:
-    result = "⚠️ [買い弱化] 日足Dc。静観。"
-
-else:
-    result = "➡ [静観] まだ買いラインに未達。"
-
-        result = "➔【静観】まだ買いラインに未達。"
 
     # ===== 基準比較 =====
     base_diff_today = SOX_TODAY - SOX_MOTOMOTO
@@ -272,7 +262,19 @@ details = f"""
 SOX: {round(SOX_INDEX, 2)}
 MA5/25: {round(MA5, 2)} / {round(MA25, 2)}
 RSI14: {round(RSI_14, 2)}
-SOX先物: {round(SOX_F, 2)} ({round(sox_f_move, 2)}%)
+SOX先物: {round(SOX_F, 2)} ({round(sox_f_move, 2)}%)# ===== 売り判定 =====
+if sox_sell_zone:
+    result = "💰【利確GO】あなたSOXが売り場帯"
+
+elif is_overpriced:
+    result = "⚠️【買い見送り】割高ライン超え。静観。"
+
+elif MA5 < MA25:
+    result = "⚠️【買い弱化】日足Dc。静観。"
+
+else:
+    result = "➔【静観】まだ買いラインに未達。"
+
 NQ先物: {round(NASDAQ_F, 2)} ({round(nasdaq_f_move, 2)}%)
 VIX: {round(VIX, 2)}
 JPY: {round(JPY, 2)} ({round(jpy_move, 2)}%)
