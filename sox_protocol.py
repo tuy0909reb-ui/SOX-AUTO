@@ -243,12 +243,15 @@ else:
 if sox_sell_zone:
     decision_sell = "💰【利確GO】あなたSOXが売り場帯"
 
-        is_my_bottom and
-        is_market_bottom and
-        not pm_overheat and
-        not is_overpriced and
-        batting_count < 4
-    ):
+       # ===== 売り判定 =====
+if sox_sell_zone:
+    decision_sell = "💰【利確GO】あなたSOXが売り場帯"
+
+elif MA5 < MA25:
+    result = "⚠ [買い弱化] 日足Dc。静観。"
+elif is_overpriced:
+    result = "⚠ [買い見送り] 割高ライン超え。静観。"
+
         log["batting"].append(str(today))
         save_log(log)
         result = "🔥【買いGO強化】反発10％ゾーン。（打席記録済み）"
