@@ -30,3 +30,12 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python pm_sox_protocol.py
+
+import datetime
+
+hour = datetime.datetime.utcnow().hour
+
+if hour == 3:
+    pm_12_check()
+elif hour == 5:
+    pm_14_final()
