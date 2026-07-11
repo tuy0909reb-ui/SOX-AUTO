@@ -35,17 +35,26 @@ def pm_12_check():
 
 # 14時本判定（方向性確定）
 def pm_14_final():
+    with open("morning_input.json", "r") as f:
+        data = json.load(f)
+
+    sox_today = data["SOX_TODAY"]
+
     sox_f, nq_f, jpy, vix = get_futures()
 
-    # 本物の方向性判定
-    if sox_f >= 0:
+    pm_move = ((sox_f - sox_today) / sox_today) * 100
+
+    # 本物の方向性判定（±0.50%以上）
+    if pm_move >= 0.5:
         direction = "上昇（本物）"
-    else:
+    elif pm_move <= -0.5:
         direction = "下落（本物）"
+    else:
+        direction = "午前判定維持（方向性変わらず）"
 
     msg = (
         f"【14時本判定】\n"
-        f"SOX先物: {sox_f:.2f}\n"
+        f"SOX先物: {pm_move:.2f}%（午前比）\n"
         f"NASDAQ先物: {nq_f:.2f}\n"
         f"→ 午前判定を最終確定：{direction}"
     )
