@@ -244,25 +244,23 @@ def execute_sox_protocol():
     base_diff_index = SOX_INDEX - SOX_MOTOMOTO
     base_diff_hyoka = SOX_HYOKA - SOX_MOTOMOTO
 
-    # ===== 根拠数字まとめ =====
+    # ===== 根拠数字まとめ（読みやすいフォーマット） =====
     details = f"""
 【基準比較】
-今日のSOX基準価額との差: {base_diff_today}
-SOX指数との差: {base_diff_index}
-評価額との差: {base_diff_hyoka}
+SOX基準価額差: {base_diff_today}
+SOX指数差: {round(base_diff_index)}
+評価額差: {round(base_diff_hyoka)}
 
-【根拠データ】
-SOX指数: {SOX_INDEX}
-MA5: {MA5}
-MA25: {MA25}
-RSI14: {RSI_14}
-SOX先物: {SOX_F}（{round(sox_f_move,2)}%）
-NASDAQ: {NASDAQ_SPOT}
-NASDAQ先物: {NASDAQ_F}（{round(nasdaq_f_move,2)}%）
-VIX: {VIX}
-円: {JPY}（{round(jpy_move,2)}%）
-反発期待値: {round(rebound_expect,2)}%
-割高判定ライン: {REAL_OVERPRICE_LINE}
+【根拠】
+SOX: {round(SOX_INDEX, 2)}
+MA5/25: {round(MA5, 2)} / {round(MA25, 2)}
+RSI14: {round(RSI_14, 2)}
+SOX先物: {round(SOX_F, 2)} ({round(sox_f_move, 2)}%)
+NQ先物: {round(NASDAQ_F, 2)} ({round(nasdaq_f_move, 2)}%)
+VIX: {round(VIX, 2)}
+JPY: {round(JPY, 2)} ({round(jpy_move, 2)}%)
+反発期待: {round(rebound_expect, 2)}%
+割高ライン: {round(REAL_OVERPRICE_LINE, 2)}
 """
 
     return result + "\n" + details
