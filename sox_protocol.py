@@ -243,7 +243,6 @@ else:
 if sox_sell_zone:
     decision_sell = "💰【利確GO】あなたSOXが売り場帯"
 
-    elif (
         is_my_bottom and
         is_market_bottom and
         not pm_overheat and
