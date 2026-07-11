@@ -244,12 +244,14 @@ def execute_sox_protocol():
     base_diff_index = SOX_INDEX - SOX_MOTOMOTO
     base_diff_hyoka = SOX_HYOKA - SOX_MOTOMOTO
 
-    # ===== 根拠数字まとめ（読みやすいフォーマット） =====
+        # ===== 根拠数字まとめ（読みやすいフォーマット） =====
+    pos_diff = SOX_HYOKA - SOX_MOTOMOTO          # 評価額差（あなたのポジション）
+    index_diff = SOX_INDEX - SOX_MOTOMOTO        # 指数との差（市場との乖離）
+
     details = f"""
-【基準比較】
-SOX基準価額差: {base_diff_today}
-SOX指数差: {round(base_diff_index)}
-評価額差: {round(base_diff_hyoka)}
+【ポジション比較】
+評価額差: {round(pos_diff)}
+指数差: {round(index_diff)}
 
 【根拠】
 SOX: {round(SOX_INDEX, 2)}
