@@ -222,6 +222,7 @@ def execute_sox_protocol():
     # ===== 最終判定 =====
     if crash_zone and is_my_bottom and not is_overpriced:
         result = "🟣【暴落ゾーン買い】反発期待値高い。"
+
     # ===== あなたSOXの変動率（％） =====
 sox_change = (SOX_HYOKA - SOX_MOTOMOTO) / SOX_MOTOMOTO * 100
 
