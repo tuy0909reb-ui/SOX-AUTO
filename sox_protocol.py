@@ -222,6 +222,26 @@ def execute_sox_protocol():
     # ===== 最終判定 =====
     if crash_zone and is_my_bottom and not is_overpriced:
         result = "🟣【暴落ゾーン買い】反発期待値高い。"
+    # ===== あなたSOXの変動率（％） =====
+sox_change = (SOX_HYOKA - SOX_MOTOMOTO) / SOX_MOTOMOTO * 100
+
+sox_buy_zone = sox_change <= -10      # -10%以下 → 買い場帯
+sox_sell_zone = sox_change >= 10      # +10%以上 → 売り場帯
+
+# ===== 買い判定 =====
+if market_bottom and sox_buy_zone:
+    decision = "🔥【買いGO】市場底 × あなたSOX底"
+elif sox_buy_zone:
+    decision = "🔵【買い準備】あなたSOXが買い場帯"
+elif day_dc:
+    decision = "⚠️【買い弱化】日足DC。静観。"
+else:
+    decision = "➔【静観】買いライン未達"
+
+# ===== 売り判定 =====
+if sox_sell_zone:
+    decision_sell = "💰【利確GO】あなたSOXが売り場帯"
+
     elif (
         is_my_bottom and
         is_market_bottom and
@@ -248,10 +268,11 @@ def execute_sox_protocol():
     pos_diff = SOX_HYOKA - SOX_MOTOMOTO          # 評価額差（あなたのポジション）
     index_diff = SOX_INDEX - SOX_MOTOMOTO        # 指数との差（市場との乖離）
 
-    details = f"""
+details = f"""
 【ポジション比較】
 評価額差: {round(pos_diff)}
 指数差: {round(index_diff)}
+あなたSOX変動率: {round(sox_change, 2)}%
 
 【根拠】
 SOX: {round(SOX_INDEX, 2)}
@@ -264,6 +285,7 @@ JPY: {round(JPY, 2)} ({round(jpy_move, 2)}%)
 反発期待: {round(rebound_expect, 2)}%
 割高ライン: {round(REAL_OVERPRICE_LINE, 2)}
 """
+
 
     return result + "\n" + details
 
