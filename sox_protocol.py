@@ -245,9 +245,6 @@ if sox_sell_zone:
 
 elif is_overpriced:
     result = "⚠ [買い見送り] 割高ライン超え。静観。"
-
-        log["batting"].append(str(today))
-        save_log(log)
         result = "🔥【買いGO強化】反発10％ゾーン。（打席記録済み）"
     elif MA5 < MA25:
         result = "⚠️【買い弱化】日足DC。静観。"
