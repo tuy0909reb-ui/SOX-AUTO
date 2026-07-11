@@ -2,7 +2,6 @@ import os
 import requests
 import datetime
 import yfinance as yf
-import pandas as pd
 import json
 
 # ================================
@@ -247,4 +246,21 @@ def execute_sox_protocol():
 【根拠】
 SOX: {round(SOX_INDEX, 2)}
 MA5/25: {round(MA5, 2)} / {round(MA25, 2)}
-RSI14: {round(RSI_14,
+RSI14: {round(RSI_14, 2)}
+SOX先物: {round(SOX_F, 2)} ({round(sox_f_move, 2)}%)
+NQ先物: {round(NASDAQ_F, 2)} ({round(nasdaq_f_move, 2)}%)
+VIX: {round(VIX, 2)}
+JPY: {round(JPY, 2)} ({round(jpy_move, 2)}%)
+反発期待: {round(rebound_expect, 2)}%
+割高ライン: {round(REAL_OVERPRICE_LINE, 2)}
+"""
+
+    return result + "\n" + details
+
+# ================================
+# 実行
+# ================================
+if __name__ == "__main__":
+    message = execute_sox_protocol()
+    print(message)
+    send_discord(message)
