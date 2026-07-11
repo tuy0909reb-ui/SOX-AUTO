@@ -242,15 +242,15 @@ else:
 # ===== 売り判定 =====
 if sox_sell_zone:
     decision_sell = "💰【利確GO】あなたSOXが売り場帯"
-
 elif is_overpriced:
-    result = "⚠ [買い見送り] 割高ライン超え。静観。"
-        result = "🔥【買いGO強化】反発10％ゾーン。（打席記録済み）"
-    elif MA5 < MA25:
-        result = "⚠️【買い弱化】日足DC。静観。"
-    elif is_overpriced:
-        result = "⚠️【買い見送り】割高ライン超え。静観。"
-    else:
+    result = "⚠️ [買い見送り] 割高ライン超え。静観。"
+
+elif MA5 < MA25:
+    result = "⚠️ [買い弱化] 日足Dc。静観。"
+
+else:
+    result = "➡ [静観] まだ買いラインに未達。"
+
         result = "➔【静観】まだ買いラインに未達。"
 
     # ===== 基準比較 =====
