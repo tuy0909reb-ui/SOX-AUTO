@@ -2,8 +2,8 @@ name: PM SOX PROTOCOL
 
 on:
   schedule:
-    - cron: "0 3 * * *"   # JST 12:00（速報）
-    - cron: "0 5 * * *"   # JST 14:00（本判定）
+    - cron: "0 3 * * *"
+    - cron: "0 5 * * *"
   workflow_dispatch:
 
 jobs:
@@ -29,13 +29,5 @@ jobs:
       - name: Run PM SOX PROTOCOL
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: python pm_sox_protocol.py
-
-import datetime
-
-hour = datetime.datetime.utcnow().hour
-
-if hour == 3:
-    pm_12_check()
-elif hour == 5:
-    pm_14_final()
+        run: |
+          python pm_sox_protocol.py
