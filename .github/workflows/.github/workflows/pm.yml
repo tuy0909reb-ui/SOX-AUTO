@@ -2,8 +2,8 @@ name: PM SOX PROTOCOL
 
 on:
   schedule:
-    - cron: "0 3 * * *"
-    - cron: "0 5 * * *"
+    - cron: "0 3 * * *"   # JST 12:00（速報）
+    - cron: "0 5 * * *"   # JST 14:00（本判定）
   workflow_dispatch:
 
 jobs:
