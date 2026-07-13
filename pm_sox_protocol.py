@@ -1,8 +1,11 @@
 import json
 import yfinance as yf
 from sox_protocol import send_discord
+import datetime
 
+# ================================
 # 先物データ取得
+# ================================
 def get_futures():
     sox_f = yf.Ticker("^SOX").history(period="1d")["Close"].iloc[-1]
     nq_f = yf.Ticker("NQ=F").history(period="1d")["Close"].iloc[-1]
@@ -10,13 +13,14 @@ def get_futures():
     vix = yf.Ticker("^VIX").history(period="1d")["Close"].iloc[-1]
     return sox_f, nq_f, jpy, vix
 
+# ================================
 # 12時速報（だましチェック）
+# ================================
 def pm_12_check():
     with open("morning_input.json", "r") as f:
         data = json.load(f)
 
     sox_today = data["SOX_TODAY"]
-
     sox_f, nq_f, jpy, vix = get_futures()
 
     pm_move = ((sox_f - sox_today) / sox_today) * 100
@@ -33,13 +37,14 @@ def pm_12_check():
     send_discord(msg)
     print(msg)
 
+# ================================
 # 14時本判定（方向性確定）
+# ================================
 def pm_14_final():
     with open("morning_input.json", "r") as f:
         data = json.load(f)
 
     sox_today = data["SOX_TODAY"]
-
     sox_f, nq_f, jpy, vix = get_futures()
 
     pm_move = ((sox_f - sox_today) / sox_today) * 100
@@ -61,3 +66,12 @@ def pm_14_final():
 
     send_discord(msg)
     print(msg)
+
+# ================================
+# GitHub Actions 用：UTC 時刻で判定
+# ================================
+if __name__ == "__main__":
+    hour = datetime.datetime.utcnow().hour
+
+    if hour == 3:
+        pm_12_check
