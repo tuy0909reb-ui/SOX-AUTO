@@ -1,0 +1,39 @@
+name: PM SOX PROTOCOL
+
+on:
+  schedule:
+    - cron: "0 3 * * *"   # JST 12:00（速報）
+    - cron: "0 5 * * *"   # JST 14:00（本判定）
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install yfinance
+          pip install pandas
+          pip install numpy
+          pip install requests
+
+      - name: Download morning baseline from SOX protocol
+        uses: actions/download-artifact@v4
+        with:
+          name: morning-input
+          path: .
+        continue-on-error: true
+
+      - name: Run PM SOX PROTOCOL
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: python pm_sox_protocol.py

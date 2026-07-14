@@ -1,26 +1,51 @@
 import json
+import os
+import datetime
 import yfinance as yf
 from sox_protocol import send_discord
-import datetime
+
+MORNING_INPUT_FILE = "morning_input.json"
+
+
+def _safe_float(x):
+    if hasattr(x, "item"):
+        return float(x.item())
+    return float(x)
+
+
+def load_sox_today():
+    """午前基準値を morning_input.json から読み込み、なければ ^SOX 始値で代替。"""
+    if os.path.exists(MORNING_INPUT_FILE):
+        try:
+            with open(MORNING_INPUT_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if data.get("date") == datetime.date.today().isoformat():
+                return _safe_float(data["SOX_TODAY"])
+        except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+            pass
+
+    hist = yf.Ticker("^SOX").history(period="5d")
+    if hist.empty:
+        raise RuntimeError("SOX基準値を取得できませんでした。")
+    return _safe_float(hist["Open"].iloc[-1])
+
 
 # ================================
 # 先物データ取得
 # ================================
 def get_futures():
-    sox_f = yf.Ticker("^SOX").history(period="1d")["Close"].iloc[-1]
-    nq_f = yf.Ticker("NQ=F").history(period="1d")["Close"].iloc[-1]
-    jpy = yf.Ticker("JPY=X").history(period="1d")["Close"].iloc[-1]
-    vix = yf.Ticker("^VIX").history(period="1d")["Close"].iloc[-1]
+    sox_f = _safe_float(yf.Ticker("SOX=F").history(period="1d")["Close"].iloc[-1])
+    nq_f = _safe_float(yf.Ticker("NQ=F").history(period="1d")["Close"].iloc[-1])
+    jpy = _safe_float(yf.Ticker("JPY=X").history(period="1d")["Close"].iloc[-1])
+    vix = _safe_float(yf.Ticker("^VIX").history(period="1d")["Close"].iloc[-1])
     return sox_f, nq_f, jpy, vix
+
 
 # ================================
 # 12時速報（だましチェック）
 # ================================
 def pm_12_check():
-    with open("morning_input.json", "r") as f:
-        data = json.load(f)
-
-    sox_today = data["SOX_TODAY"]
+    sox_today = load_sox_today()
     sox_f, nq_f, jpy, vix = get_futures()
 
     pm_move = ((sox_f - sox_today) / sox_today) * 100
@@ -37,14 +62,12 @@ def pm_12_check():
     send_discord(msg)
     print(msg)
 
+
 # ================================
 # 14時本判定（方向性確定）
 # ================================
 def pm_14_final():
-    with open("morning_input.json", "r") as f:
-        data = json.load(f)
-
-    sox_today = data["SOX_TODAY"]
+    sox_today = load_sox_today()
     sox_f, nq_f, jpy, vix = get_futures()
 
     pm_move = ((sox_f - sox_today) / sox_today) * 100
@@ -67,11 +90,21 @@ def pm_14_final():
     send_discord(msg)
     print(msg)
 
-# ================================
-# GitHub Actions 用：UTC 時刻で判定
-# ================================
-if __name__ == "__main__":
-    hour = datetime.datetime.utcnow().hour
 
-    if hour == 3:
-        pm_12_check
+if __name__ == "__main__":
+    # GitHub Actions (UTC) とローカル (JST) の両方で動くよう UTC 時刻で分岐
+    utc_hour = datetime.datetime.now(datetime.UTC).hour
+
+    if utc_hour == 3:
+        pm_12_check()
+    elif utc_hour == 5:
+        pm_14_final()
+    else:
+        # ローカル手動実行用: JST 12/14 台でも起動できる
+        jst = datetime.datetime.now(datetime.UTC) + datetime.timedelta(hours=9)
+        if 12 <= jst.hour < 13:
+            pm_12_check()
+        elif 14 <= jst.hour < 15:
+            pm_14_final()
+        else:
+            print(f"pm_sox_protocol.py called at UTC {utc_hour} / JST {jst.hour}; no scheduled PM action.")

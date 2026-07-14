@@ -1,14 +1,16 @@
 name: SOX PROTOCOL v2
 
 on:
-  # 日本時間12時に自動実行（UTC 3時）
+  # 日本時間08時に自動実行（UTC 23時、前日）
   schedule:
+    - cron: "0 23 * * *"
     - cron: "0 3 * * *"
   # 手動実行ボタン（Run workflow）を有効化
   workflow_dispatch:
 
 jobs:
   run-python:
+    if: github.event_name != 'schedule' || github.event.schedule == '0 23 * * *'
     runs-on: ubuntu-latest
 
     steps:
@@ -29,6 +31,7 @@ jobs:
           pip install pandas
           pip install numpy
           pip install requests
+          pip install pytz
 
       # SOX PROTOCOL 実行（Secrets を環境変数として渡す）
       - name: Run SOX PROTOCOL
@@ -37,3 +40,38 @@ jobs:
           SOX_HYOKA: ${{ secrets.SOX_HYOKA }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python sox_protocol.py
+
+      - name: Upload morning baseline for PM protocol
+        uses: actions/upload-artifact@v4
+        with:
+          name: morning-input
+          path: morning_input.json
+          retention-days: 1
+
+      # 👑 シリコンサイクル大崩壊プロトコルを全自動で実行する
+      - name: Run SILICON PROTOCOL
+        run: python silicon_protocol.py
+
+  silicon_midday_check:
+    if: github.event_name != 'schedule' || github.event.schedule == '0 3 * * *'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install yfinance
+          pip install pandas
+          pip install numpy
+          pip install requests
+          pip install pytz
+
+      - name: Run SILICON PROTOCOL
+        run: python silicon_protocol.py
