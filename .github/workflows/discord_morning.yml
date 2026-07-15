@@ -1,15 +1,13 @@
-name: PM SOX PROTOCOL
+name: Discord Morning SOX Protocol
 
 on:
   schedule:
-    - cron: "0 3 * * *"   # JST 12:00（速報）
-    - cron: "0 5 * * *"   # JST 14:00（本判定）
+    - cron: '0 23 * * *'   # JST 08:00 朝プロトコル
   workflow_dispatch:
 
 jobs:
   run:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -21,13 +19,16 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pip install discord.py
           pip install yfinance
           pip install pandas
           pip install numpy
           pip install requests
+          pip install pytz
 
-      - name: Run PM SOX PROTOCOL
+      - name: Run Discord morning protocol
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-        run: |
-          python pm_sox_protocol.py
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          INPUT_CHANNEL_ID: ${{ vars.INPUT_CHANNEL_ID }}
+          OUTPUT_CHANNEL_ID: ${{ vars.OUTPUT_CHANNEL_ID }}
+        run: python discord_morning_bot.py

@@ -1,24 +1,7 @@
 import os
-import requests
 import datetime
-import yfinance as yf
 import json
-from sox_utils import get_env_float, fetch_with_retry, safe_float, calc_RSI
-
-# ================================
-# Discord通知
-# ================================
-DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")
-
-
-def send_discord(message: str):
-    if not DISCORD_WEBHOOK_URL:
-        print("Discord Webhook URL未設定のため送信をスキップ")
-        return
-    try:
-        requests.post(DISCORD_WEBHOOK_URL, json={"content": message})
-    except Exception as e:
-        print("Discord送信エラー:", e)
+from sox_utils import calc_RSI, fetch_with_retry, get_env_float, safe_float, send_discord
 
 
 # ================================
@@ -73,14 +56,10 @@ WEEK_ANOMALY = {
 # ================================
 # メインロジック
 # ================================
-def execute_sox_protocol():
+def execute_sox_protocol(sox_motomoto=None, sox_hyoka=None):
 
-    SOX_MOTOMOTO = get_env_float("SOX_MOTOMOTO")
-    SOX_HYOKA = get_env_float("SOX_HYOKA")
-
-    soxx = yf.Ticker("SOXX")
-    hist = soxx.history(period="5d")
-    SOX_TODAY = safe_float(hist["Close"].dropna().iloc[-1])
+    SOX_MOTOMOTO = sox_motomoto if sox_motomoto is not None else get_env_float("SOX_MOTOMOTO")
+    SOX_HYOKA = sox_hyoka if sox_hyoka is not None else get_env_float("SOX_HYOKA")
 
     # fallback to prompt when env vars are not set
     if SOX_MOTOMOTO is None or SOX_HYOKA is None:

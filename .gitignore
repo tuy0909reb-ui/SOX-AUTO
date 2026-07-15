@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Local / generated runtime
+morning_input.json
+sox_batting_log.json
+
+# Local debug leftovers
+_*.py
+_*.txt
+*.pyc

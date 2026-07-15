@@ -14,17 +14,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # リポジトリをチェックアウト
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Pythonセットアップ
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      # 必要ライブラリのインストール
       - name: Install dependencies
         run: |
           pip install yfinance
@@ -33,7 +30,6 @@ jobs:
           pip install requests
           pip install pytz
 
-      # SOX PROTOCOL 実行（Secrets を環境変数として渡す）
       - name: Run SOX PROTOCOL
         env:
           SOX_MOTOMOTO: ${{ secrets.SOX_MOTOMOTO }}
@@ -48,8 +44,9 @@ jobs:
           path: morning_input.json
           retention-days: 1
 
-      # 👑 シリコンサイクル大崩壊プロトコルを全自動で実行する
       - name: Run SILICON PROTOCOL
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python silicon_protocol.py
 
   silicon_midday_check:
@@ -74,4 +71,6 @@ jobs:
           pip install pytz
 
       - name: Run SILICON PROTOCOL
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python silicon_protocol.py

@@ -1,5 +1,6 @@
 import os
 import time
+import requests
 import yfinance as yf
 import pandas as pd
 
@@ -17,8 +18,27 @@ def get_env_float(name):
             return None
 
 
+def send_discord(message: str, webhook_url=None, timeout=10):
+    """Send a Discord notification when a webhook is configured."""
+    url = webhook_url or os.getenv("DISCORD_WEBHOOK_URL")
+    if not url:
+        print("Discord Webhook URL未設定のため送信をスキップ")
+        return False
+
+    try:
+        response = requests.post(url, json={"content": message}, timeout=timeout)
+        response.raise_for_status()
+        return True
+    except requests.RequestException as exc:
+        print("Discord送信エラー:", exc)
+        return False
+
+
 def fetch_with_retry(ticker, attempts=3, delay=1, **kwargs):
     """Fetch OHLCV via Ticker.history (avoids yf.download MultiIndex columns)."""
+    if attempts < 1:
+        raise ValueError("attempts must be at least 1")
+
     last_exc = None
     history_kwargs = {}
     for key in ("period", "interval", "start", "end", "auto_adjust", "prepost"):
@@ -35,7 +55,8 @@ def fetch_with_retry(ticker, attempts=3, delay=1, **kwargs):
             return df
         except Exception as e:
             last_exc = e
-            time.sleep(delay * (i + 1))
+            if i < attempts - 1:
+                time.sleep(delay * (i + 1))
     raise last_exc
 
 

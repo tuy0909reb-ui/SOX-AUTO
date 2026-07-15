@@ -1,16 +1,9 @@
 import json
 import os
 import datetime
-import yfinance as yf
-from sox_protocol import send_discord
+from sox_utils import fetch_with_retry, safe_float, send_discord
 
 MORNING_INPUT_FILE = "morning_input.json"
-
-
-def _safe_float(x):
-    if hasattr(x, "item"):
-        return float(x.item())
-    return float(x)
 
 
 def load_sox_today():
@@ -20,24 +13,22 @@ def load_sox_today():
             with open(MORNING_INPUT_FILE, "r", encoding="utf-8") as f:
                 data = json.load(f)
             if data.get("date") == datetime.date.today().isoformat():
-                return _safe_float(data["SOX_TODAY"])
+                return safe_float(data["SOX_TODAY"])
         except (KeyError, TypeError, ValueError, json.JSONDecodeError):
             pass
 
-    hist = yf.Ticker("^SOX").history(period="5d")
-    if hist.empty:
-        raise RuntimeError("SOX基準値を取得できませんでした。")
-    return _safe_float(hist["Open"].iloc[-1])
+    hist = fetch_with_retry("^SOX", period="5d", auto_adjust=False)
+    return safe_float(hist["Open"].iloc[-1])
 
 
 # ================================
 # 先物データ取得
 # ================================
 def get_futures():
-    sox_f = _safe_float(yf.Ticker("SOX=F").history(period="1d")["Close"].iloc[-1])
-    nq_f = _safe_float(yf.Ticker("NQ=F").history(period="1d")["Close"].iloc[-1])
-    jpy = _safe_float(yf.Ticker("JPY=X").history(period="1d")["Close"].iloc[-1])
-    vix = _safe_float(yf.Ticker("^VIX").history(period="1d")["Close"].iloc[-1])
+    sox_f = safe_float(fetch_with_retry("SOX=F", period="1d", auto_adjust=False)["Close"].iloc[-1])
+    nq_f = safe_float(fetch_with_retry("NQ=F", period="1d", auto_adjust=False)["Close"].iloc[-1])
+    jpy = safe_float(fetch_with_retry("JPY=X", period="1d", auto_adjust=False)["Close"].iloc[-1])
+    vix = safe_float(fetch_with_retry("^VIX", period="1d", auto_adjust=False)["Close"].iloc[-1])
     return sox_f, nq_f, jpy, vix
 
 
