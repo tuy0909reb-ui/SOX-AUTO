@@ -5,6 +5,8 @@ from datetime import datetime
 
 from sox_utils import fetch_with_retry, safe_float, send_discord
 
+DEFENSE_DROP_EXIT_PCT = 25.0
+
 # ============================
 #  TSMC YoY（壊れない自動計算版）
 # ============================
@@ -125,9 +127,16 @@ def execute_silicon_protocol_v10():
         is_below_200ma = m_data["SOX_CLOSE"] < m_data["200MA_NOW"]
         is_downward_trend = m_data["200MA_TREND"] < 0
         sensor_3 = "🔴" if (is_below_200ma and is_downward_trend) else "🟢"
+        defense_exit = sox_drop >= DEFENSE_DROP_EXIT_PCT
+        defense_exit_line = (
+            f"🔴 全売却ライン到達（高値から-{DEFENSE_DROP_EXIT_PCT:g}%以上）"
+            if defense_exit
+            else f"🟢 全売却ライン未到達（閾値 -{DEFENSE_DROP_EXIT_PCT:g}%）"
+        )
     else:
         sox_drop = None
         sensor_1 = sensor_2 = sensor_3 = "DATA-ERROR"
+        defense_exit_line = "DATA-ERROR"
 
     jst = pytz.timezone('Asia/Tokyo')
     now_jst = datetime.now(jst)
@@ -140,11 +149,13 @@ def execute_silicon_protocol_v10():
 ================================================================================
 SOX最高値: {_format_numeric(m_data.get('SOX_HIGH'), 0)}
 SOX終値  : {_format_numeric(m_data.get('SOX_CLOSE'), 0)}
+高値下落率: {_format_numeric(sox_drop, 2)}%
 200MA    : {_format_numeric(m_data.get('200MA_NOW'), 2)}
 
 WSTS     : {sensor_1}
 TSMC YoY : {sensor_2}
 200MA判定: {sensor_3}
+全売却判定: {defense_exit_line}
 
 最終フェーズ: {"DATA-ERROR" if data_error else "正常判定"}
 ================================================================================

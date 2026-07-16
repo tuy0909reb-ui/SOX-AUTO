@@ -76,6 +76,15 @@ def calc_RSI(series, period=14):
     return 100 - (100 / (1 + RS))
 
 
+# 年4回の季節サイクル窓（generate_anomaly_factor / バックテスト共通）
+CYCLE_WINDOWS = {
+    1: {"buy": ("02-10", "02-28"), "sell": ("04-01", "04-20")},
+    2: {"buy": ("05-01", "05-31"), "sell": ("07-20", "07-31")},
+    3: {"buy": ("08-25", "09-07"), "sell": ("09-10", "09-20")},
+    4: {"buy": ("10-10", "10-20"), "sell": ("12-10", "12-20")},
+}
+
+
 def generate_anomaly_factor():
     today = pd.Timestamp.today().date()
     start = today - pd.Timedelta(days=365 * 20)
@@ -87,13 +96,6 @@ def generate_anomaly_factor():
     df["date"] = df.index
     df["mmdd"] = df["date"].dt.strftime("%m-%d")
     df["year"] = df["date"].dt.year
-
-    CYCLE_WINDOWS = {
-        1: {"buy": ("02-10", "02-28"), "sell": ("04-01", "04-20")},
-        2: {"buy": ("05-01", "05-31"), "sell": ("07-20", "07-31")},
-        3: {"buy": ("08-25", "09-07"), "sell": ("09-10", "09-20")},
-        4: {"buy": ("10-10", "10-20"), "sell": ("12-10", "12-20")},
-    }
 
     anomaly_factor = {}
 

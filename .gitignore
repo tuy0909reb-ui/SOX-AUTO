@@ -7,6 +7,7 @@ __pycache__/
 # Local / generated runtime
 morning_input.json
 sox_batting_log.json
+data/backtest/
 
 # Local debug leftovers
 _*.py
