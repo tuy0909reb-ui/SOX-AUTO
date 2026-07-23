@@ -1,0 +1,70 @@
+# Architecture Baselines
+
+Auto Scribe AI / Framework Architecture Baseline の索引。
+
+| Baseline ID | Version | Status | Spec / Registry Path |
+|---|---|---|---|
+| ASA-ARCH-1.3 | 1.3 | Superseded | `docs/baselines/ASA-ARCH-1.3.md`（履歴） |
+| **ASA-ARCH-2.0** | **2.0** | **Event Layer Design Baseline（Detailed）** | `docs/specs/auto_scribe_ai_architecture_phase12.md` |
+| **ASA-ARCH-12.0** | **1.0** | **Event Layer Architecture ID** | `docs/baselines/ASA-ARCH-12.0.md`（≡ ASA-ARCH-2.0） |
+| **ASA-ARCH-13.0** | **1.0** | **Knowledge Layer** | `docs/baselines/ASA-ARCH-13.0.md` |
+| **ASA-ARCH-14.0** | **1.0** | **Traceability Layer** | `docs/baselines/ASA-ARCH-14.0.md` |
+| **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
+| **ASA-ARCH-16.0** | **Draft 0.1** | **Open — Placeholder（successor）** | `docs/baselines/ASA-ARCH-16.0.md` |
+
+## Layer Stack
+
+```text
+ASA-ARCH-12.0 / ASA-ARCH-2.0  → Event Layer
+ASA-ARCH-13.0                 → Knowledge Layer
+ASA-ARCH-14.0                 → Traceability Layer
+ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
+ASA-ARCH-16.0                 → Successor（Draft placeholder）
+```
+
+Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
+Current Event Layer Architecture ID: **ASA-ARCH-12.0**  
+Current Knowledge Layer SoT: **ASA-ARCH-13.0**  
+Current Traceability Layer SoT: **ASA-ARCH-14.0**  
+Trace Intelligence Layer SoT（production / frozen）: **ASA-ARCH-15.0**  
+Next Architecture draft: **ASA-ARCH-16.0**（does not modify 15.0）
+
+## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
+
+| Spec ID | Title | Status | Path |
+|---|---|---|---|
+| **ASA-IMPL-REC-1.1** | Record JSON Schema | Ready for Coding | `docs/specs/auto_scribe_ai_record_json_schema.md` |
+| **ASA-IMPL-API-1.0** | Runtime API Specification | Ready for Coding | `docs/specs/auto_scribe_ai_runtime_api_specification.md` |
+| **ASA-IMPL-STOR-1.0** | Storage Specification | Ready for Coding | `docs/specs/auto_scribe_ai_storage_specification.md` |
+| **ASA-IMPL-CAP-1.0** | Auto Capture Rule Specification | Ready for Coding | `docs/specs/auto_scribe_ai_auto_capture_rule_specification.md` |
+| **ASA-IMPL-SRCH-1.0** | Search Specification | Ready for Coding | `docs/specs/auto_scribe_ai_search_specification.md` |
+| **ASA-IMPL-EXP-1.0** | Export Specification | Ready for Coding | `docs/specs/auto_scribe_ai_export_specification.md` |
+
+## Child Implementation Specs（ASA-ARCH-13.0）
+
+| Spec ID | Title | Status | Path |
+|---|---|---|---|
+| **ASA-IMPL-DEC-1.0** | Decision Memory Specification | Ready for Coding | `docs/specs/auto_scribe_ai_decision_memory_specification.md` |
+| **ASA-IMPL-IMP-1.0** | Implementation Memory Specification | Ready for Coding | `docs/specs/auto_scribe_ai_implementation_memory_specification.md` |
+| **ASA-IMPL-REV-1.0** | Revert Memory Specification | Ready for Coding | `docs/specs/auto_scribe_ai_revert_memory_specification.md` |
+| **ASA-IMPL-DSEARCH-1.0** | Deep Search Specification | Ready for Coding | `docs/specs/auto_scribe_ai_deep_search_specification.md` |
+
+## Child Implementation Specs（ASA-ARCH-14.0）
+
+| Spec ID | Title | Status | Path |
+|---|---|---|---|
+| **ASA-IMPL-TRACE-1.0** | Traceability Specification（Base Trace） | Ready for Coding | `docs/specs/auto_scribe_ai_traceability_specification.md` |
+| **ASA-IMPL-COMMIT-1.0** | Commit Implementation Specification | Ready for Coding | `docs/specs/auto_scribe_ai_commit_implementation_specification.md` |
+| **ASA-IMPL-PR-1.0** | Pull Request Implementation Specification | Implemented | `docs/specs/auto_scribe_ai_pr_implementation_specification.md` |
+| **ASA-IMPL-ISSUE-1.0** | Issue Implementation Specification | Implemented | `docs/specs/auto_scribe_ai_issue_implementation_specification.md` |
+| **ASA-IMPL-RELEASE-1.0** | Release Implementation Specification | Implemented | `docs/specs/auto_scribe_ai_release_implementation_specification.md` |
+
+## Child Implementation Specs（ASA-ARCH-15.0）
+
+| Spec ID | Title | Status | Path |
+|---|---|---|---|
+| ASA-IMPL-REQ-TRACE-QUERY-001 | Trace Query Layer Implementation Request | Issued — Implemented | `docs/change_requests/asa_impl_req_trace_query_001.md` / `auto-scribe-ai/impl/trace_query_spec.md` |
+| ASA-IMPL-REQ-TRACE-GRAPH-001 | Trace Graph Engine Implementation Request | Issued — Implemented | `docs/change_requests/asa_impl_req_trace_graph_001.md` / `auto-scribe-ai/impl/trace_graph_spec.md` |
+| ASA-IMPL-REQ-TRACE-CHECKER-001 | Trace Consistency Checker Implementation Request | Issued — Implemented（Acceptance Revision） | `docs/change_requests/asa_impl_req_trace_checker_001.md` / `auto-scribe-ai/impl/trace_checker_spec.md` |
+| ASA-IMPL-REQ-REPOSITORY-FACADE-001 | Repository Facade Implementation Request | Issued — Implemented（Final v3） | `docs/change_requests/asa_impl_req_repository_facade_001.md` / `auto-scribe-ai/impl/repository_facade_spec.md` |
+| ASA-IMPL-REQ-ARCH-CLOSEOUT-15.0-001 | Architecture 15.0 Closeout & Baseline Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-15.0-final` |
