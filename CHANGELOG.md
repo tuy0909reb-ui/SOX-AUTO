@@ -4,6 +4,38 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.5-freeze] — 2026-07-25
+
+### Architecture 17.5 — Distribution — Frozen
+
+Architecture frozen. Acceptance reference recorded. Baseline version established. Documentation-only change.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen |
+| 17.2 | Rendering | Frozen |
+| 17.3 | Natural Language | Frozen |
+| 17.4 | Integration | Frozen |
+| 17.5 | Distribution | Frozen / Accepted |
+| 17.6 | （Open） | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.5-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.5-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.5 Frozen / Baseline 17.5）  
+**Git tag:** `arch-17.5-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** `distribution_id` uniqueness is scoped to `integration_id`.  
+**NB-2（Non-blocking）:** Access denial produces `DistributionAccessError` prior to model creation.  
+**NB-3（Non-blocking）:** `delivery_status` `FAILURE` reserved.  
+**NB-4（Non-blocking）:** `DistributedOutput.to_dict()` follows existing nested-reference pattern.  
+**NB-5（Non-blocking）:** Architecture Change Summary narrative requires future documentation update.
+
+Production source unchanged（governance documents only）. Phase 17.6 remains Open.
+
+---
+
 ## [arch-17.4-freeze] — 2026-07-24
 
 ### Architecture 17.4 — Integration — Frozen
