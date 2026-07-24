@@ -2,8 +2,8 @@
 
 **Baseline ID:** ASA-ARCH-17.0  
 **Title:** Presentation Layer（successor to Decision→Recommendation）  
-**Version:** Draft 0.7（Phase 17.1–17.5 Frozen; Phase 17.6 Open）  
-**Status:** Open — Active Draft（Phase 17.1–17.5 Frozen; Phase 17.6 Open）  
+**Version:** Draft 0.9（Phase 17.1–17.6 Frozen; Phase 17.7 Open）  
+**Status:** Open — Active Draft（Phase 17.1–17.6 Frozen; Phase 17.7 Open）  
 **Category:** Architecture Evolution  
 **Document Type:** Architecture Baseline  
 **Previous Baseline:** ASA-ARCH-16.0（Decision / Audit / Reasoning / Recommendation — CLOSED / Frozen）  
@@ -20,6 +20,8 @@
 **Acceptance（17.4）:** ASA-VERIFY-ARCH-17.4-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 **Freeze（17.5）:** ASA-IMPL-REQ-ARCH-FREEZE-17.5-001  
 **Acceptance（17.5）:** ASA-VERIFY-ARCH-17.5-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
+**Freeze（17.6）:** ASA-IMPL-REQ-ARCH-FREEZE-17.6-001  
+**Acceptance（17.6）:** ASA-VERIFY-ARCH-17.6-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 
 ---
 
@@ -34,6 +36,7 @@
 * **Phase 17.3 Natural Language is Frozen / Accepted（Baseline 17.3）**  
 * **Phase 17.4 Integration is Frozen / Accepted（Baseline 17.4）**  
 * **Phase 17.5 Distribution is Frozen / Accepted（Baseline 17.5）**  
+* **Phase 17.6 Feedback / Improvement Mechanism is Frozen / Accepted（Baseline 17.6）**  
 
 ---
 
@@ -59,10 +62,11 @@ ASA-ARCH-16.0 で完了した範囲（参照のみ・変更禁止）:
 
 ```text
 Architecture 17.0 adds Presentation, Rendering, Natural Language, Integration,
-and Distribution downstream of frozen RecommendationReport.
+Distribution, and Feedback downstream of frozen RecommendationReport.
 Presentation / Rendering / NL explain Recommendation output without inference.
 Integration orchestrates the three layers into an IntegratedReport.
 Distribution transmits IntegratedReport to registered interfaces only.
+Feedback evaluates DistributedOutput + audit_log + UserFeedback and proposes improvements.
 ```
 
 | Area | Change | Status |
@@ -72,6 +76,7 @@ Distribution transmits IntegratedReport to registered interfaces only.
 | Phase 17.3 Natural Language | RenderedView → NaturalLanguageReport（explain only） | **Frozen / Accepted** |
 | Phase 17.4 Integration | RecommendationReport → IntegratedReport（orchestrator） | **Frozen / Accepted** |
 | Phase 17.5 Distribution | IntegratedReport → DistributedOutput（transmit only） | **Frozen / Accepted** |
+| Phase 17.6 Feedback | DistributedOutput + audit_log + UserFeedback → ImprovementReport | **Frozen / Accepted** |
 
 ---
 
@@ -89,6 +94,8 @@ Distribution transmits IntegratedReport to registered interfaces only.
 | — | ASA-IMPL-REQ-ARCH-FREEZE-17.4-001 — Phase 17.4 Freeze | **Implemented** |
 | 5 | ASA-IMPL-REQ-DISTRIBUTION-001 Final v1.2 — Distribution | **Frozen** |
 | — | ASA-IMPL-REQ-ARCH-FREEZE-17.5-001 — Phase 17.5 Freeze | **Implemented** |
+| 6 | ASA-IMPL-REQ-FEEDBACK-001 Final v1.1 — Feedback | **Frozen** |
+| — | ASA-IMPL-REQ-ARCH-FREEZE-17.6-001 — Phase 17.6 Freeze | **Implemented** |
 
 ---
 
@@ -236,15 +243,16 @@ Production behavior unchanged by this freeze（governance documents only）.
 ## 7. Dependency Inheritance
 
 ```text
-Distribution → Integration → NaturalLanguage → Rendering → Presentation
+Feedback → Distribution → Integration → NaturalLanguage → Rendering → Presentation
   → Recommendation → Reasoning → Audit → Decision
   → Checker → Graph → Query → Facade → Store
 ```
 
+Feedback consumes **DistributedOutput**, **DistributionModel.audit_log**, and **UserFeedbackModel** only.  
 Distribution consumes **IntegratedReport** only.  
 Integration consumes **RecommendationReport** only and orchestrates frozen 17.1–17.3 engines.  
 Architecture 15.0 and 16.0 source and baselines remain unchanged.  
-Phase 17.1–17.5 remain Frozen and unmodified.
+Phase 17.1–17.6 remain Frozen and unmodified.
 
 ---
 
@@ -459,18 +467,93 @@ Production behavior unchanged by this freeze（governance documents only）.
 
 ---
 
-## 11. Status
+## 11. Phase 17.6 — Feedback / Improvement Mechanism
+
+**Status:** Frozen / Accepted  
+**Baseline:** 17.6 Frozen  
+**Git tag:** `arch-17.6-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**Normative spec:** `auto-scribe-ai/impl/feedback_spec.md`  
+
+**Public input:** `DistributedOutput` + `DistributionModel.audit_log` + `UserFeedbackModel`  
+
+**Deliverables:**
+
+| Kind | Path |
+|---|---|
+| Spec | `auto-scribe-ai/impl/feedback_spec.md` |
+| Engine | `auto-scribe-ai/src/feedback/feedback_engine.py` |
+| Model | `auto-scribe-ai/src/feedback/feedback_model.py` |
+| Suggestion | `auto-scribe-ai/src/feedback/improvement_suggestion_model.py` |
+| Review | `auto-scribe-ai/src/feedback/governance_review_model.py` |
+| Report | `auto-scribe-ai/src/feedback/improvement_report.py` |
+| Exceptions | `auto-scribe-ai/src/feedback/exceptions.py` |
+| Unit tests | `auto-scribe-ai/tests/test_feedback.py` |
+| Pipeline tests | `auto-scribe-ai/tests/test_feedback_pipeline.py` |
+
+**Contracts（summary）:**
+
+* Evaluate and propose only — no DistributedOutput mutation / regeneration  
+* Deterministic ImprovementReport under versioned evaluation configuration  
+* FeedbackModel owns metrics / suggestions / traceability_map  
+* GovernanceReviewModel separate（PENDING / APPROVED / REJECTED）  
+* Snapshot evaluation; no Feedback cache  
+
+Phase 17.1–17.5 contracts remain Frozen and unmodified.
+
+### 11.1 Acceptance & Freeze Record
+
+| Field | Value |
+|---|---|
+| Acceptance Review | ASA-VERIFY-ARCH-17.6-ACCEPTANCE-001 |
+| Acceptance Result | **PASS WITH NON-BLOCKING NOTES** |
+| Acceptance Status | **ACCEPTED** |
+| Eligible for Baseline Freeze | **YES** |
+| Freeze Request | ASA-IMPL-REQ-ARCH-FREEZE-17.6-001 |
+| Phase status | **Frozen / Accepted** |
+| Baseline | **17.6 Frozen** |
+| Freeze Date | **2026-07-25** |
+
+### 11.2 Freeze Notes — Non-blocking
+
+| ID | Topic | Detail | Status |
+|---|---|---|---|
+| NB-1 | Identifier scope | `feedback_id` / `user_feedback_id` derived solely from `distribution_id`; uniqueness per Distribution. Future multi-feedback may require identifier expansion | Non-blocking |
+| NB-2 | Unused config weights | Evaluation configuration contains unused weighting / threshold parameters; reserved for future deterministic scoring | Non-blocking |
+| NB-3 | Nested-reference `to_dict()` | `ImprovementReport.to_dict()` repeats referential identifiers at top level and nested FeedbackModel | Non-blocking |
+| NB-4 | Error separation | `FeedbackIntegrityError` vs `FeedbackValidationError` intentionally represent different architectural responsibilities | Non-blocking |
+| NB-5 | Registry sync | Baseline registry documentation synchronized so Phase 17.6 is Frozen | Non-blocking |
+
+No contract violations. No blocking issues. Feedback baseline fixed.  
+No production behavior changes during freeze.
+
+### 11.3 Phase 17.6 Freeze Rule
+
+```text
+Architecture 17.6 Feedback SHALL be immutable.
+Future Feedback contract changes SHALL NOT mutate Phase 17.6
+except through Change Requests that supersede via a later Architecture 17.x phase.
+Phase 17.7+ evolution SHALL begin as Open work on ASA-ARCH-17.0.
+```
+
+Production behavior unchanged by this freeze（governance documents only）.
+
+---
+
+## 12. Status
 
 | Field | Value |
 |---|---|
 | Registration | Open — Active Draft |
-| Spec version | Draft 0.7 |
+| Spec version | Draft 0.9 |
 | Phase 17.1 | **Frozen / Accepted（Baseline 17.1）** |
 | Phase 17.2 | **Frozen / Accepted（Baseline 17.2）** |
 | Phase 17.3 | **Frozen / Accepted（Baseline 17.3）** |
 | Phase 17.4 | **Frozen / Accepted（Baseline 17.4）** |
 | Phase 17.5 | **Frozen / Accepted（Baseline 17.5）** |
-| Phase 17.6 | **Open** |
+| Phase 17.6 | **Frozen / Accepted（Baseline 17.6）** |
+| Phase 17.7 | **Open** |
 | Based on | ASA-ARCH-16.0 Final（CLOSED / Frozen） |
 | Production SoT for Decision→Recommendation | **ASA-ARCH-16.0（frozen）** |
 | Production SoT for Presentation Core | **ASA-ARCH-17.0 Phase 17.1（Frozen）** |
@@ -478,23 +561,26 @@ Production behavior unchanged by this freeze（governance documents only）.
 | Production SoT for Natural Language | **ASA-ARCH-17.0 Phase 17.3（Frozen）** |
 | Production SoT for Integration | **ASA-ARCH-17.0 Phase 17.4（Frozen）** |
 | Production SoT for Distribution | **ASA-ARCH-17.0 Phase 17.5（Frozen）** |
+| Production SoT for Feedback | **ASA-ARCH-17.0 Phase 17.6（Frozen）** |
 | Phase 17.1 Git tag | `arch-17.1-freeze` |
 | Phase 17.2 Git tag | `arch-17.2-freeze` |
 | Phase 17.3 Git tag | `arch-17.3-freeze` |
 | Phase 17.4 Git tag | `arch-17.4-freeze` |
 | Phase 17.5 Git tag | `arch-17.5-freeze` |
+| Phase 17.6 Git tag | `arch-17.6-freeze` |
 
 ---
 
-## 12. Governance
+## 13. Governance
 
 | Role | Rule |
 |---|---|
-| Editable baseline | **ASA-ARCH-17.0** for Phase 17.6 draft updates（Phase 17.1–17.5 frozen） |
+| Editable baseline | **ASA-ARCH-17.0** for Phase 17.7 draft updates（Phase 17.1–17.6 frozen） |
 | Constraint | MUST NOT mutate `docs/baselines/ASA-ARCH-15.0.md` or `ASA-ARCH-16.0.md` |
-| Upstream | Recommendation / Presentation / Rendering / NL / Integration / Distribution contracts remain Final / frozen |
+| Upstream | Recommendation / Presentation / Rendering / NL / Integration / Distribution / Feedback contracts remain Final / frozen |
 | Phase 17.1 | Immutable after `arch-17.1-freeze` |
 | Phase 17.2 | Immutable after `arch-17.2-freeze` |
 | Phase 17.3 | Immutable after `arch-17.3-freeze` |
 | Phase 17.4 | Immutable after `arch-17.4-freeze` |
 | Phase 17.5 | Immutable after `arch-17.5-freeze` |
+| Phase 17.6 | Immutable after `arch-17.6-freeze` |

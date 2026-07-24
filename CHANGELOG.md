@@ -4,6 +4,39 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.6-freeze] — 2026-07-25
+
+### Architecture 17.6 — Feedback / Improvement Mechanism — Frozen
+
+Architecture Phase 17.6 frozen. Acceptance recorded. Governance documentation updated. No production source changes.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen |
+| 17.2 | Rendering | Frozen |
+| 17.3 | Natural Language | Frozen |
+| 17.4 | Integration | Frozen |
+| 17.5 | Distribution | Frozen |
+| 17.6 | Feedback | Frozen / Accepted |
+| 17.7 | （Open） | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.6-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.6-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.6 Frozen / Baseline 17.6）  
+**Git tag:** `arch-17.6-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** `feedback_id` / `user_feedback_id` derived solely from `distribution_id`; uniqueness per Distribution. Future multi-feedback may require identifier expansion.  
+**NB-2（Non-blocking）:** Evaluation configuration contains currently unused weighting parameters; reserved for future deterministic scoring.  
+**NB-3（Non-blocking）:** `ImprovementReport.to_dict()` repeats referential identifiers at top level and nested FeedbackModel.  
+**NB-4（Non-blocking）:** `FeedbackIntegrityError` and `FeedbackValidationError` intentionally represent different architectural responsibilities.  
+**NB-5（Non-blocking）:** Baseline registry documentation synchronized so Phase 17.6 is Frozen.
+
+Production source unchanged（governance documents only）. Phase 17.7 remains Open.
+
+---
+
 ## [arch-17.5-freeze] — 2026-07-25
 
 ### Architecture 17.5 — Distribution — Frozen
