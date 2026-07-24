@@ -11,7 +11,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-14.0** | **1.0** | **Traceability Layer** | `docs/baselines/ASA-ARCH-14.0.md` |
 | **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
 | **ASA-ARCH-16.0** | **Final 1.0** | **CLOSED — Decision→Recommendation（Frozen）** | `docs/baselines/ASA-ARCH-16.0.md` |
-| **ASA-ARCH-17.0** | **Baseline 17.3** | **Open — Phase 17.1–17.3 Frozen; Phase 17.4 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
+| **ASA-ARCH-17.0** | **Baseline 17.4** | **Open — Phase 17.1–17.4 Frozen; Phase 17.5 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
 
 ## Layer Stack
 
@@ -21,7 +21,7 @@ ASA-ARCH-13.0                 → Knowledge Layer
 ASA-ARCH-14.0                 → Traceability Layer
 ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
 ASA-ARCH-16.0                 → Decision / Audit / Reasoning / Recommendation（CLOSED / Frozen）
-ASA-ARCH-17.0                 → Presentation / Rendering / NL（Phase 17.1–17.3 Frozen; Phase 17.4 Open）
+ASA-ARCH-17.0                 → Presentation / Rendering / NL / Integration（Phase 17.1–17.4 Frozen; Phase 17.5 Open）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -33,7 +33,8 @@ Decision→Recommendation SoT（production / frozen）: **ASA-ARCH-16.0**
 Presentation Core SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.1**  
 Rendering SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.2**  
 Natural Language SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.3**  
-Next open phase: **ASA-ARCH-17.0 Phase 17.4 Integration**（does not modify 15.x, 16.x, or Phase 17.1–17.3）
+Integration SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.4**  
+Next open phase: **ASA-ARCH-17.0 Phase 17.5**（does not modify 15.x, 16.x, or Phase 17.1–17.4）
 
 ## Architecture Status
 
@@ -41,10 +42,11 @@ Next open phase: **ASA-ARCH-17.0 Phase 17.4 Integration**（does not modify 15.x
 |---|---|
 | ARCH-15.x | Frozen |
 | ARCH-16.x | Frozen |
-| ARCH-17.0 Phase 17.1 Presentation | Frozen |
-| ARCH-17.0 Phase 17.2 Rendering | Frozen |
-| ARCH-17.0 Phase 17.3 Natural Language | Frozen |
-| ARCH-17.0 Phase 17.4 Integration | Open |
+| ARCH-17.0 Phase 17.1 | Frozen |
+| ARCH-17.0 Phase 17.2 | Frozen |
+| ARCH-17.0 Phase 17.3 | Frozen |
+| ARCH-17.0 Phase 17.4 | Frozen |
+| ARCH-17.0 Phase 17.5 | Open |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 
@@ -106,3 +108,5 @@ Next open phase: **ASA-ARCH-17.0 Phase 17.4 Integration**（does not modify 15.x
 | ASA-IMPL-REQ-ARCH-FREEZE-17.2-001 | Architecture 17.2 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.2-freeze` |
 | ASA-IMPL-REQ-NATURAL-LANGUAGE-001 | Natural Language Implementation Request | Issued — Implemented（Final v1.3） / Phase 17.3 Frozen | `auto-scribe-ai/impl/natural_language_spec.md` |
 | ASA-IMPL-REQ-ARCH-FREEZE-17.3-001 | Architecture 17.3 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.3-freeze` |
+| ASA-IMPL-REQ-INTEGRATION-001 | Integration Implementation Request | Issued — Implemented（Final v1.2） / Phase 17.4 Frozen | `auto-scribe-ai/impl/integration_spec.md` |
+| ASA-IMPL-REQ-ARCH-FREEZE-17.4-001 | Architecture 17.4 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.4-freeze` |

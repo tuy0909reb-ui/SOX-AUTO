@@ -4,6 +4,32 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.4-freeze] — 2026-07-24
+
+### Architecture 17.4 — Integration — Frozen
+
+Architecture frozen. Acceptance reference recorded. Baseline version established. Documentation-only change.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen |
+| 17.2 | Rendering | Frozen |
+| 17.3 | Natural Language | Frozen |
+| 17.4 | Integration | Frozen / Accepted |
+| 17.5 | （Open） | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.4-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.4-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.4 Frozen / Baseline 17.4）  
+**Git tag:** `arch-17.4-freeze`  
+**Freeze Date:** 2026-07-24  
+
+**NB-1（Non-blocking）:** `IntegrationEngine.integrate()` currently fixes `render_format=MARKDOWN`, `tone_profile=NEUTRAL`, `template_version=1.0`. This preserves determinism. Future API expansion may expose these as optional parameters. No architecture change required.
+
+Production source unchanged（governance documents only）. Phase 17.5 remains Open.
+
+---
+
 ## [arch-17.3-freeze] — 2026-07-24
 
 ### Architecture 17.3 — Natural Language — Frozen
