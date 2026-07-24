@@ -4,6 +4,34 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.2-freeze] — 2026-07-24
+
+### Architecture 17.2 — Rendering — Frozen
+
+Architecture 17.2 Rendering accepted and frozen.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen |
+| 17.2 | Rendering | Frozen / Accepted |
+| 17.3 | Natural Language | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.2-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.2-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.2 Frozen）  
+**Git tag:** `arch-17.2-freeze`  
+
+Reference: ASA-VERIFY-ARCH-17.2-ACCEPTANCE-001  
+
+No production source changes.  
+Rendering baseline fixed.
+
+**NB-1（Non-blocking）:** `RenderingEngine` requires `presentation_id` keyword metadata for rendering identity. No architecture modification required. Future API cleanup candidate only.
+
+Production source unchanged（governance documents only）. Phase 17.3 remains Open.
+
+---
+
 ## [arch-17.1-freeze] — 2026-07-24
 
 ### Architecture 17.1 — Presentation Core — Frozen

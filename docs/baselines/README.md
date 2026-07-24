@@ -11,7 +11,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-14.0** | **1.0** | **Traceability Layer** | `docs/baselines/ASA-ARCH-14.0.md` |
 | **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
 | **ASA-ARCH-16.0** | **Final 1.0** | **CLOSED — Decision→Recommendation（Frozen）** | `docs/baselines/ASA-ARCH-16.0.md` |
-| **ASA-ARCH-17.0** | **Draft 0.2** | **Open — Phase 17.1 Frozen; Phase 17.2 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
+| **ASA-ARCH-17.0** | **Draft 0.3** | **Open — Phase 17.1–17.2 Frozen; Phase 17.3 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
 
 ## Layer Stack
 
@@ -21,7 +21,7 @@ ASA-ARCH-13.0                 → Knowledge Layer
 ASA-ARCH-14.0                 → Traceability Layer
 ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
 ASA-ARCH-16.0                 → Decision / Audit / Reasoning / Recommendation（CLOSED / Frozen）
-ASA-ARCH-17.0                 → Presentation Layer（Phase 17.1 Frozen; Phase 17.2 Open）
+ASA-ARCH-17.0                 → Presentation / Rendering（Phase 17.1–17.2 Frozen; Phase 17.3 Open）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -31,7 +31,8 @@ Current Traceability Layer SoT: **ASA-ARCH-14.0**
 Trace Intelligence Layer SoT（production / frozen）: **ASA-ARCH-15.0**  
 Decision→Recommendation SoT（production / frozen）: **ASA-ARCH-16.0**  
 Presentation Core SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.1**  
-Next open phase: **ASA-ARCH-17.0 Phase 17.2**（does not modify 15.0, 16.0, or Phase 17.1）
+Rendering SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.2**  
+Next open phase: **ASA-ARCH-17.0 Phase 17.3**（does not modify 15.0, 16.0, 17.1, or 17.2）
 
 ## Architecture Status
 
@@ -40,7 +41,8 @@ Next open phase: **ASA-ARCH-17.0 Phase 17.2**（does not modify 15.0, 16.0, or P
 | ARCH-15.0 | Frozen |
 | ARCH-16.0 | Frozen |
 | ARCH-17.0 Phase 17.1 | Frozen |
-| ARCH-17.0 Phase 17.2 | Open |
+| ARCH-17.0 Phase 17.2 | Frozen |
+| ARCH-17.0 Phase 17.3 | Open |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 
@@ -98,3 +100,5 @@ Next open phase: **ASA-ARCH-17.0 Phase 17.2**（does not modify 15.0, 16.0, or P
 |---|---|---|---|
 | ASA-IMPL-REQ-PRESENTATION-001 | Presentation Core Implementation Request | Issued — Implemented（Final v2.2） / Phase 17.1 Frozen | `auto-scribe-ai/impl/presentation_spec.md` |
 | ASA-IMPL-REQ-ARCH-FREEZE-17.1-001 | Architecture 17.1 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.1-freeze` |
+| ASA-IMPL-REQ-RENDERING-001 | Rendering Implementation Request | Issued — Implemented（Final v1） / Phase 17.2 Frozen | `auto-scribe-ai/impl/rendering_spec.md` |
+| ASA-IMPL-REQ-ARCH-FREEZE-17.2-001 | Architecture 17.2 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.2-freeze` |
