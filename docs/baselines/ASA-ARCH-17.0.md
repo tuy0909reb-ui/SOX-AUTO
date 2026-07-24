@@ -2,8 +2,8 @@
 
 **Baseline ID:** ASA-ARCH-17.0  
 **Title:** Presentation Layer（successor to Decision→Recommendation）  
-**Version:** Draft 0.3（Phase 17.1 Frozen; Phase 17.2 Frozen）  
-**Status:** Open — Active Draft（Phase 17.1–17.2 Frozen; Phase 17.3 Open）  
+**Version:** Baseline 17.3（Draft 0.4 content; Phase 17.1–17.3 Frozen）  
+**Status:** Open — Active Draft（Phase 17.1–17.3 Frozen; Phase 17.4 Open）  
 **Category:** Architecture Evolution  
 **Document Type:** Architecture Baseline  
 **Previous Baseline:** ASA-ARCH-16.0（Decision / Audit / Reasoning / Recommendation — CLOSED / Frozen）  
@@ -14,6 +14,8 @@
 **Acceptance（17.1）:** ASA-VERIFY-ARCH-17.1-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 **Freeze（17.2）:** ASA-IMPL-REQ-ARCH-FREEZE-17.2-001  
 **Acceptance（17.2）:** ASA-VERIFY-ARCH-17.2-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
+**Freeze（17.3）:** ASA-IMPL-REQ-ARCH-FREEZE-17.3-001  
+**Acceptance（17.3）:** ASA-VERIFY-ARCH-17.3-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 
 ---
 
@@ -25,7 +27,8 @@
 * Architecture 17.0 SHALL NOT modify Architecture 16.0 or 15.0  
 * **Phase 17.1 Presentation Core is Frozen / Accepted（Baseline 17.1）**  
 * **Phase 17.2 Rendering is Frozen / Accepted（Baseline 17.2）**  
-* Phase 17.3+ remains Open  
+* **Phase 17.3 Natural Language is Frozen / Accepted（Baseline 17.3）**  
+* Phase 17.4 Integration remains Open  
 
 ---
 
@@ -50,17 +53,19 @@ ASA-ARCH-16.0 で完了した範囲（参照のみ・変更禁止）:
 ## 3. Change Summary
 
 ```text
-Architecture 17.0 adds Presentation and Rendering downstream of frozen RecommendationReport.
+Architecture 17.0 adds Presentation, Rendering, and Natural Language
+downstream of frozen RecommendationReport.
 Presentation transforms Recommendation output into presentation-ready structured data.
 Rendering formats PresentationData into RenderedView（MARKDOWN / HTML / CLI）.
-Neither layer reasons, recommends, or generates natural language.
+Natural Language explains RenderedView in human language without inference.
 ```
 
 | Area | Change | Status |
 |---|---|---|
 | Phase 17.1 Presentation Core | Deterministic RecommendationReport → PresentationModel / PresentationReport | **Frozen / Accepted** |
 | Phase 17.2 Rendering | PresentationData → RenderedView（MARKDOWN / HTML / CLI） | **Frozen / Accepted** |
-| Phase 17.3+ Natural language | NL generation over presentation / rendering structures | **Open** |
+| Phase 17.3 Natural Language | RenderedView → NaturalLanguageReport（explain only） | **Frozen / Accepted** |
+| Phase 17.4 Integration | End-to-end Presentation→Rendering→NL integration hardening | **Open** |
 
 ---
 
@@ -72,7 +77,9 @@ Neither layer reasons, recommends, or generates natural language.
 | — | ASA-IMPL-REQ-ARCH-FREEZE-17.1-001 — Phase 17.1 Freeze | **Implemented** |
 | 2 | ASA-IMPL-REQ-RENDERING-001 Final v1 — Rendering | **Frozen** |
 | — | ASA-IMPL-REQ-ARCH-FREEZE-17.2-001 — Phase 17.2 Freeze | **Implemented** |
-| — | Natural language（17.3+） | Open / Not issued |
+| 3 | ASA-IMPL-REQ-NATURAL-LANGUAGE-001 Final v1.3 — Natural Language | **Frozen** |
+| — | ASA-IMPL-REQ-ARCH-FREEZE-17.3-001 — Phase 17.3 Freeze | **Implemented** |
+| — | Phase 17.4 Integration | Open / Not issued |
 
 ---
 
@@ -220,40 +227,113 @@ Production behavior unchanged by this freeze（governance documents only）.
 ## 7. Dependency Inheritance
 
 ```text
-Rendering → Presentation → Recommendation → Reasoning → Audit → Decision
+NaturalLanguage → Rendering → Presentation → Recommendation → Reasoning → Audit → Decision
   → Checker → Graph → Query → Facade → Store
 ```
 
+Natural Language consumes **RenderedView** only.  
 Rendering consumes **PresentationData** only.  
 Presentation consumes **only** the frozen Recommendation public interface.  
-Architecture 15.0 and 16.0 source and baselines remain unchanged.
+Architecture 15.0 and 16.0 source and baselines remain unchanged.  
+Phase 17.1 and Phase 17.2 remain Frozen and unmodified.
 
 ---
 
-## 8. Status
+## 8. Phase 17.3 — Natural Language
+
+**Status:** Frozen / Accepted  
+**Baseline:** 17.3 Frozen  
+**Git tag:** `arch-17.3-freeze`  
+
+**Normative spec:** `auto-scribe-ai/impl/natural_language_spec.md`  
+
+**Public input:** `RenderedView` only（plus referential `rendering_id` metadata）  
+
+**Deliverables:**
+
+| Kind | Path |
+|---|---|
+| Spec | `auto-scribe-ai/impl/natural_language_spec.md` |
+| Engine | `auto-scribe-ai/src/natural_language/natural_language_engine.py` |
+| Prompt Builder | `auto-scribe-ai/src/natural_language/prompt_builder.py` |
+| Model | `auto-scribe-ai/src/natural_language/natural_language_model.py` |
+| Report | `auto-scribe-ai/src/natural_language/natural_language_report.py` |
+| Templates | `auto-scribe-ai/src/natural_language/templates/` |
+| Exceptions | `auto-scribe-ai/src/natural_language/exceptions.py` |
+| Unit tests | `auto-scribe-ai/tests/test_natural_language.py` |
+| Integration tests | `auto-scribe-ai/tests/test_natural_language_integration.py` |
+
+**Contracts（summary）:**
+
+* Deterministic PromptBuilder + NaturalLanguageReport under deterministic backends  
+* Explain only — no infer / evaluate / recommend / fabricate  
+* Output validation against RenderedView（facts / ordering / hallucination prevention）  
+* Backend abstraction（Mock / GPT / Claude / Gemini）  
+* generated_text owned by NaturalLanguageModel; Report does not duplicate it  
+* Snapshot evaluation; no NL cache  
+
+### 8.1 Acceptance & Freeze Record
 
 | Field | Value |
 |---|---|
-| Registration | Open — Active Draft（17.3+） |
-| Spec version | Draft 0.3 |
+| Acceptance Review | ASA-VERIFY-ARCH-17.3-ACCEPTANCE-001 |
+| Acceptance Result | **PASS WITH NON-BLOCKING NOTES** |
+| Acceptance Status | **ACCEPTED** |
+| Freeze Request | ASA-IMPL-REQ-ARCH-FREEZE-17.3-001 |
+| Phase status | **Frozen / Accepted** |
+| Baseline | **17.3 Frozen** |
+
+### 8.2 Freeze Notes — Non-blocking
+
+| ID | Topic | Detail | Status |
+|---|---|---|---|
+| NB-1 | `rendering_id` keyword metadata | Required for `nl_id` / `rendering_reference_id` derivation | Future API cleanup candidate |
+| NB-2 | Hallucination validator scope | Current: field completeness, ordering, identifier integrity, URL novelty. Future: optional allow-list validation | Non-blocking |
+
+No contract violations. No blocking issues. Natural Language baseline fixed.  
+No production behavior changes during freeze.
+
+### 8.3 Phase 17.3 Freeze Rule
+
+```text
+Architecture 17.3 Natural Language SHALL be immutable.
+Future Natural Language contract changes SHALL NOT mutate Phase 17.3
+except through Change Requests that supersede via a later Architecture 17.x phase.
+Phase 17.4+ evolution SHALL begin as Open work on ASA-ARCH-17.0.
+```
+
+Production behavior unchanged by this freeze（governance documents only）.
+
+---
+
+## 9. Status
+
+| Field | Value |
+|---|---|
+| Registration | Open — Active Draft（17.4+） |
+| Spec version | Baseline 17.3（Draft 0.4 lineage） |
 | Phase 17.1 | **Frozen / Accepted（Baseline 17.1）** |
 | Phase 17.2 | **Frozen / Accepted（Baseline 17.2）** |
-| Phase 17.3 | **Open** |
+| Phase 17.3 | **Frozen / Accepted（Baseline 17.3）** |
+| Phase 17.4 | **Open** |
 | Based on | ASA-ARCH-16.0 Final（CLOSED / Frozen） |
 | Production SoT for Decision→Recommendation | **ASA-ARCH-16.0（frozen）** |
 | Production SoT for Presentation Core | **ASA-ARCH-17.0 Phase 17.1（Frozen）** |
 | Production SoT for Rendering | **ASA-ARCH-17.0 Phase 17.2（Frozen）** |
+| Production SoT for Natural Language | **ASA-ARCH-17.0 Phase 17.3（Frozen）** |
 | Phase 17.1 Git tag | `arch-17.1-freeze` |
 | Phase 17.2 Git tag | `arch-17.2-freeze` |
+| Phase 17.3 Git tag | `arch-17.3-freeze` |
 
 ---
 
-## 9. Governance
+## 10. Governance
 
 | Role | Rule |
 |---|---|
-| Editable baseline | **ASA-ARCH-17.0** for Phase 17.3+ draft updates（Phase 17.1–17.2 frozen） |
+| Editable baseline | **ASA-ARCH-17.0** for Phase 17.4+ draft updates（Phase 17.1–17.3 frozen） |
 | Constraint | MUST NOT mutate `docs/baselines/ASA-ARCH-15.0.md` or `ASA-ARCH-16.0.md` |
-| Upstream | RecommendationReport / PresentationData / Rendering contracts remain Final / frozen |
+| Upstream | Recommendation / Presentation / Rendering / NL contracts remain Final / frozen |
 | Phase 17.1 | Immutable after `arch-17.1-freeze` |
 | Phase 17.2 | Immutable after `arch-17.2-freeze` |
+| Phase 17.3 | Immutable after `arch-17.3-freeze` |

@@ -4,6 +4,31 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.3-freeze] — 2026-07-24
+
+### Architecture 17.3 — Natural Language — Frozen
+
+Freeze Phase 17.3 Natural Language. Acceptance completed. Baseline established. No production behavior changes.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen |
+| 17.2 | Rendering | Frozen |
+| 17.3 | Natural Language | Frozen / Accepted |
+| 17.4 | Integration | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.3-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.3-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.3 Frozen / Baseline 17.3）  
+**Git tag:** `arch-17.3-freeze`  
+
+**NB-1（Non-blocking）:** `rendering_id` keyword metadata — Future API cleanup candidate.  
+**NB-2（Non-blocking）:** Hallucination validator scope — field completeness, ordering, identifier integrity, URL novelty; optional allow-list validation as future enhancement.
+
+Production source unchanged（governance documents only）. Phase 17.4 remains Open.
+
+---
+
 ## [arch-17.2-freeze] — 2026-07-24
 
 ### Architecture 17.2 — Rendering — Frozen
