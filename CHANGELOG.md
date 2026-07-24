@@ -4,6 +4,42 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.7-freeze] — 2026-07-25
+
+### Architecture 17.7 — Reflection / Continuous Improvement Cycle — Frozen
+
+Phase 17.7 frozen. Acceptance completed. Reflection baseline established. Architecture 17.8 opened. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen |
+| 17.2 | Rendering | Frozen |
+| 17.3 | Natural Language | Frozen |
+| 17.4 | Integration | Frozen |
+| 17.5 | Distribution | Frozen |
+| 17.6 | Feedback | Frozen |
+| 17.7 | Reflection | Frozen / Accepted |
+| 17.8 | （Open） | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.7-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.7-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-REFLECTION-001 Final v1.1  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.7 Frozen / Baseline 17.7）  
+**Git tag:** `arch-17.7-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** `reflection_id` derived solely from `feedback_id`; uniqueness per Feedback evaluation.  
+**NB-2（Non-blocking）:** Evaluation configuration requires unused thresholds; reserved for future deterministic enhancements.  
+**NB-3（Non-blocking）:** Traceability `evaluation_result_id` is a deterministic synthetic reference; no separate persisted EvaluationResult model.  
+**NB-4（Non-blocking）:** `ReflectionIntegrityError` and `ReflectionValidationError` intentionally represent different responsibilities.  
+**NB-5（Non-blocking）:** Frozen GovernanceReviewModel has no ReflectionSummary intake API; Reflection outputs summary only; governance remains external.  
+**NB-6（Non-blocking）:** Baseline registry documentation synchronized so Phase 17.7 is Frozen.
+
+Production source unchanged（governance documents only）. Phase 17.8 remains Open.
+
+---
+
 ## [arch-17.6-freeze] — 2026-07-25
 
 ### Architecture 17.6 — Feedback / Improvement Mechanism — Frozen

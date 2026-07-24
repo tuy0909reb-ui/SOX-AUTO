@@ -2,8 +2,8 @@
 
 **Baseline ID:** ASA-ARCH-17.0  
 **Title:** Presentation Layer（successor to Decision→Recommendation）  
-**Version:** Draft 0.9（Phase 17.1–17.6 Frozen; Phase 17.7 Open）  
-**Status:** Open — Active Draft（Phase 17.1–17.6 Frozen; Phase 17.7 Open）  
+**Version:** Draft 1.1（Phase 17.1–17.7 Frozen; Phase 17.8 Open）  
+**Status:** Open — Active Draft（Phase 17.1–17.7 Frozen; Phase 17.8 Open）  
 **Category:** Architecture Evolution  
 **Document Type:** Architecture Baseline  
 **Previous Baseline:** ASA-ARCH-16.0（Decision / Audit / Reasoning / Recommendation — CLOSED / Frozen）  
@@ -22,6 +22,8 @@
 **Acceptance（17.5）:** ASA-VERIFY-ARCH-17.5-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 **Freeze（17.6）:** ASA-IMPL-REQ-ARCH-FREEZE-17.6-001  
 **Acceptance（17.6）:** ASA-VERIFY-ARCH-17.6-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
+**Freeze（17.7）:** ASA-IMPL-REQ-ARCH-FREEZE-17.7-001  
+**Acceptance（17.7）:** ASA-VERIFY-ARCH-17.7-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 
 ---
 
@@ -37,6 +39,7 @@
 * **Phase 17.4 Integration is Frozen / Accepted（Baseline 17.4）**  
 * **Phase 17.5 Distribution is Frozen / Accepted（Baseline 17.5）**  
 * **Phase 17.6 Feedback / Improvement Mechanism is Frozen / Accepted（Baseline 17.6）**  
+* **Phase 17.7 Reflection / Continuous Improvement Cycle is Frozen / Accepted（Baseline 17.7）**  
 
 ---
 
@@ -62,11 +65,12 @@ ASA-ARCH-16.0 で完了した範囲（参照のみ・変更禁止）:
 
 ```text
 Architecture 17.0 adds Presentation, Rendering, Natural Language, Integration,
-Distribution, and Feedback downstream of frozen RecommendationReport.
+Distribution, Feedback, and Reflection downstream of frozen RecommendationReport.
 Presentation / Rendering / NL explain Recommendation output without inference.
 Integration orchestrates the three layers into an IntegratedReport.
 Distribution transmits IntegratedReport to registered interfaces only.
 Feedback evaluates DistributedOutput + audit_log + UserFeedback and proposes improvements.
+Reflection evaluates ImprovementReport + Governance + HistoricalMetrics for continuous improvement.
 ```
 
 | Area | Change | Status |
@@ -77,6 +81,7 @@ Feedback evaluates DistributedOutput + audit_log + UserFeedback and proposes imp
 | Phase 17.4 Integration | RecommendationReport → IntegratedReport（orchestrator） | **Frozen / Accepted** |
 | Phase 17.5 Distribution | IntegratedReport → DistributedOutput（transmit only） | **Frozen / Accepted** |
 | Phase 17.6 Feedback | DistributedOutput + audit_log + UserFeedback → ImprovementReport | **Frozen / Accepted** |
+| Phase 17.7 Reflection | ImprovementReport + Governance + HistoricalMetrics → ReflectionSummary | **Frozen / Accepted** |
 
 ---
 
@@ -96,6 +101,8 @@ Feedback evaluates DistributedOutput + audit_log + UserFeedback and proposes imp
 | — | ASA-IMPL-REQ-ARCH-FREEZE-17.5-001 — Phase 17.5 Freeze | **Implemented** |
 | 6 | ASA-IMPL-REQ-FEEDBACK-001 Final v1.1 — Feedback | **Frozen** |
 | — | ASA-IMPL-REQ-ARCH-FREEZE-17.6-001 — Phase 17.6 Freeze | **Implemented** |
+| 7 | ASA-IMPL-REQ-REFLECTION-001 Final v1.1 — Reflection | **Frozen** |
+| — | ASA-IMPL-REQ-ARCH-FREEZE-17.7-001 — Phase 17.7 Freeze | **Implemented** |
 
 ---
 
@@ -243,16 +250,17 @@ Production behavior unchanged by this freeze（governance documents only）.
 ## 7. Dependency Inheritance
 
 ```text
-Feedback → Distribution → Integration → NaturalLanguage → Rendering → Presentation
+Reflection → Feedback → Distribution → Integration → NaturalLanguage → Rendering → Presentation
   → Recommendation → Reasoning → Audit → Decision
   → Checker → Graph → Query → Facade → Store
 ```
 
+Reflection consumes **ImprovementReport**, **GovernanceReviewModel**, and **HistoricalMetricsModel** only.  
 Feedback consumes **DistributedOutput**, **DistributionModel.audit_log**, and **UserFeedbackModel** only.  
 Distribution consumes **IntegratedReport** only.  
 Integration consumes **RecommendationReport** only and orchestrates frozen 17.1–17.3 engines.  
 Architecture 15.0 and 16.0 source and baselines remain unchanged.  
-Phase 17.1–17.6 remain Frozen and unmodified.
+Phase 17.1–17.7 remain Frozen and unmodified.
 
 ---
 
@@ -541,19 +549,97 @@ Production behavior unchanged by this freeze（governance documents only）.
 
 ---
 
-## 12. Status
+## 12. Phase 17.7 — Reflection / Continuous Improvement Cycle
+
+**Status:** Frozen / Accepted  
+**Baseline:** 17.7 Frozen  
+**Git tag:** `arch-17.7-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**Normative spec:** `auto-scribe-ai/impl/reflection_spec.md`  
+
+**Public input:** `ImprovementReport` + `GovernanceReviewModel` + `HistoricalMetricsModel`  
+
+**Deliverables:**
+
+| Kind | Path |
+|---|---|
+| Spec | `auto-scribe-ai/impl/reflection_spec.md` |
+| Engine | `auto-scribe-ai/src/reflection/reflection_engine.py` |
+| Model | `auto-scribe-ai/src/reflection/reflection_model.py` |
+| Historical Metrics | `auto-scribe-ai/src/reflection/historical_metrics_model.py` |
+| Recommendation | `auto-scribe-ai/src/reflection/continuous_recommendation_model.py` |
+| Summary | `auto-scribe-ai/src/reflection/reflection_summary.py` |
+| Exceptions | `auto-scribe-ai/src/reflection/exceptions.py` |
+| Unit tests | `auto-scribe-ai/tests/test_reflection.py` |
+| Pipeline tests | `auto-scribe-ai/tests/test_reflection_pipeline.py` |
+
+**Contracts（summary）:**
+
+* Evaluate improvement effectiveness — no upstream mutation  
+* Deterministic ReflectionSummary under versioned evaluation configuration  
+* ReflectionModel owns results / findings / recommendations / traceability_map  
+* ReflectionSummary references ReflectionModel only（no field duplication）  
+* GovernanceReviewModel remains external（no status updates by Reflection）  
+* Snapshot evaluation; no Reflection cache  
+
+Phase 17.1–17.6 contracts remain Frozen and unmodified.
+
+### 12.1 Acceptance & Freeze Record
+
+| Field | Value |
+|---|---|
+| Acceptance Review | ASA-VERIFY-ARCH-17.7-ACCEPTANCE-001 |
+| Acceptance Result | **PASS WITH NON-BLOCKING NOTES** |
+| Acceptance Status | **ACCEPTED** |
+| Eligible for Baseline Freeze | **YES** |
+| Freeze Request | ASA-IMPL-REQ-ARCH-FREEZE-17.7-001 |
+| Implementation | ASA-IMPL-REQ-REFLECTION-001 Final v1.1 |
+| Phase status | **Frozen / Accepted** |
+| Baseline | **17.7 Frozen** |
+| Freeze Date | **2026-07-25** |
+
+### 12.2 Freeze Notes — Non-blocking
+
+| ID | Topic | Detail | Status |
+|---|---|---|---|
+| NB-1 | Identifier scope | `reflection_id` derived solely from `feedback_id`; uniqueness per Feedback evaluation | Non-blocking |
+| NB-2 | Unused thresholds | Evaluation configuration requires thresholds unused by scoring; reserved for future deterministic enhancements | Non-blocking |
+| NB-3 | Synthetic evaluation_result_id | Traceability `evaluation_result_id` is deterministic synthetic reference; no separate persisted EvaluationResult model | Non-blocking |
+| NB-4 | Error separation | `ReflectionIntegrityError` vs `ReflectionValidationError` intentionally represent different responsibilities | Non-blocking |
+| NB-5 | Governance intake | Frozen GovernanceReviewModel has no ReflectionSummary intake API; Reflection outputs summary only; governance remains external | Non-blocking |
+| NB-6 | Registry sync | Baseline registry documentation synchronized so Phase 17.7 is Frozen | Non-blocking |
+
+No contract violations. No blocking issues. Reflection baseline fixed.  
+No production behavior changes during freeze.
+
+### 12.3 Phase 17.7 Freeze Rule
+
+```text
+Architecture 17.7 Reflection SHALL be immutable.
+Future Reflection contract changes SHALL NOT mutate Phase 17.7
+except through Change Requests that supersede via a later Architecture 17.x phase.
+Phase 17.8+ evolution SHALL begin as Open work on ASA-ARCH-17.0.
+```
+
+Production behavior unchanged by this freeze（governance documents only）.
+
+---
+
+## 13. Status
 
 | Field | Value |
 |---|---|
 | Registration | Open — Active Draft |
-| Spec version | Draft 0.9 |
+| Spec version | Draft 1.1 |
 | Phase 17.1 | **Frozen / Accepted（Baseline 17.1）** |
 | Phase 17.2 | **Frozen / Accepted（Baseline 17.2）** |
 | Phase 17.3 | **Frozen / Accepted（Baseline 17.3）** |
 | Phase 17.4 | **Frozen / Accepted（Baseline 17.4）** |
 | Phase 17.5 | **Frozen / Accepted（Baseline 17.5）** |
 | Phase 17.6 | **Frozen / Accepted（Baseline 17.6）** |
-| Phase 17.7 | **Open** |
+| Phase 17.7 | **Frozen / Accepted（Baseline 17.7）** |
+| Phase 17.8 | **Open** |
 | Based on | ASA-ARCH-16.0 Final（CLOSED / Frozen） |
 | Production SoT for Decision→Recommendation | **ASA-ARCH-16.0（frozen）** |
 | Production SoT for Presentation Core | **ASA-ARCH-17.0 Phase 17.1（Frozen）** |
@@ -562,25 +648,28 @@ Production behavior unchanged by this freeze（governance documents only）.
 | Production SoT for Integration | **ASA-ARCH-17.0 Phase 17.4（Frozen）** |
 | Production SoT for Distribution | **ASA-ARCH-17.0 Phase 17.5（Frozen）** |
 | Production SoT for Feedback | **ASA-ARCH-17.0 Phase 17.6（Frozen）** |
+| Production SoT for Reflection | **ASA-ARCH-17.0 Phase 17.7（Frozen）** |
 | Phase 17.1 Git tag | `arch-17.1-freeze` |
 | Phase 17.2 Git tag | `arch-17.2-freeze` |
 | Phase 17.3 Git tag | `arch-17.3-freeze` |
 | Phase 17.4 Git tag | `arch-17.4-freeze` |
 | Phase 17.5 Git tag | `arch-17.5-freeze` |
 | Phase 17.6 Git tag | `arch-17.6-freeze` |
+| Phase 17.7 Git tag | `arch-17.7-freeze` |
 
 ---
 
-## 13. Governance
+## 14. Governance
 
 | Role | Rule |
 |---|---|
-| Editable baseline | **ASA-ARCH-17.0** for Phase 17.7 draft updates（Phase 17.1–17.6 frozen） |
+| Editable baseline | **ASA-ARCH-17.0** for Phase 17.8 draft updates（Phase 17.1–17.7 frozen） |
 | Constraint | MUST NOT mutate `docs/baselines/ASA-ARCH-15.0.md` or `ASA-ARCH-16.0.md` |
-| Upstream | Recommendation / Presentation / Rendering / NL / Integration / Distribution / Feedback contracts remain Final / frozen |
+| Upstream | Recommendation / Presentation / Rendering / NL / Integration / Distribution / Feedback / Reflection contracts remain Final / frozen |
 | Phase 17.1 | Immutable after `arch-17.1-freeze` |
 | Phase 17.2 | Immutable after `arch-17.2-freeze` |
 | Phase 17.3 | Immutable after `arch-17.3-freeze` |
 | Phase 17.4 | Immutable after `arch-17.4-freeze` |
 | Phase 17.5 | Immutable after `arch-17.5-freeze` |
 | Phase 17.6 | Immutable after `arch-17.6-freeze` |
+| Phase 17.7 | Immutable after `arch-17.7-freeze` |
