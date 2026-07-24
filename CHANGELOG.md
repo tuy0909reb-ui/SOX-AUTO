@@ -4,6 +4,30 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.1-freeze] — 2026-07-24
+
+### Architecture 17.1 — Presentation Core — Frozen
+
+Architecture Baseline **ASA-ARCH-17.0** Phase **17.1**（Presentation Core）is accepted and frozen.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen / Accepted |
+| 17.2 | （Open） | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.1-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.1-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.1 Frozen）  
+**Git tag:** `arch-17.1-freeze`  
+
+Acceptance completed. No contract violations. No blocking issues.
+
+**NB-1（Non-blocking）:** Packaging dependency — `FrozenEvidence` imported as shared type utility. Future Packaging Cleanup. No architecture impact. No implementation change required.
+
+Production source unchanged（governance documents only）. Phase 17.2 remains Open.
+
+---
+
 ## [arch-16.0-final] — 2026-07-24
 
 ### Architecture 16.0 — Decision / Audit / Reasoning / Recommendation — CLOSED

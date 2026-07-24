@@ -11,7 +11,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-14.0** | **1.0** | **Traceability Layer** | `docs/baselines/ASA-ARCH-14.0.md` |
 | **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
 | **ASA-ARCH-16.0** | **Final 1.0** | **CLOSED — Decision→Recommendation（Frozen）** | `docs/baselines/ASA-ARCH-16.0.md` |
-| **ASA-ARCH-17.0** | **Draft 0.1** | **Open — Placeholder（successor）** | `docs/baselines/ASA-ARCH-17.0.md` |
+| **ASA-ARCH-17.0** | **Draft 0.2** | **Open — Phase 17.1 Frozen; Phase 17.2 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
 
 ## Layer Stack
 
@@ -21,7 +21,7 @@ ASA-ARCH-13.0                 → Knowledge Layer
 ASA-ARCH-14.0                 → Traceability Layer
 ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
 ASA-ARCH-16.0                 → Decision / Audit / Reasoning / Recommendation（CLOSED / Frozen）
-ASA-ARCH-17.0                 → Successor（Draft placeholder）
+ASA-ARCH-17.0                 → Presentation Layer（Phase 17.1 Frozen; Phase 17.2 Open）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -30,13 +30,17 @@ Current Knowledge Layer SoT: **ASA-ARCH-13.0**
 Current Traceability Layer SoT: **ASA-ARCH-14.0**  
 Trace Intelligence Layer SoT（production / frozen）: **ASA-ARCH-15.0**  
 Decision→Recommendation SoT（production / frozen）: **ASA-ARCH-16.0**  
-Next Architecture draft: **ASA-ARCH-17.0**（does not modify 15.0 or 16.0）
+Presentation Core SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.1**  
+Next open phase: **ASA-ARCH-17.0 Phase 17.2**（does not modify 15.0, 16.0, or Phase 17.1）
+
+## Architecture Status
 
 | Architecture | Status |
 |---|---|
 | ARCH-15.0 | Frozen |
 | ARCH-16.0 | Frozen |
-| ARCH-17.0 | Open |
+| ARCH-17.0 Phase 17.1 | Frozen |
+| ARCH-17.0 Phase 17.2 | Open |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 
@@ -87,3 +91,10 @@ Next Architecture draft: **ASA-ARCH-17.0**（does not modify 15.0 or 16.0）
 | ASA-IMPL-REQ-TRACE-REASONING-001 | Trace Reasoning Implementation Request | Issued — Implemented（Final v1） | `docs/change_requests/asa_impl_req_trace_reasoning_001.md` / `auto-scribe-ai/impl/trace_reasoning_spec.md` |
 | ASA-IMPL-REQ-RECOMMENDATION-001 | Recommendation Engine Implementation Request | Issued — Implemented（Final v1） | `docs/change_requests/asa_impl_req_recommendation_001.md` / `auto-scribe-ai/impl/recommendation_spec.md` |
 | ASA-IMPL-REQ-ARCH-CLOSEOUT-16.0-001 | Architecture 16.0 Closeout & Baseline Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-16.0-final` |
+
+## Child Implementation Specs（ASA-ARCH-17.0）
+
+| Spec ID | Title | Status | Path |
+|---|---|---|---|
+| ASA-IMPL-REQ-PRESENTATION-001 | Presentation Core Implementation Request | Issued — Implemented（Final v2.2） / Phase 17.1 Frozen | `auto-scribe-ai/impl/presentation_spec.md` |
+| ASA-IMPL-REQ-ARCH-FREEZE-17.1-001 | Architecture 17.1 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.1-freeze` |
