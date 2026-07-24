@@ -4,6 +4,46 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-17.9-freeze] — 2026-07-25
+
+### Architecture 17.9 — Synthesis / Consolidation Mechanism — Frozen
+
+Phase 17.9 frozen. Acceptance completed. Synthesis baseline established. Architecture 18.0 opened. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 17.1 | Presentation Core | Frozen |
+| 17.2 | Rendering | Frozen |
+| 17.3 | Natural Language | Frozen |
+| 17.4 | Integration | Frozen |
+| 17.5 | Distribution | Frozen |
+| 17.6 | Feedback | Frozen |
+| 17.7 | Reflection | Frozen |
+| 17.8 | Evolution | Frozen |
+| 17.9 | Synthesis | Frozen / Accepted |
+| 18.0 | （Open） | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-17.9-001  
+**Acceptance:** ASA-VERIFY-ARCH-17.9-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-SYNTHESIS-001 Final v1.1  
+**Architecture:** ASA-ARCH-17.0 Draft 1.4（acceptance） → Draft 1.5（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-17.0.md`（Phase 17.9 Frozen / Baseline 17.9）  
+**Git tag:** `arch-17.9-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** `synthesis_id` uniqueness is per `evolution_id` / evaluation set.  
+**NB-2（Non-blocking）:** Threshold configuration reserved for future deterministic extensions.  
+**NB-3（Non-blocking）:** `consolidation_result_id` is a synthetic deterministic reference.  
+**NB-4（Non-blocking）:** IntegrityError / ValidationError responsibility split confirmed.  
+**NB-5（Non-blocking）:** `GovernanceReviewModel` remains read-only.  
+**NB-6（Non-blocking）:** `SynthesisReport` references `SynthesisModel` only.  
+**NB-7（Non-blocking）:** Baseline registry synchronized during freeze.
+
+Production source unchanged（governance documents only）. Architecture 18.0 remains Open.
+
+---
+
 ## [arch-17.8-freeze] — 2026-07-25
 
 ### Architecture 17.8 — Evolution / Optimization Mechanism — Frozen

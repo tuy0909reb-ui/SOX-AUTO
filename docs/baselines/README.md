@@ -11,7 +11,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-14.0** | **1.0** | **Traceability Layer** | `docs/baselines/ASA-ARCH-14.0.md` |
 | **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
 | **ASA-ARCH-16.0** | **Final 1.0** | **CLOSED — Decision→Recommendation（Frozen）** | `docs/baselines/ASA-ARCH-16.0.md` |
-| **ASA-ARCH-17.0** | **Baseline 17.8** | **Open — Phase 17.1–17.8 Frozen; Phase 17.9 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
+| **ASA-ARCH-17.0** | **Baseline 17.9** | **Open — Phase 17.1–17.9 Frozen; Architecture 18.0 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
 
 ## Layer Stack
 
@@ -21,7 +21,8 @@ ASA-ARCH-13.0                 → Knowledge Layer
 ASA-ARCH-14.0                 → Traceability Layer
 ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
 ASA-ARCH-16.0                 → Decision / Audit / Reasoning / Recommendation（CLOSED / Frozen）
-ASA-ARCH-17.0                 → Presentation / Rendering / NL / Integration / Distribution / Feedback / Reflection / Evolution（Phase 17.1–17.8 Frozen; Phase 17.9 Open）
+ASA-ARCH-17.0                 → Presentation / Rendering / NL / Integration / Distribution / Feedback / Reflection / Evolution / Synthesis（Phase 17.1–17.9 Frozen）
+ASA-ARCH-18.0                 → （Open）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -38,7 +39,8 @@ Distribution SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.5**
 Feedback SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.6**  
 Reflection SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.7**  
 Evolution SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.8**  
-Next open phase: **ASA-ARCH-17.0 Phase 17.9**（does not modify 15.x, 16.x, or Phase 17.1–17.8）
+Synthesis SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.9**  
+Next open architecture: **ASA-ARCH-18.0**（does not modify 15.x, 16.x, or Phase 17.1–17.9）
 
 ## Architecture Status
 
@@ -54,7 +56,8 @@ Next open phase: **ASA-ARCH-17.0 Phase 17.9**（does not modify 15.x, 16.x, or P
 | ARCH-17.0 Phase 17.6 | Frozen |
 | ARCH-17.0 Phase 17.7 | Frozen |
 | ARCH-17.0 Phase 17.8 | Frozen |
-| ARCH-17.0 Phase 17.9 | Open |
+| ARCH-17.0 Phase 17.9 | Frozen |
+| ARCH-18.0 | Open |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 
@@ -126,3 +129,5 @@ Next open phase: **ASA-ARCH-17.0 Phase 17.9**（does not modify 15.x, 16.x, or P
 | ASA-IMPL-REQ-ARCH-FREEZE-17.7-001 | Architecture 17.7 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.7-freeze` |
 | ASA-IMPL-REQ-EVOLUTION-001 | Evolution Implementation Request | Issued — Implemented（Final v1.1） / Phase 17.8 Frozen | `auto-scribe-ai/impl/evolution_spec.md` |
 | ASA-IMPL-REQ-ARCH-FREEZE-17.8-001 | Architecture 17.8 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.8-freeze` |
+| ASA-IMPL-REQ-SYNTHESIS-001 | Synthesis Implementation Request | Issued — Implemented（Final v1.1） / Phase 17.9 Frozen | `auto-scribe-ai/impl/synthesis_spec.md` |
+| ASA-IMPL-REQ-ARCH-FREEZE-17.9-001 | Architecture 17.9 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.9-freeze` |
