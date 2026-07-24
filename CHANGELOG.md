@@ -4,6 +4,39 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.1-freeze] — 2026-07-25
+
+### Architecture 18.1 — Runtime Orchestration Mechanism — Frozen
+
+Phase 18.1 accepted and frozen. Orchestration baseline established. Architecture 18.2 opened. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.0 | Frozen layers | Frozen |
+| 18.1 | Runtime Orchestration | Frozen / Accepted |
+| 18.2 | Lifecycle Control | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.1-001  
+**Freeze Identifier:** ARCH-18.1-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.1-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-ORCHESTRATION-001 Final v1.1  
+**Architecture:** ASA-ARCH-18.0 Draft 1.2（acceptance） → Draft 1.3（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.1 Frozen / Baseline 18.1）  
+**Git tag:** `arch-18.1-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** `plan_id` derived from `manifest_id`; uniqueness per orchestration evaluation set.  
+**NB-2（Non-blocking）:** Recovery policy is definition-only; retry/rollback/recovery paths not executed.  
+**NB-3（Non-blocking）:** Governance runtime hooks are checkpoint definitions only; approval deferred to 18.3.  
+**NB-4（Non-blocking）:** Execution topology is a deterministic DAG（topological ordering）.  
+**NB-5（Non-blocking）:** Pipeline covers Convergence → Orchestration; runtime execution out of scope.  
+**NB-6（Non-blocking）:** Scheduling / workers / async / lifecycle control deferred to 18.2+.
+
+Production source unchanged（governance documents only）. Phase 18.2 remains Open.
+
+---
+
 ## [arch-18.0-freeze] — 2026-07-25
 
 ### Architecture 18.0 — Convergence / Meta-Architecture — Frozen
