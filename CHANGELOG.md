@@ -4,6 +4,41 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.0-freeze] — 2026-07-25
+
+### Architecture 18.0 — Convergence / Meta-Architecture — Frozen
+
+Phase 18.0 accepted and frozen. Convergence baseline established. Architecture 18.1 opened. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–17.9 | Frozen layers | Frozen |
+| 18.0 | Convergence / Meta-Architecture | Frozen / Accepted |
+| 18.1 | Runtime Orchestration | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.0-001  
+**Freeze Identifier:** ARCH-18.0-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.0-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-CONVERGENCE-001 Final v1.1（ACCEPTED Edition）  
+**Architecture:** ASA-ARCH-18.0 Draft 1.0（acceptance） → Draft 1.1（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.0 Frozen / Baseline 18.0）  
+**Git tag:** `arch-18.0-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** `manifest_id` derived solely from `synthesis_id`.  
+**NB-2（Non-blocking）:** `execution_policy.mode = DEFINITION_ONLY`; runtime deferred to Phase 18.1.  
+**NB-3（Non-blocking）:** `thresholds.min_topology_nodes` enforced; `max_cycle_count` reserved（DAG integrity）.  
+**NB-4（Non-blocking）:** IntegrityError（input） / ValidationError（output） responsibility split confirmed.  
+**NB-5（Non-blocking）:** `GovernanceRegistryModel` remains immutable.  
+**NB-6（Non-blocking）:** Manifest owns topology/policies; MetaArchitecture owns refs/traceability.  
+**NB-7（Non-blocking）:** Runtime topology is deterministic definition only.  
+**NB-8（Non-blocking）:** Baseline registry synchronized during freeze.
+
+Production source unchanged（governance documents only）. Phase 18.1 remains Open.
+
+---
+
 ## [arch-17.9-freeze] — 2026-07-25
 
 ### Architecture 17.9 — Synthesis / Consolidation Mechanism — Frozen

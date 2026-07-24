@@ -11,7 +11,8 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-14.0** | **1.0** | **Traceability Layer** | `docs/baselines/ASA-ARCH-14.0.md` |
 | **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
 | **ASA-ARCH-16.0** | **Final 1.0** | **CLOSED — Decision→Recommendation（Frozen）** | `docs/baselines/ASA-ARCH-16.0.md` |
-| **ASA-ARCH-17.0** | **Baseline 17.9** | **Open — Phase 17.1–17.9 Frozen; Architecture 18.0 Open** | `docs/baselines/ASA-ARCH-17.0.md` |
+| **ASA-ARCH-17.0** | **Baseline 17.9** | **Open — Phase 17.1–17.9 Frozen** | `docs/baselines/ASA-ARCH-17.0.md` |
+| **ASA-ARCH-18.0** | **Baseline 18.0** | **Open — Phase 18.0 Frozen; Phases 18.1–18.4 Open** | `docs/baselines/ASA-ARCH-18.0.md` |
 
 ## Layer Stack
 
@@ -22,7 +23,7 @@ ASA-ARCH-14.0                 → Traceability Layer
 ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
 ASA-ARCH-16.0                 → Decision / Audit / Reasoning / Recommendation（CLOSED / Frozen）
 ASA-ARCH-17.0                 → Presentation / Rendering / NL / Integration / Distribution / Feedback / Reflection / Evolution / Synthesis（Phase 17.1–17.9 Frozen）
-ASA-ARCH-18.0                 → （Open）
+ASA-ARCH-18.0                 → Meta-Architecture / Convergence（Phase 18.0 Frozen; 18.1–18.4 Open）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -40,7 +41,8 @@ Feedback SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.6**
 Reflection SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.7**  
 Evolution SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.8**  
 Synthesis SoT（production / frozen）: **ASA-ARCH-17.0 Phase 17.9**  
-Next open architecture: **ASA-ARCH-18.0**（does not modify 15.x, 16.x, or Phase 17.1–17.9）
+Convergence SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.0**  
+Next open phase: **ASA-ARCH-18.0 Phase 18.1**（does not modify 15.x–17.9 or Phase 18.0）
 
 ## Architecture Status
 
@@ -57,7 +59,11 @@ Next open architecture: **ASA-ARCH-18.0**（does not modify 15.x, 16.x, or Phase
 | ARCH-17.0 Phase 17.7 | Frozen |
 | ARCH-17.0 Phase 17.8 | Frozen |
 | ARCH-17.0 Phase 17.9 | Frozen |
-| ARCH-18.0 | Open |
+| ARCH-18.0 Phase 18.0 | Frozen |
+| ARCH-18.0 Phase 18.1 | Open |
+| ARCH-18.0 Phase 18.2 | Open |
+| ARCH-18.0 Phase 18.3 | Open |
+| ARCH-18.0 Phase 18.4 | Open |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 
@@ -131,3 +137,10 @@ Next open architecture: **ASA-ARCH-18.0**（does not modify 15.x, 16.x, or Phase
 | ASA-IMPL-REQ-ARCH-FREEZE-17.8-001 | Architecture 17.8 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.8-freeze` |
 | ASA-IMPL-REQ-SYNTHESIS-001 | Synthesis Implementation Request | Issued — Implemented（Final v1.1） / Phase 17.9 Frozen | `auto-scribe-ai/impl/synthesis_spec.md` |
 | ASA-IMPL-REQ-ARCH-FREEZE-17.9-001 | Architecture 17.9 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-17.9-freeze` |
+
+## Child Implementation Specs（ASA-ARCH-18.0）
+
+| Spec ID | Title | Status | Path |
+|---|---|---|---|
+| ASA-IMPL-REQ-CONVERGENCE-001 | Convergence / Meta-Architecture Implementation Request | Issued — Implemented（Final v1.1） / Phase 18.0 Frozen | `auto-scribe-ai/impl/convergence_spec.md` |
+| ASA-IMPL-REQ-ARCH-FREEZE-18.0-001 | Architecture 18.0 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-18.0-freeze` |
