@@ -4,6 +4,37 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.3-freeze] — 2026-07-25
+
+### Architecture 18.3 — Governance Runtime — Frozen
+
+Phase 18.3 accepted and frozen. Governance Runtime baseline established. Architecture 18.4 opened. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.2 | Frozen layers | Frozen |
+| 18.3 | Governance Runtime | Frozen / Accepted |
+| 18.4 | System Integration Freeze | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.3-001  
+**Freeze Identifier:** ARCH-18.3-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.3-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-GOVERNANCE-RUNTIME-001 Draft 0.1  
+**Architecture:** ASA-ARCH-18.0 Draft 1.6（acceptance） → Draft 1.7（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.3 Frozen / Baseline 18.3）  
+**Git tag:** `arch-18.3-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** Implementation Spec remains Draft 0.1（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** `lifecycle_effect` recorded on decision; LifecycleManifest.current_state not mutated.  
+**NB-3（Non-blocking）:** Unsupported mandatory registry rules fail closed via ContractViolationError.  
+**NB-4（Non-blocking）:** Spec path under `auto-scribe-ai/impl/`（matches 18.0–18.2 convention）.
+
+Production source unchanged（governance documents only）. Phase 18.4 remains Open.
+
+---
+
 ## [arch-18.2-freeze] — 2026-07-25
 
 ### Architecture 18.2 — Lifecycle Control Mechanism — Frozen
