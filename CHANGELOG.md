@@ -4,6 +4,134 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-19.1-freeze] — 2026-07-25
+
+### Architecture 19.1 — Workflow Engine — Frozen
+
+Phase 19.1 accepted and frozen. Workflow Engine baseline established. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Accepted（Pending Freeze） |
+| 19.1 | Workflow Engine | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-ARCH-19.1-001  
+**Freeze Identifier:** ARCH-19.1-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-19.1-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-ARCH-19.1-001  
+**Architecture:** ASA-ARCH-19.1 Draft 0.6  
+**Baseline:** `docs/baselines/ASA-ARCH-19.1.md`（Phase 19.1 Frozen）  
+**Git tag:** `arch-19.1-freeze`  
+**Freeze Date:** 2026-07-25  
+**Unit / Architecture / Pipeline Tests:** 30 passed  
+**Regression:** 673 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 0.6（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** `Workflow.steps` holds sole step body.  
+**NB-3（Non-blocking）:** Schema body validation remains deferred.  
+**NB-4（Non-blocking）:** Production source remains outside freeze commit（governance metadata only）.
+
+Production source unchanged（governance documents only）. Phase 19.1 Frozen / Accepted.
+
+---
+
+## [arch-19.1-accepted] — 2026-07-25
+
+### Architecture 19.1 — Workflow Engine — Accepted
+
+Phase 19.1 Workflow Engine acceptance verification passed. Eligible for baseline freeze（`ARCH-19.1-FREEZE`）.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Accepted（Pending Freeze） |
+| 19.1 | Workflow Engine | Accepted（Pending Freeze） |
+
+**Acceptance:** ASA-VERIFY-ARCH-19.1-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Blocking Issues:** NONE  
+**Verification Record:** `docs/change_requests/asa_verify_arch_19_1_acceptance_001.md`  
+**Architecture:** ASA-ARCH-19.1 Draft 0.6  
+**Baseline:** `docs/baselines/ASA-ARCH-19.1.md`  
+**Regression:** 673 passed / 0 failed  
+
+---
+
+## [arch-19.1-implemented] — 2026-07-25
+
+### Architecture 19.1 — Workflow Engine — Implemented
+
+Phase 19.1 Workflow Engine implemented. Immutable definition-only models: Workflow, WorkflowStep, WorkflowGraph, WorkflowNode, WorkflowEdge, ExecutionPlan, ExecutionPlanStage, ContractDefinition, StepReference; pure validation; deterministic plan generation; Core-compatible serialization. Phases 15.x–19.0 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Accepted（Pending Freeze） |
+| 19.1 | Workflow Engine | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-19.1-001  
+**Implementation Spec:** `auto-scribe-ai/impl/workflow_engine_spec.md`  
+**Architecture:** ASA-ARCH-19.1 Draft 0.6（Phase 19.1 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-19.1.md`  
+**Package:** `auto-scribe-ai/src/workflow/`  
+**Depends On:** ASA-ARCH-19.0 Core Platform  
+**Unit / Architecture / Pipeline Tests:** 30 passed  
+**Regression:** 673 passed  
+
+---
+
+## [arch-19.0-accepted] — 2026-07-25
+
+### Architecture 19.0 — Core Platform — Accepted
+
+Phase 19.0 Core Platform acceptance verification passed. Eligible for baseline freeze（`ARCH-19.0-FREEZE`）.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Accepted（Pending Freeze） |
+
+**Acceptance Request:** ASA-IMPL-REQ-ARCH-ACCEPTANCE-19.0-001  
+**Acceptance:** ASA-VERIFY-ARCH-19.0-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Blocking Issues:** NONE  
+**Verification Record:** `docs/change_requests/asa_verify_arch_19_0_acceptance_001.md`  
+**Architecture:** ASA-ARCH-19.0 Draft 1.0  
+**Baseline:** `docs/baselines/ASA-ARCH-19.0.md`  
+**Regression:** 643 passed / 0 failed  
+
+---
+
+## [arch-19.0-implemented] — 2026-07-25
+
+### Architecture 19.0 — Core Platform — Implemented
+
+Phase 19.0 Core Platform implemented. Pure immutable value objects and contracts: Version, Identifier（ServiceID / WorkflowID / CapabilityID / EventID / StateID）, Metadata, Validation, Serialization. Phases 15.x–18.9 unmodified. No RuntimeService / Workflow / Event / State / Observability.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-19.0-001  
+**Implementation Spec:** `auto-scribe-ai/impl/core_platform_spec.md`  
+**Architecture:** ASA-ARCH-19.0 Draft 1.0（Phase 19.0 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-19.0.md`  
+**Package:** `auto-scribe-ai/src/core/`  
+**Contracts:** Version · Identifier · Metadata · ValidationResult · JSON Serialization  
+**Guarantees:** Pure / Immutable / Deterministic / Serializable / Side-effect Free  
+**Unit Tests:** 27 passed（`test_core_platform.py`）  
+**Architecture Tests:** 6 passed（`test_core_platform_architecture.py`）  
+**Pipeline Tests:** 6 passed（`test_core_platform_pipeline.py`）  
+**Regression:** 643 passed  
+
+---
+
 ## [arch-18.9-freeze] — 2026-07-25
 
 ### Architecture 18.9 — System Governance Runtime Execution Scheduler / Orchestration — Frozen
