@@ -12,7 +12,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
 | **ASA-ARCH-16.0** | **Final 1.0** | **CLOSED — Decision→Recommendation（Frozen）** | `docs/baselines/ASA-ARCH-16.0.md` |
 | **ASA-ARCH-17.0** | **Baseline 17.9** | **Open — Phase 17.1–17.9 Frozen** | `docs/baselines/ASA-ARCH-17.0.md` |
-| **ASA-ARCH-18.0** | **Baseline 18.8** | **Open — Phase 18.0–18.8 Frozen** | `docs/baselines/ASA-ARCH-18.0.md` |
+| **ASA-ARCH-18.0** | **Baseline 18.9 / Draft 3.0** | **Open — Phase 18.0–18.9 Frozen** | `docs/baselines/ASA-ARCH-18.0.md` |
 
 ## Layer Stack
 
@@ -23,7 +23,7 @@ ASA-ARCH-14.0                 → Traceability Layer
 ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
 ASA-ARCH-16.0                 → Decision / Audit / Reasoning / Recommendation（CLOSED / Frozen）
 ASA-ARCH-17.0                 → Presentation / Rendering / NL / Integration / Distribution / Feedback / Reflection / Evolution / Synthesis（Phase 17.1–17.9 Frozen）
-ASA-ARCH-18.0                 → Meta-Architecture … / Runtime Execution / Execution Control（Phase 18.0–18.8 Frozen）
+ASA-ARCH-18.0                 → Meta-Architecture … / Execution Control / Execution Scheduler（Phase 18.0–18.9 Frozen）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -49,7 +49,8 @@ System Governance Integration SoT（production / frozen）: **ASA-ARCH-18.0 Phas
 Runtime Binding SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.5**  
 Runtime Operation SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.6**  
 Runtime Execution SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.7**  
-Runtime Execution Control SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.8**
+Runtime Execution Control SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.8**  
+Runtime Execution Scheduler SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.9**
 
 ## Architecture Status
 
@@ -75,6 +76,7 @@ Runtime Execution Control SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18
 | ARCH-18.0 Phase 18.6 | Frozen |
 | ARCH-18.0 Phase 18.7 | Frozen |
 | ARCH-18.0 Phase 18.8 | Frozen |
+| ARCH-18.0 Phase 18.9 | Frozen |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 

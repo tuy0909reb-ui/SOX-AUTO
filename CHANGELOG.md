@@ -4,6 +4,61 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.9-freeze] — 2026-07-25
+
+### Architecture 18.9 — System Governance Runtime Execution Scheduler / Orchestration — Frozen
+
+Phase 18.9 accepted and frozen. Runtime Execution Scheduler baseline established. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.8 | Frozen layers | Frozen |
+| 18.9 | Runtime Execution Scheduler / Orchestration | Frozen / Accepted |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.9-001  
+**Freeze Identifier:** ARCH-18.9-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.9-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-SCHEDULER-001 Draft 0.3  
+**Architecture:** ASA-ARCH-18.0 Draft 2.9（acceptance） → Draft 3.0（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.9 Frozen / Baseline 18.9）  
+**Git tag:** `arch-18.9-freeze`  
+**Freeze Date:** 2026-07-25  
+**Unit Tests:** 19 passed  
+**Pipeline Tests:** 2 passed  
+**Regression:** 604 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 0.3（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** Advanced distributed orchestration beyond Scheduler remains deferred.  
+**NB-3（Non-blocking）:** Side effects recorded only on SchedulingResult; ExecutionControlResult immutable.  
+**NB-4（Non-blocking）:** Production source remains outside freeze commit（governance metadata only）.
+
+Production source unchanged（governance documents only）. Phases 15.x–18.9 Frozen.
+
+---
+
+## [arch-18.9-implemented] — 2026-07-25
+
+### Architecture 18.9 — System Governance Runtime Execution Scheduler / Orchestration — Implemented
+
+Phase 18.9 Runtime Execution Scheduler / Orchestration implemented. Queue, priority, FIFO, aging, fairness, deadline, resource allocation, DAG resolution, dispatch to Phase 18.8 Execution Control, and cancellation propagation. Phases 18.2–18.8 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.8 | Frozen layers | Frozen |
+| 18.9 | Runtime Execution Scheduler / Orchestration | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-SCHEDULER-001 Draft 0.3  
+**Implementation Request:** ASA-IMPL-TASK-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-SCHEDULER-001  
+**Architecture:** ASA-ARCH-18.0 Draft 2.9（Phase 18.9 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`  
+**Package:** `auto-scribe-ai/src/system_governance_runtime_execution_scheduler/`  
+**API:** `RuntimeExecutionScheduler.schedule(SchedulingPlan, SchedulingContext) → SchedulingResult`  
+**Validation:** Schema → Permission → SchedulingPlan → PolicyCompatibility → Environment → Contract → Traceability  
+
+---
+
 ## [arch-18.8-freeze] — 2026-07-25
 
 ### Architecture 18.8 — System Governance Runtime Execution Control / Recovery — Frozen
