@@ -2,8 +2,8 @@
 
 **Baseline ID:** ASA-ARCH-18.0  
 **Title:** Meta-Architecture / Convergence（successor to ASA-ARCH-17.0 Synthesis）  
-**Version:** Draft 1.3（Phase 18.0–18.1 Frozen; Phase 18.2 Open）  
-**Status:** Open — Active Draft（Phase 18.0–18.1 Frozen; Phases 18.2–18.4 Open）  
+**Version:** Draft 1.5（Phase 18.0–18.2 Frozen; Phase 18.3 Open）  
+**Status:** Open — Active Draft（Phase 18.0–18.2 Frozen; Phases 18.3–18.4 Open）  
 **Category:** Architecture Evolution  
 **Document Type:** Architecture Baseline  
 **Previous Baseline:** ASA-ARCH-17.0（Presentation→Synthesis — Phase 17.1–17.9 Frozen）  
@@ -15,6 +15,9 @@
 **Freeze（18.1）:** ASA-IMPL-REQ-ARCH-FREEZE-18.1-001  
 **Acceptance（18.1）:** ASA-VERIFY-ARCH-18.1-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 **Freeze Identifier（18.1）:** ARCH-18.1-FREEZE  
+**Freeze（18.2）:** ASA-IMPL-REQ-ARCH-FREEZE-18.2-001  
+**Acceptance（18.2）:** ASA-VERIFY-ARCH-18.2-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
+**Freeze Identifier（18.2）:** ARCH-18.2-FREEZE  
 
 ---
 
@@ -26,7 +29,8 @@
 * Architecture 18.0 SHALL NOT modify Architecture 15.x / 16.x / 17.1–17.9  
 * **Phase 18.0 Convergence / Meta-Architecture is Frozen / Accepted（Baseline 18.0）**  
 * **Phase 18.1 Runtime Orchestration is Frozen / Accepted（Baseline 18.1）**  
-* Phases 18.2 Lifecycle / 18.3 Governance Runtime / 18.4 System Integration Freeze remain Open  
+* **Phase 18.2 Lifecycle Control is Frozen / Accepted（Baseline 18.2）**  
+* Phases 18.3 Governance Runtime / 18.4 System Integration Freeze remain Open  
 
 ---
 
@@ -35,14 +39,15 @@
 ```text
 Architecture 18.0 Phase 18.0 defines runtime topology only.
 Phase 18.1 defines orchestration plans only（no scheduling / execution / workers）.
-Lifecycle control and governance runtime remain out of scope until Phases 18.2–18.3.
+Phase 18.2 defines lifecycle state control only（no runtime execution / approval execution）.
+Governance runtime remains out of scope until Phase 18.3.
 ```
 
 | Area | Change | Status |
 |---|---|---|
 | Phase 18.0 Convergence | SynthesisReport + GovernanceRegistry + HistoricalMetrics → ConvergenceManifest | **Frozen / Accepted** |
 | Phase 18.1 Runtime Orchestration | ConvergenceManifest + GovernanceRegistry + HistoricalMetrics → OrchestrationPlan | **Frozen / Accepted** |
-| Phase 18.2 Lifecycle Control | （Open） | **Open** |
+| Phase 18.2 Lifecycle Control | OrchestrationPlan + GovernanceRegistry + HistoricalMetrics → LifecycleManifest | **Frozen / Accepted** |
 | Phase 18.3 Governance Runtime | （Open） | **Open** |
 | Phase 18.4 System Integration Freeze | （Open） | **Open** |
 
@@ -56,7 +61,8 @@ Lifecycle control and governance runtime remain out of scope until Phases 18.2�
 | — | ASA-IMPL-REQ-ARCH-FREEZE-18.0-001 — Phase 18.0 Freeze | **Implemented** |
 | 1 | ASA-IMPL-REQ-ORCHESTRATION-001 Final v1.1 — Runtime Orchestration | **Frozen** |
 | — | ASA-IMPL-REQ-ARCH-FREEZE-18.1-001 — Phase 18.1 Freeze | **Implemented** |
-| 2 | ASA-IMPL-REQ-LIFECYCLE-CONTROL-001 — Lifecycle Control | **Open** |
+| 2 | ASA-IMPL-REQ-LIFECYCLE-001 Final v1.0 — Lifecycle Control | **Frozen** |
+| — | ASA-IMPL-REQ-ARCH-FREEZE-18.2-001 — Phase 18.2 Freeze | **Implemented** |
 | 3 | ASA-IMPL-REQ-GOVERNANCE-RUNTIME-001 — Governance Runtime | **Open** |
 | 4 | ASA-IMPL-REQ-ARCH-FREEZE-18.4-001 — System Integration Freeze | **Open** |
 
@@ -225,50 +231,138 @@ Production behavior unchanged by this freeze（governance documents only）.
 
 ---
 
-## 6. Dependency Inheritance
+## 6. Phase 18.2 — Lifecycle Control Mechanism
+
+**Status:** Frozen / Accepted  
+**Baseline:** 18.2 Frozen  
+**Git tag:** `arch-18.2-freeze`  
+**Freeze Date:** 2026-07-25  
+**Freeze Identifier:** ARCH-18.2-FREEZE  
+
+**Normative spec:** `auto-scribe-ai/impl/lifecycle_spec.md`  
+
+**Public input:** `OrchestrationPlan` + `GovernanceRegistryModel` + `HistoricalMetricsModel`  
+
+**Deliverables:**
+
+| Kind | Path |
+|---|---|
+| Spec | `auto-scribe-ai/impl/lifecycle_spec.md` |
+| Engine | `auto-scribe-ai/src/lifecycle/lifecycle_engine.py` |
+| Model | `auto-scribe-ai/src/lifecycle/lifecycle_model.py` |
+| Manifest | `auto-scribe-ai/src/lifecycle/lifecycle_manifest_model.py` |
+| Configuration | `auto-scribe-ai/src/lifecycle/lifecycle_configuration_model.py` |
+| Exceptions | `auto-scribe-ai/src/lifecycle/exceptions.py` |
+| Unit tests | `auto-scribe-ai/tests/test_lifecycle.py` |
+| Pipeline tests | `auto-scribe-ai/tests/test_lifecycle_pipeline.py` |
+
+**Contracts（summary）:**
+
+* Define lifecycle state machine / restart / stability only — no runtime execution  
+* Deterministic LifecycleManifest under versioned immutable configuration  
+* LifecycleManifest references LifecycleModel only（no field duplication）  
+* LifecycleModel owns configuration / states / transitions / restart / stability / boundaries / traceability  
+* ROLLBACK is an action（not a state）; FAILED is non-terminal  
+* Governance checkpoints definition only（approval in 18.3）  
+* Snapshot evaluation; no Lifecycle cache  
+
+Phase 18.0–18.1 contracts remain Frozen and unmodified.
+
+### 6.1 Acceptance & Freeze Record
+
+| Field | Value |
+|---|---|
+| Acceptance Review | ASA-VERIFY-ARCH-18.2-ACCEPTANCE-001 |
+| Acceptance Result | **PASS WITH NON-BLOCKING NOTES** |
+| Acceptance Status | **ACCEPTED** |
+| Eligible for Baseline Freeze | **YES** |
+| Freeze Request | ASA-IMPL-REQ-ARCH-FREEZE-18.2-001 |
+| Freeze Identifier | **ARCH-18.2-FREEZE** |
+| Implementation | ASA-IMPL-REQ-LIFECYCLE-001 Final v1.0 |
+| Architecture Version | ASA-ARCH-18.0 Draft 1.4（at acceptance） / Draft 1.5（post-freeze） |
+| Phase status | **Frozen / Accepted** |
+| Baseline | **18.2 Frozen** |
+| Freeze Date | **2026-07-25** |
+| Freeze Scope | Phases 15.x–18.2 Frozen; Phase 18.3 Open |
+
+### 6.2 Freeze Notes — Non-blocking
+
+| ID | Topic | Detail | Status |
+|---|---|---|---|
+| NB-1 | Identifier scope | `manifest_id` derived from orchestration `plan_id` + `evaluation_window` | Non-blocking |
+| NB-2 | Definition only | Transition/restart/recovery paths specified but not executed | Non-blocking |
+| NB-3 | Governance hooks | Approval execution deferred to Phase 18.3 | Non-blocking |
+| NB-4 | Generation / restart | `generation` starts at 0; `restart_id` from `manifest_id` + `generation` | Non-blocking |
+| NB-5 | Exception hierarchy | `IllegalTransitionError` sibling under `LifecycleError`（not under ValidationError） | Non-blocking |
+| NB-6 | Traceability | Uses `terminal_state_placeholder` until runtime terminal | Non-blocking |
+| NB-7 | Metrics read-only | `HistoricalMetricsModel` not updated; triggers reserved | Non-blocking |
+| NB-8 | Registry sync | Baseline registry synchronized during freeze | Non-blocking |
+
+No contract violations. No blocking issues. Lifecycle baseline fixed.  
+No production behavior changes during freeze.
+
+### 6.3 Phase 18.2 Freeze Rule
 
 ```text
-Orchestration → Convergence → Synthesis → Evolution → Reflection → Feedback → Distribution
+Architecture 18.2 Lifecycle Control SHALL be immutable.
+Future Lifecycle contract changes SHALL NOT mutate Phase 18.2
+except through Change Requests that supersede via a later Architecture 18.x phase.
+Phase 18.3+ evolution SHALL begin as Open work on ASA-ARCH-18.0.
+```
+
+Production behavior unchanged by this freeze（governance documents only）.
+
+---
+
+## 7. Dependency Inheritance
+
+```text
+Lifecycle → Orchestration → Convergence → Synthesis → Evolution → Reflection → Feedback → Distribution
   → Integration → NaturalLanguage → Rendering → Presentation
   → Recommendation → Reasoning → Audit → Decision
   → Checker → Graph → Query → Facade → Store
 ```
 
+Lifecycle consumes **OrchestrationPlan**, **GovernanceRegistryModel**, and **HistoricalMetricsModel** only.  
 Orchestration consumes **ConvergenceManifest**, **GovernanceRegistryModel**, and **HistoricalMetricsModel** only.  
 Convergence consumes **SynthesisReport**, **GovernanceRegistryModel**, and **HistoricalMetricsModel** only.  
 Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.  
-Phase 18.0–18.1 remain Frozen and unmodified.
+Phase 18.0–18.2 remain Frozen and unmodified.
 
 ---
 
-## 7. Status
+## 8. Status
 
 | Field | Value |
 |---|---|
 | Registration | Open — Active Draft |
-| Spec version | Draft 1.3 |
+| Spec version | Draft 1.5 |
 | Phase 18.0 | **Frozen / Accepted（Baseline 18.0）** |
 | Phase 18.1 | **Frozen / Accepted（Baseline 18.1）** |
-| Phase 18.2 | **Open** |
+| Phase 18.2 | **Frozen / Accepted（Baseline 18.2）** |
 | Phase 18.3 | **Open** |
 | Phase 18.4 | **Open** |
 | Based on | ASA-ARCH-17.0 Draft 1.5（Phase 17.1–17.9 Frozen） |
 | Production SoT for Synthesis | **ASA-ARCH-17.0 Phase 17.9（Frozen）** |
 | Production SoT for Convergence | **ASA-ARCH-18.0 Phase 18.0（Frozen）** |
 | Production SoT for Orchestration | **ASA-ARCH-18.0 Phase 18.1（Frozen）** |
+| Production SoT for Lifecycle | **ASA-ARCH-18.0 Phase 18.2（Frozen）** |
 | Phase 18.0 Git tag | `arch-18.0-freeze` |
 | Phase 18.1 Git tag | `arch-18.1-freeze` |
+| Phase 18.2 Git tag | `arch-18.2-freeze` |
 | Freeze Identifier（18.0） | ARCH-18.0-FREEZE |
 | Freeze Identifier（18.1） | ARCH-18.1-FREEZE |
+| Freeze Identifier（18.2） | ARCH-18.2-FREEZE |
 
 ---
 
-## 8. Governance
+## 9. Governance
 
 | Role | Rule |
 |---|---|
-| Editable baseline | **ASA-ARCH-18.0** for Phase 18.2+ draft updates（Phase 18.0–18.1 frozen） |
+| Editable baseline | **ASA-ARCH-18.0** for Phase 18.3+ draft updates（Phase 18.0–18.2 frozen） |
 | Constraint | MUST NOT mutate ASA-ARCH-15.0 / 16.0 / 17.0 Phase 17.1–17.9 freeze contracts |
-| Upstream | Convergence / Orchestration and all prior frozen phases remain Final / frozen |
+| Upstream | Convergence / Orchestration / Lifecycle and all prior frozen phases remain Final / frozen |
 | Phase 18.0 | Immutable after `arch-18.0-freeze` |
 | Phase 18.1 | Immutable after `arch-18.1-freeze` |
+| Phase 18.2 | Immutable after `arch-18.2-freeze` |

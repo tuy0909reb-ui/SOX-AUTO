@@ -4,6 +4,41 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.2-freeze] — 2026-07-25
+
+### Architecture 18.2 — Lifecycle Control Mechanism — Frozen
+
+Phase 18.2 accepted and frozen. Lifecycle baseline established. Architecture 18.3 opened. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.1 | Frozen layers | Frozen |
+| 18.2 | Lifecycle Control | Frozen / Accepted |
+| 18.3 | Governance Runtime | Open |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.2-001  
+**Freeze Identifier:** ARCH-18.2-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.2-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES（ACCEPTED）  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-LIFECYCLE-001 Final v1.0  
+**Architecture:** ASA-ARCH-18.0 Draft 1.4（acceptance） → Draft 1.5（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.2 Frozen / Baseline 18.2）  
+**Git tag:** `arch-18.2-freeze`  
+**Freeze Date:** 2026-07-25  
+
+**NB-1（Non-blocking）:** `manifest_id` derived from orchestration `plan_id` + `evaluation_window`（evaluation set）.  
+**NB-2（Non-blocking）:** Phase 18.2 is definition-only; transition/restart/recovery paths are not executed.  
+**NB-3（Non-blocking）:** Governance approval execution deferred to Phase 18.3（checkpoints + reserved mapping only）.  
+**NB-4（Non-blocking）:** `generation` starts at 0; `restart_id` deterministic from `manifest_id` + `generation`.  
+**NB-5（Non-blocking）:** `IllegalTransitionError`（and related）are siblings under `LifecycleError`, not under `LifecycleValidationError`.  
+**NB-6（Non-blocking）:** Traceability uses `terminal_state_placeholder` until a terminal state is reached at runtime.  
+**NB-7（Non-blocking）:** `HistoricalMetricsModel` remains read-only; update triggers reserved and not executed.  
+**NB-8（Non-blocking）:** Baseline registry synchronized during freeze.
+
+Production source unchanged（governance documents only）. Phase 18.3 remains Open.
+
+---
+
 ## [arch-18.1-freeze] — 2026-07-25
 
 ### Architecture 18.1 — Runtime Orchestration Mechanism — Frozen
