@@ -4,6 +4,29 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-20.5-freeze] — 2026-07-26
+
+### Architecture 20.5 — Runtime Event System — Frozen
+
+Phase 20.5 accepted and frozen. Runtime Event System Draft 1.0 + `runtime_event` production surface established. Depends on ASA-ARCH-20.4 Freeze. 20.3 / 20.4 checksums retained.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.4 | Frozen layers | Frozen / Accepted |
+| 20.5 | Runtime Event System | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-ARCH-20.5-001  
+**Freeze Identifier:** ARCH-20.5-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-20.5-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Tests:** 42 passed  
+**Regression:** 910 passed  
+**Git tag:** `arch-20.5-freeze`  
+**Baseline:** `docs/baselines/ASA-ARCH-20.5.md`  
+
+Phase 20.5 Frozen / Accepted. ASA-ARCH-20.6 design MAY begin.
+
+---
+
 ## [arch-20.4-freeze] — 2026-07-25
 
 ### Architecture 20.4 — Runtime Lifecycle — Frozen
