@@ -4,6 +4,74 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-20.0-freeze] — 2026-07-25
+
+### Architecture 20.0 — Runtime Core — Frozen
+
+Phase 20.0 accepted and frozen. Runtime Core baseline established. No production source modifications during freeze.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–19.5 | Frozen layers | Frozen / Accepted |
+| 20.0 | Runtime Core | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-REQ-ARCH-20.0-001 / ASA-FREEZE-ARCH-20.0-001  
+**Freeze Identifier:** ARCH-20.0-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-20.0-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Implementation:** ASA-IMPL-REQ-ARCH-20.0-IMPLEMENTATION-001  
+**Architecture:** ASA-ARCH-20.0 Draft 1.3  
+**Baseline:** `docs/baselines/ASA-ARCH-20.0.md`（Phase 20.0 Frozen）  
+**Git tag:** `arch-20.0-freeze`  
+**Freeze Date:** 2026-07-25  
+**Unit / Architecture / Pipeline Tests:** 16 passed  
+**Regression:** 768 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 1.3.  
+**NB-2（Non-blocking）:** Failed retains Context for resume; dispose on Completed/Cancelled.  
+**NB-3（Non-blocking）:** Phase 18.x via injected OperationExecutor port.  
+**NB-4（Non-blocking）:** Freeze commit is governance metadata only.
+
+Production source unchanged during freeze（governance documents only）. Phase 20.0 Frozen / Accepted.
+
+---
+
+## [arch-20.0-accepted] — 2026-07-25
+
+### Architecture 20.0 — Runtime Core — Accepted
+
+Phase 20.0 accepted against ASA-ARCH-20.0 Draft 1.3. Full regression **768 passed / 0 failed**. No blocking issues. Eligible for baseline freeze.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–19.5 | Frozen layers | Frozen / Accepted |
+| 20.0 | Runtime Core | Accepted（Pending Freeze） |
+
+**Acceptance:** ASA-VERIFY-ARCH-20.0-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+**Baseline:** `docs/baselines/ASA-ARCH-20.0.md`  
+**Package:** `auto-scribe-ai/src/runtime_core/`  
+
+---
+
+## [arch-20.0-implemented] — 2026-07-25
+
+### Architecture 20.0 — Runtime Core — Implemented
+
+Phase 20.0 Runtime Core implemented. RuntimeOrchestrator owns ExecutionContext + internal ExecutionGraph; consumes immutable RuntimePlan（19.5）; delegates operation execution via OperationExecutor port to Phase 18.x; BaseResult hierarchy with ExecutionResult only at terminal states; append-only ExecutionTrace; ValidationResult validators; Core JSON serialization. Phases 15.x–19.5 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–19.5 | Frozen layers | Frozen / Accepted |
+| 20.0 | Runtime Core | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-20.0-IMPLEMENTATION-001  
+**Implementation Spec:** `auto-scribe-ai/impl/runtime_core_spec.md`  
+**Architecture:** ASA-ARCH-20.0 Draft 1.3（Phase 20.0 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-20.0.md`  
+**Package:** `auto-scribe-ai/src/runtime_core/`  
+
+---
+
 ## [arch-19.5-freeze] — 2026-07-25
 
 ### Architecture 19.5 — Workflow Execution Plan & RuntimePlan Generation — Frozen
