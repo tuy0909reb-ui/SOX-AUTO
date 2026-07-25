@@ -18,6 +18,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-19.2** | **Draft 0.2** | **Open — Phase 19.2 Frozen / Accepted** | `docs/baselines/ASA-ARCH-19.2.md` |
 | **ASA-ARCH-19.3** | **Draft 1.1** | **Open — Phase 19.3 Frozen / Accepted** | `docs/baselines/ASA-ARCH-19.3.md` |
 | **ASA-ARCH-19.4** | **Draft 1.1** | **Open — Phase 19.4 Frozen / Accepted** | `docs/baselines/ASA-ARCH-19.4.md` |
+| **ASA-ARCH-19.5** | **Draft 1.1** | **Open — Phase 19.5 Frozen / Accepted** | `docs/baselines/ASA-ARCH-19.5.md` |
 
 ## Layer Stack
 
@@ -34,6 +35,7 @@ ASA-ARCH-19.1                 → Workflow Engine（Phase 19.1 Frozen / Accepted
 ASA-ARCH-19.2                 → Capability Layer（Phase 19.2 Frozen / Accepted）
 ASA-ARCH-19.3                 → Capability Graph & Registry（Phase 19.3 Frozen / Accepted）
 ASA-ARCH-19.4                 → Execution Contract & Runtime Binding（Phase 19.4 Frozen / Accepted）
+ASA-ARCH-19.5                 → Workflow Execution Plan & RuntimePlan（Phase 19.5 Frozen / Accepted）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -65,7 +67,8 @@ Core Platform SoT（production / accepted）: **ASA-ARCH-19.0 Phase 19.0**
 Workflow Engine SoT（production / frozen）: **ASA-ARCH-19.1 Phase 19.1**  
 Capability Layer SoT（production / frozen）: **ASA-ARCH-19.2 Phase 19.2**  
 Capability Graph & Registry SoT（production / frozen）: **ASA-ARCH-19.3 Phase 19.3**  
-Execution Contract & Runtime Binding SoT（production / frozen）: **ASA-ARCH-19.4 Phase 19.4**
+Execution Contract & Runtime Binding SoT（production / frozen）: **ASA-ARCH-19.4 Phase 19.4**  
+Workflow Execution Plan SoT（production / frozen）: **ASA-ARCH-19.5 Phase 19.5**
 
 ## Architecture Status
 
@@ -97,6 +100,7 @@ Execution Contract & Runtime Binding SoT（production / frozen）: **ASA-ARCH-19
 | ARCH-19.2 Phase 19.2 | Frozen |
 | ARCH-19.3 Phase 19.3 | Frozen |
 | ARCH-19.4 Phase 19.4 | Frozen |
+| ARCH-19.5 Phase 19.5 | Frozen |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 

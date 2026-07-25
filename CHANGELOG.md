@@ -4,6 +4,74 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-19.5-freeze] — 2026-07-25
+
+### Architecture 19.5 — Workflow Execution Plan & RuntimePlan Generation — Frozen
+
+Phase 19.5 accepted and frozen. Workflow Execution Plan & RuntimePlan Generation baseline established. No production source modifications during freeze.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–19.4 | Frozen layers | Frozen / Accepted |
+| 19.5 | Workflow Execution Plan & RuntimePlan | Frozen / Accepted |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-19.5-FREEZE-001 / ASA-FREEZE-ARCH-19.5-001  
+**Freeze Identifier:** ARCH-19.5-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-19.5-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Implementation:** ASA-IMPL-REQ-ARCH-19.5-IMPLEMENTATION-001  
+**Architecture:** ASA-ARCH-19.5 Draft 1.1  
+**Baseline:** `docs/baselines/ASA-ARCH-19.5.md`（Phase 19.5 Frozen）  
+**Git tag:** `arch-19.5-freeze`  
+**Freeze Date:** 2026-07-25  
+**Unit / Architecture / Pipeline Tests:** 13 passed  
+**Regression:** 752 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 1.1.  
+**NB-2（Non-blocking）:** StepBindingLink supplies explicit WorkflowStep→Capability wiring.  
+**NB-3（Non-blocking）:** RuntimePlan remains a derived definition; Phase 18.x execution out of scope.  
+**NB-4（Non-blocking）:** Freeze commit is governance metadata only.
+
+Production source unchanged during freeze（governance documents only）. Phase 19.5 Frozen / Accepted.
+
+---
+
+## [arch-19.5-accepted] — 2026-07-25
+
+### Architecture 19.5 — Workflow Execution Plan & RuntimePlan Generation — Accepted
+
+Phase 19.5 accepted against ASA-ARCH-19.5 Draft 1.1. Full regression **752 passed / 0 failed**. No blocking issues. Eligible for baseline freeze.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–19.4 | Frozen layers | Frozen / Accepted |
+| 19.5 | Workflow Execution Plan & RuntimePlan | Accepted（Pending Freeze） |
+
+**Acceptance:** ASA-VERIFY-ARCH-19.5-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+**Baseline:** `docs/baselines/ASA-ARCH-19.5.md`  
+**Package:** `auto-scribe-ai/src/workflow_execution/`  
+
+---
+
+## [arch-19.5-implemented] — 2026-07-25
+
+### Architecture 19.5 — Workflow Execution Plan & RuntimePlan Generation — Implemented
+
+Phase 19.5 Workflow Execution Plan & RuntimePlan Generation implemented. Immutable WorkflowExecutionPlan / ExecutionPlanStep / RuntimePlan / RuntimeOperationCall; deterministic WorkflowExecutionPlanner; pure RuntimePlanGenerator; validation & Core JSON serialization. Extends ExecutionPlan（19.1）without replacing it. Phases 15.x–19.4 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–19.4 | Frozen layers | Frozen / Accepted |
+| 19.5 | Workflow Execution Plan & RuntimePlan | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-19.5-IMPLEMENTATION-001  
+**Implementation Spec:** `auto-scribe-ai/impl/workflow_execution_spec.md`  
+**Architecture:** ASA-ARCH-19.5 Draft 1.1（Phase 19.5 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-19.5.md`  
+**Package:** `auto-scribe-ai/src/workflow_execution/`  
+
+---
+
 ## [arch-19.4-freeze] — 2026-07-25
 
 ### Architecture 19.4 — Execution Contract & Runtime Binding — Frozen
