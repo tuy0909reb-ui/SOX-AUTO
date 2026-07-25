@@ -4,6 +4,58 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.8-freeze] — 2026-07-25
+
+### Architecture 18.8 — System Governance Runtime Execution Control / Recovery — Frozen
+
+Phase 18.8 accepted and frozen. Runtime Execution Control baseline established. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.7 | Frozen layers | Frozen |
+| 18.8 | Runtime Execution Control / Recovery | Frozen / Accepted |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.8-001（ASA-FREEZE-18.8-001）  
+**Freeze Identifier:** ARCH-18.8-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.8-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-CONTROL-001 Draft 0.2  
+**Architecture:** ASA-ARCH-18.0 Draft 2.7（acceptance） → Draft 2.8（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.8 Frozen / Baseline 18.8）  
+**Git tag:** `arch-18.8-freeze`  
+**Freeze Date:** 2026-07-25  
+**Regression:** 583 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 0.2（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** Advanced transaction / orchestration beyond Control remains deferred.  
+**NB-3（Non-blocking）:** STRICT rollback raises ControlFailureError（no result） by design.  
+**NB-4（Non-blocking）:** Production source remains outside freeze commit（governance metadata only）.
+
+Production source unchanged（governance documents only）. Phases 15.x–18.8 Frozen.
+
+---
+
+## [arch-18.8-implemented] — 2026-07-25
+
+### Architecture 18.8 — System Governance Runtime Execution Control / Recovery — Implemented
+
+Phase 18.8 Execution Control / Recovery implemented. Retry, Rollback, Timeout, Circuit Breaker, and Compensation over immutable Phase 18.7 ExecutionResult. Phases 18.2–18.7 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.7 | Frozen layers | Frozen |
+| 18.8 | Runtime Execution Control / Recovery | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-CONTROL-001 Draft 0.2  
+**Architecture:** ASA-ARCH-18.0 Draft 2.7（Phase 18.8 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`  
+**Package:** `auto-scribe-ai/src/system_governance_runtime_execution_control/`  
+**API:** `RuntimeExecutionController.control(RuntimeOperation, ExecutionContext, ControlPolicy) → ExecutionControlResult`  
+**Validation:** Schema → Permission → Policy → Environment → Contract → Traceability  
+
+---
+
 ## [arch-18.7-freeze] — 2026-07-25
 
 ### Architecture 18.7 — System Governance Runtime Execution Engine — Frozen
