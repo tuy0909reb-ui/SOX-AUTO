@@ -4,6 +4,29 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-20.3-freeze] — 2026-07-25
+
+### Architecture 20.3 — Runtime Scheduler Architecture Tests — Frozen
+
+Phase 20.3 accepted and frozen. Scheduler Architecture Test + minimal declaration baseline established. No production source modifications during freeze. 20.0 / 20.1 / 20.2 checksums retained.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.2 | Frozen layers | Frozen / Accepted |
+| 20.3 | Runtime Scheduler Architecture Tests | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-ARCH-20.3-001  
+**Freeze Identifier:** ARCH-20.3-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-20.3-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Tests:** 14 passed  
+**Regression:** 818 passed  
+**Git tag:** `arch-20.3-freeze`  
+**Baseline:** `docs/baselines/ASA-ARCH-20.3.md`  
+
+Production source unchanged during freeze（governance documents only）. Phase 20.3 Frozen / Accepted.
+
+---
+
 ## [arch-20.2-freeze] — 2026-07-25
 
 ### Architecture 20.2 — Policy Layer Architecture Tests — Frozen
