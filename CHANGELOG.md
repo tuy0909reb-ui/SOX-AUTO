@@ -4,6 +4,38 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.6-freeze] — 2026-07-25
+
+### Architecture 18.6 — System Governance Runtime Operation — Frozen
+
+Phase 18.6 accepted and frozen. Runtime Operation baseline established. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.5 | Frozen layers | Frozen |
+| 18.6 | System Governance Runtime Operation | Frozen / Accepted |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.6-001（ASA-FREEZE-18.6-001）  
+**Freeze Identifier:** ARCH-18.6-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.6-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-OPERATION-001 Draft 0.2  
+**Architecture:** ASA-ARCH-18.0 Draft 2.2（acceptance） → Draft 2.3（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.6 Frozen / Baseline 18.6）  
+**Git tag:** `arch-18.6-freeze`  
+**Freeze Date:** 2026-07-25  
+**Regression:** 535 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 0.2（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** RuntimeOperation execution remains deferred to Phase 18.7.  
+**NB-3（Non-blocking）:** `operation_plan.execution_status = DEFERRED_TO_18_7` only.  
+**NB-4（Non-blocking）:** Production source remains outside freeze commit（governance metadata only）.
+
+Production source unchanged（governance documents only）. Phases 15.x–18.6 Frozen.
+
+---
+
 ## [arch-18.5-freeze] — 2026-07-25
 
 ### Architecture 18.5 — System Governance Runtime Binding — Frozen
