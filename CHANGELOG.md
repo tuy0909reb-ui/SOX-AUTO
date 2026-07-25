@@ -4,6 +4,29 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-20.7-freeze] — 2026-07-26
+
+### Architecture 20.7 — Multi-Event Runtime — Frozen
+
+Phase 20.7 accepted and frozen. Multi-Event Pre-Pipeline Runtime Draft 0.5 + `pre_pipeline_runtime` production surface established. Extends Frozen Baselines 20.0〜20.6 without modifying their contracts. 20.0〜20.6 checksums retained.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.6 | Frozen layers | Frozen / Accepted |
+| 20.7 | Multi-Event Runtime（Pre-Pipeline） | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-ARCH-20.7-001  
+**Freeze Identifier:** ARCH-20.7-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-20.7-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Tests:** 18 passed  
+**Regression:** 941 passed  
+**Git tag:** `arch-20.7-freeze`  
+**Baseline:** `docs/baselines/ASA-ARCH-20.7.md`  
+
+Phase 20.7 Frozen / Accepted. ASA-ARCH-20.8 design MAY begin.
+
+---
+
 ## [arch-20.6-freeze] — 2026-07-26
 
 ### Architecture 20.6 — Runtime Pipeline — Frozen
