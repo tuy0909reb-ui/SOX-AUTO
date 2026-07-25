@@ -4,6 +4,85 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-19.4-freeze] — 2026-07-25
+
+### Architecture 19.4 — Execution Contract & Runtime Binding — Frozen
+
+Phase 19.4 accepted and frozen. Execution Contract & Runtime Binding baseline established. No production source modifications during freeze.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.1–19.3 | Workflow / Capability / Graph | Frozen / Accepted |
+| 19.4 | Execution Contract & Runtime Binding | Frozen / Accepted |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-19.4-FREEZE-001 / ASA-FREEZE-ARCH-19.4-001  
+**Freeze Identifier:** ARCH-19.4-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-19.4-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Implementation:** ASA-IMPL-REQ-ARCH-19.4-001  
+**Architecture:** ASA-ARCH-19.4 Draft 1.1  
+**Baseline:** `docs/baselines/ASA-ARCH-19.4.md`（Phase 19.4 Frozen）  
+**Git tag:** `arch-19.4-freeze`  
+**Freeze Date:** 2026-07-25  
+**Unit / Architecture / Pipeline Tests:** 23 passed  
+**Regression:** 739 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 1.1.  
+**NB-2（Non-blocking）:** Phase 18.x ids via known_runtime_operation_ids catalog.  
+**NB-3（Non-blocking）:** Workflow → ExecutionContract wiring remains deferred.  
+**NB-4（Non-blocking）:** Freeze commit is governance metadata only.
+
+Production source unchanged during freeze（governance documents only）. Phase 19.4 Frozen / Accepted.
+
+---
+
+## [arch-19.4-accepted] — 2026-07-25
+
+### Architecture 19.4 — Execution Contract & Runtime Binding — Accepted
+
+Phase 19.4 acceptance verification passed. Eligible for baseline freeze（`ARCH-19.4-FREEZE`）. No implementation changes during acceptance.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.1–19.3 | Workflow / Capability / Graph | Frozen / Accepted |
+| 19.4 | Execution Contract & Runtime Binding | Accepted（Pending Freeze） |
+
+**Acceptance Request:** ASA-IMPL-REQ-ARCH-19.4-ACCEPTANCE-001  
+**Acceptance:** ASA-VERIFY-ARCH-19.4-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Blocking Issues:** NONE  
+**Verification Record:** `docs/change_requests/asa_verify_arch_19_4_acceptance_001.md`  
+**Architecture:** ASA-ARCH-19.4 Draft 1.1  
+**Baseline:** `docs/baselines/ASA-ARCH-19.4.md`  
+**Regression:** 739 passed / 0 failed  
+
+---
+
+## [arch-19.4-implemented] — 2026-07-25
+
+### Architecture 19.4 — Execution Contract & Runtime Binding — Implemented
+
+Phase 19.4 Execution Contract & Runtime Binding implemented. Immutable ExecutionContract / ExecutionOperationDescriptor / RuntimeBinding; pure RuntimeBindingResolver; local BindingResolutionResult / OperationResolutionResult; registry & contract consistency validation; Core-compatible serialization. Execution remains delegated to Phase 18.x. Phases 15.x–19.3 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.1–19.3 | Workflow / Capability / Graph | Frozen / Accepted |
+| 19.4 | Execution Contract & Runtime Binding | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-19.4-001  
+**Implementation Spec:** `auto-scribe-ai/impl/execution_contract_spec.md`  
+**Architecture:** ASA-ARCH-19.4 Draft 1.1（Phase 19.4 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-19.4.md`  
+**Package:** `auto-scribe-ai/src/execution_contract/`  
+**Unit / Architecture / Pipeline Tests:** 23 passed  
+**Regression:** 739 passed  
+
+---
+
 ## [arch-19.3-freeze] — 2026-07-25
 
 ### Architecture 19.3 — Capability Graph & Capability Registry — Frozen
