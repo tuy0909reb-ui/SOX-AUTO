@@ -21,6 +21,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-19.5** | **Draft 1.1** | **Open — Phase 19.5 Frozen / Accepted** | `docs/baselines/ASA-ARCH-19.5.md` |
 | **ASA-ARCH-20.0** | **Draft 1.3** | **Open — Phase 20.0 Frozen / Accepted** | `docs/baselines/ASA-ARCH-20.0.md` |
 | **ASA-ARCH-20.1** | **Draft 1.0** | **Open — Phase 20.1 Frozen / Accepted** | `docs/baselines/ASA-ARCH-20.1.md` |
+| **ASA-ARCH-20.2** | **Draft 0.4** | **Open — Phase 20.2 Frozen / Accepted** | `docs/baselines/ASA-ARCH-20.2.md` |
 
 ## Layer Stack
 
@@ -40,6 +41,7 @@ ASA-ARCH-19.4                 → Execution Contract & Runtime Binding（Phase 1
 ASA-ARCH-19.5                 → Workflow Execution Plan & RuntimePlan（Phase 19.5 Frozen / Accepted）
 ASA-ARCH-20.0                 → Runtime Core（Phase 20.0 Frozen / Accepted）
 ASA-ARCH-20.1                 → Runtime Orchestration Boundary（Phase 20.1 Frozen / Accepted）
+ASA-ARCH-20.2                 → Policy Layer Architecture Tests（Phase 20.2 Frozen / Accepted）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -109,6 +111,7 @@ Runtime Orchestration Boundary SoT（production / frozen）: **ASA-ARCH-20.1 Pha
 | ARCH-19.5 Phase 19.5 | Frozen |
 | ARCH-20.0 Phase 20.0 | Frozen |
 | ARCH-20.1 Phase 20.1 | Frozen |
+| ARCH-20.2 Phase 20.2 | Frozen |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 

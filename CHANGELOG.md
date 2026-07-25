@@ -4,6 +4,57 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-20.2-freeze] — 2026-07-25
+
+### Architecture 20.2 — Policy Layer Architecture Tests — Frozen
+
+Phase 20.2 accepted and frozen. Architecture Test + minimal declaration baseline established. No production source modifications during freeze. 20.0 / 20.1 checksums retained.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.1 | Frozen layers | Frozen / Accepted |
+| 20.2 | Policy Layer Architecture Tests | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-ARCH-20.2-001  
+**Freeze Identifier:** ARCH-20.2-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-20.2-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Tests:** 22 passed  
+**Regression:** 804 passed  
+**Git tag:** `arch-20.2-freeze`  
+**Baseline:** `docs/baselines/ASA-ARCH-20.2.md`  
+
+Production source unchanged during freeze（governance documents only）. Phase 20.2 Frozen / Accepted.
+
+---
+
+## [arch-20.2-accepted] — 2026-07-25
+
+### Architecture 20.2 — Policy Layer Architecture Tests — Accepted
+
+Phase 20.2 accepted. Full regression **804 passed / 0 failed**. Eligible for freeze（proceeded immediately）.
+
+**Acceptance:** ASA-VERIFY-ARCH-20.2-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+
+---
+
+## [arch-20.2-arch-tests] — 2026-07-25
+
+### Architecture 20.2 — Policy Layer Architecture Tests — Implemented
+
+Phase 20.2 Architecture Test suite implemented（Draft 0.3 contracts）. Minimal `runtime_policy` type/contract declarations for test surface. No Retry/Timeout/ErrorPropagation algorithms. 20.0 / 20.1 production sources unmodified（checksum-verified）.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.1 | Frozen layers | Frozen / Accepted |
+| 20.2 | Policy Layer Architecture Tests | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-20.2-001  
+**Architecture Tests:** `auto-scribe-ai/tests/architecture/runtime_policy/`  
+**Declarations:** `auto-scribe-ai/src/runtime_policy/`  
+**Baseline:** `docs/baselines/ASA-ARCH-20.2.md`  
+
+---
+
 ## [arch-20.1-freeze] — 2026-07-25
 
 ### Architecture 20.1 — Runtime Orchestration Boundary — Frozen
