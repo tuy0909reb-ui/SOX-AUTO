@@ -4,6 +4,59 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.7-freeze] — 2026-07-25
+
+### Architecture 18.7 — System Governance Runtime Execution Engine — Frozen
+
+Phase 18.7 accepted and frozen. Runtime Execution baseline established. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.6 | Frozen layers | Frozen |
+| 18.7 | System Governance Runtime Execution Engine | Frozen / Accepted |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.7-001（ASA-FREEZE-18.7-001）  
+**Freeze Identifier:** ARCH-18.7-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.7-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-001 Draft 0.2  
+**Architecture:** ASA-ARCH-18.0 Draft 2.5（acceptance） → Draft 2.6（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.7 Frozen / Baseline 18.7）  
+**Git tag:** `arch-18.7-freeze`  
+**Freeze Date:** 2026-07-25  
+**Regression:** 560 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 0.2（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** Retry strategy remains deferred to future phases.  
+**NB-3（Non-blocking）:** Rollback remains best-effort only.  
+**NB-4（Non-blocking）:** Production source remains outside freeze commit（governance metadata only）.
+
+Production source unchanged（governance documents only）. Phases 15.x–18.7 Frozen.
+
+---
+
+## [arch-18.7-implemented] — 2026-07-25
+
+### Architecture 18.7 — System Governance Runtime Execution Engine — Implemented
+
+Phase 18.7 Runtime Execution Engine implemented. Consumes immutable RuntimeOperation and produces ExecutionResult with recorded side effects. Phases 18.2–18.6 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.6 | Frozen layers | Frozen |
+| 18.7 | System Governance Runtime Execution Engine | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-001 Draft 0.2  
+**Implementation Request:** ASA-IMPL-ARCH-18.7-IMPLEMENTATION-001  
+**Architecture:** ASA-ARCH-18.0 Draft 2.4（Open） → Draft 2.5（Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`  
+**Package:** `auto-scribe-ai/src/system_governance_runtime_execution/`  
+**API:** `RuntimeExecutionEngine.execute(RuntimeOperation, ExecutionContext) → ExecutionResult`  
+**Validation:** Schema → Permission → Environment → Contract → Traceability  
+
+---
+
 ## [arch-18.6-freeze] — 2026-07-25
 
 ### Architecture 18.6 — System Governance Runtime Operation — Frozen

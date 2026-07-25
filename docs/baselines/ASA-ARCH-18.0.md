@@ -2,8 +2,8 @@
 
 **Baseline ID:** ASA-ARCH-18.0  
 **Title:** Meta-Architecture / Convergence（successor to ASA-ARCH-17.0 Synthesis）  
-**Version:** Draft 2.3（Phase 18.0–18.6 Frozen）  
-**Status:** Open — Active Draft（Phase 18.0–18.6 Frozen）  
+**Version:** Draft 2.6（Phase 18.0–18.7 Frozen）  
+**Status:** Open — Active Draft（Phase 18.0–18.7 Frozen）  
 **Category:** Architecture Evolution  
 **Document Type:** Architecture Baseline  
 **Previous Baseline:** ASA-ARCH-17.0（Presentation→Synthesis — Phase 17.1–17.9 Frozen）  
@@ -30,6 +30,9 @@
 **Freeze（18.6）:** ASA-IMPL-REQ-ARCH-FREEZE-18.6-001  
 **Acceptance（18.6）:** ASA-VERIFY-ARCH-18.6-ACCEPTANCE-001 — PASSED  
 **Freeze Identifier（18.6）:** ARCH-18.6-FREEZE  
+**Freeze（18.7）:** ASA-IMPL-REQ-ARCH-FREEZE-18.7-001  
+**Acceptance（18.7）:** ASA-VERIFY-ARCH-18.7-ACCEPTANCE-001 — PASSED  
+**Freeze Identifier（18.7）:** ARCH-18.7-FREEZE  
 
 ---
 
@@ -46,6 +49,7 @@
 * **Phase 18.4 System Governance Integration is Frozen / Accepted（Baseline 18.4）**  
 * **Phase 18.5 System Governance Runtime Binding is Frozen / Accepted（Baseline 18.5）**  
 * **Phase 18.6 System Governance Runtime Operation is Frozen / Accepted（Baseline 18.6）**  
+* **Phase 18.7 System Governance Runtime Execution Engine is Frozen / Accepted（Baseline 18.7）**  
 
 ---
 
@@ -59,6 +63,7 @@ Governance runtime executes approval / contracts / audit only（no scheduling）
 Phase 18.4 integrates GovernanceDecision into SystemGovernanceEffect（pure / idempotent）.
 Phase 18.5 binds SystemGovernanceEffect into RuntimeGovernanceBinding（no RuntimeOperation）.
 Phase 18.6 constructs RuntimeOperation from Binding（no execution; 18.7）.
+Phase 18.7 executes RuntimeOperation against the external environment（single attempt; no retry）.
 ```
 
 | Area | Change | Status |
@@ -70,6 +75,7 @@ Phase 18.6 constructs RuntimeOperation from Binding（no execution; 18.7）.
 | Phase 18.4 System Governance Integration | GovernanceDecision + SystemGovernanceRegistry + IntegrationContext → SystemGovernanceEffect | **Frozen / Accepted** |
 | Phase 18.5 System Governance Runtime Binding | SystemGovernanceEffect + RuntimeContext → RuntimeGovernanceBinding | **Frozen / Accepted** |
 | Phase 18.6 System Governance Runtime Operation | RuntimeGovernanceBinding + RuntimeContext → RuntimeOperation | **Frozen / Accepted** |
+| Phase 18.7 System Governance Runtime Execution | RuntimeOperation + ExecutionContext → ExecutionResult | **Frozen / Accepted** |
 
 ---
 
@@ -91,6 +97,8 @@ Phase 18.6 constructs RuntimeOperation from Binding（no execution; 18.7）.
 | — | ASA-IMPL-REQ-ARCH-FREEZE-18.5-001 — Phase 18.5 Freeze | **Implemented** |
 | 6 | ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-OPERATION-001 Draft 0.2 — Runtime Operation | **Frozen** |
 | — | ASA-IMPL-REQ-ARCH-FREEZE-18.6-001 — Phase 18.6 Freeze | **Implemented** |
+| 7 | ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-001 Draft 0.2 — Runtime Execution | **Frozen** |
+| — | ASA-IMPL-REQ-ARCH-FREEZE-18.7-001 — Phase 18.7 Freeze | **Implemented** |
 
 ---
 
@@ -672,28 +680,113 @@ Production behavior unchanged by this freeze（governance documents only）.
 
 ---
 
-## 11. Dependency Inheritance
+## 11. Phase 18.7 — System Governance Runtime Execution Engine
+
+**Status:** Frozen / Accepted  
+**Baseline:** 18.7 Frozen  
+**Git tag:** `arch-18.7-freeze`  
+**Freeze Date:** 2026-07-25  
+**Freeze Identifier:** ARCH-18.7-FREEZE  
+
+**Normative spec:** `auto-scribe-ai/impl/system_governance_runtime_execution_spec.md`  
+
+**Public input:** `RuntimeOperation` + `ExecutionContext`  
+
+**Public output:** `ExecutionResult`  
+
+**Deliverables:**
+
+| Kind | Path |
+|---|---|
+| Spec | `auto-scribe-ai/impl/system_governance_runtime_execution_spec.md` |
+| Engine | `auto-scribe-ai/src/system_governance_runtime_execution/engine.py` |
+| Models | `auto-scribe-ai/src/system_governance_runtime_execution/models.py` |
+| Validation | `auto-scribe-ai/src/system_governance_runtime_execution/validation.py` |
+| Exceptions | `auto-scribe-ai/src/system_governance_runtime_execution/exceptions.py` |
+| Unit tests | `auto-scribe-ai/tests/test_system_governance_runtime_execution.py` |
+| Pipeline tests | `auto-scribe-ai/tests/test_system_governance_runtime_execution_pipeline.py` |
+
+**Contracts（summary）:**
+
+* Sole architectural boundary permitted to interact with external systems  
+* Consumes immutable `RuntimeOperation` without modification  
+* Validation: Schema → Permission → Environment → Contract → Traceability（fail-fast）  
+* `execution_result_id = SHA256(normalize(operation_id|execution_context_id|execution_timestamp))`  
+* Validation failure → exception / no `ExecutionResult`  
+* Post-start failure → `ExecutionResult.execution_status = FAILURE`（side effects / rollback recorded）  
+* Single execution attempt; no retry; rollback best-effort only  
+* Trace chain: decision → effect → binding → operation → execution_result  
+
+Phase 18.0–18.6 contracts remain Frozen and unmodified.
+
+### 11.1 Acceptance & Freeze Record
+
+| Field | Value |
+|---|---|
+| Freeze Instruction | ASA-FREEZE-18.7-001 |
+| Acceptance Review | ASA-VERIFY-ARCH-18.7-ACCEPTANCE-001 |
+| Acceptance Result | **PASSED** |
+| Acceptance Status | **ACCEPTED** |
+| Architecture Review | **PASSED** |
+| Eligible for Baseline Freeze | **YES** |
+| Freeze Request | ASA-IMPL-REQ-ARCH-FREEZE-18.7-001 |
+| Freeze Identifier | **ARCH-18.7-FREEZE** |
+| Implementation | ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-EXECUTION-001 Draft 0.2 |
+| Architecture Version | ASA-ARCH-18.0 Draft 2.5（at acceptance） / Draft 2.6（post-freeze） |
+| Phase status | **Frozen / Accepted** |
+| Baseline | **18.7 Frozen** |
+| Freeze Date | **2026-07-25** |
+| Freeze Scope | Phases 15.x–18.7 Frozen |
+| Regression | **560 passed** |
+
+### 11.2 Freeze Notes — Non-blocking
+
+| ID | Topic | Detail | Status |
+|---|---|---|---|
+| NB-1 | Spec maturity | Spec remains Draft 0.2（Finalization recorded at freeze） | Non-blocking |
+| NB-2 | Retry deferred | Retry strategy remains a future-phase responsibility | Non-blocking |
+| NB-3 | Rollback scope | Rollback remains best-effort only | Non-blocking |
+| NB-4 | Freeze commit scope | Production source outside freeze commit（governance metadata only） | Non-blocking |
+
+No contract violations. No blocking issues. Runtime Execution baseline fixed.  
+No production behavior changes during freeze.
+
+### 11.3 Phase 18.7 Freeze Rule
 
 ```text
-RuntimeOperation → RuntimeBinding → SystemGovernanceIntegration → GovernanceRuntime → Lifecycle
+Architecture 18.7 System Governance Runtime Execution Engine SHALL be immutable.
+Future Execution contract changes SHALL NOT mutate Phase 18.7
+except through Change Requests that supersede via a later Architecture phase.
+No functional / API / contract / validation-order / execution_result_id / exception hierarchy
+changes without formal architectural approval.
+```
+
+Production behavior unchanged by this freeze（governance documents only）.
+
+---
+
+## 12. Dependency Inheritance
+
+```text
+ExecutionResult → RuntimeOperation → RuntimeBinding → SystemGovernanceIntegration → GovernanceRuntime → Lifecycle
   → Orchestration → Convergence → Synthesis → Evolution → Reflection → Feedback → Distribution
   → Integration → NaturalLanguage → Rendering → Presentation
   → Recommendation → Reasoning → Audit → Decision
   → Checker → Graph → Query → Facade → Store
 ```
 
-Runtime Operation consumes **RuntimeGovernanceBinding** and binding-layer **RuntimeContext** only.  
-Phases 18.0–18.6 remain Frozen and unmodified.  
+Runtime Execution consumes **RuntimeOperation** and **ExecutionContext** only.  
+Phases 18.0–18.7 remain Frozen and unmodified.  
 Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.
 
 ---
 
-## 12. Status
+## 13. Status
 
 | Field | Value |
 |---|---|
 | Registration | Open — Active Draft |
-| Spec version | Draft 2.3 |
+| Spec version | Draft 2.6 |
 | Phase 18.0 | **Frozen / Accepted（Baseline 18.0）** |
 | Phase 18.1 | **Frozen / Accepted（Baseline 18.1）** |
 | Phase 18.2 | **Frozen / Accepted（Baseline 18.2）** |
@@ -701,6 +794,7 @@ Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.
 | Phase 18.4 | **Frozen / Accepted（Baseline 18.4）** |
 | Phase 18.5 | **Frozen / Accepted（Baseline 18.5）** |
 | Phase 18.6 | **Frozen / Accepted（Baseline 18.6）** |
+| Phase 18.7 | **Frozen / Accepted（Baseline 18.7）** |
 | Based on | ASA-ARCH-17.0 Draft 1.5（Phase 17.1–17.9 Frozen） |
 | Production SoT for Synthesis | **ASA-ARCH-17.0 Phase 17.9（Frozen）** |
 | Production SoT for Convergence | **ASA-ARCH-18.0 Phase 18.0（Frozen）** |
@@ -710,6 +804,7 @@ Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.
 | Production SoT for System Governance Integration | **ASA-ARCH-18.0 Phase 18.4（Frozen）** |
 | Production SoT for Runtime Binding | **ASA-ARCH-18.0 Phase 18.5（Frozen）** |
 | Production SoT for Runtime Operation | **ASA-ARCH-18.0 Phase 18.6（Frozen）** |
+| Production SoT for Runtime Execution | **ASA-ARCH-18.0 Phase 18.7（Frozen）** |
 | Phase 18.0 Git tag | `arch-18.0-freeze` |
 | Phase 18.1 Git tag | `arch-18.1-freeze` |
 | Phase 18.2 Git tag | `arch-18.2-freeze` |
@@ -717,6 +812,7 @@ Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.
 | Phase 18.4 Git tag | `arch-18.4-freeze` |
 | Phase 18.5 Git tag | `arch-18.5-freeze` |
 | Phase 18.6 Git tag | `arch-18.6-freeze` |
+| Phase 18.7 Git tag | `arch-18.7-freeze` |
 | Freeze Identifier（18.0） | ARCH-18.0-FREEZE |
 | Freeze Identifier（18.1） | ARCH-18.1-FREEZE |
 | Freeze Identifier（18.2） | ARCH-18.2-FREEZE |
@@ -724,16 +820,17 @@ Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.
 | Freeze Identifier（18.4） | ARCH-18.4-FREEZE |
 | Freeze Identifier（18.5） | ARCH-18.5-FREEZE |
 | Freeze Identifier（18.6） | ARCH-18.6-FREEZE |
+| Freeze Identifier（18.7） | ARCH-18.7-FREEZE |
 
 ---
 
-## 13. Governance
+## 14. Governance
 
 | Role | Rule |
 |---|---|
-| Editable baseline | **ASA-ARCH-18.0** for post-18.6 evolution only via formal change control（Phase 18.0–18.6 frozen） |
+| Editable baseline | **ASA-ARCH-18.0** for post-18.7 evolution only via formal change control（Phase 18.0–18.7 frozen） |
 | Constraint | MUST NOT mutate ASA-ARCH-15.0 / 16.0 / 17.0 Phase 17.1–17.9 freeze contracts |
-| Upstream | Phases 18.0–18.6 remain Final / frozen |
+| Upstream | Phases 18.0–18.7 remain Final / frozen |
 | Phase 18.0 | Immutable after `arch-18.0-freeze` |
 | Phase 18.1 | Immutable after `arch-18.1-freeze` |
 | Phase 18.2 | Immutable after `arch-18.2-freeze` |
@@ -741,3 +838,4 @@ Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.
 | Phase 18.4 | Immutable after `arch-18.4-freeze` |
 | Phase 18.5 | Immutable after `arch-18.5-freeze` |
 | Phase 18.6 | Immutable after `arch-18.6-freeze` |
+| Phase 18.7 | Immutable after `arch-18.7-freeze` |
