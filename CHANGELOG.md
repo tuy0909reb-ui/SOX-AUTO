@@ -4,6 +4,38 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-18.4-freeze] — 2026-07-25
+
+### Architecture 18.4 — System Governance Integration — Frozen
+
+Phase 18.4 accepted and frozen. System Governance Integration baseline established. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.3 | Frozen layers | Frozen |
+| 18.4 | System Governance Integration | Frozen / Accepted |
+
+**Freeze:** ASA-IMPL-REQ-ARCH-FREEZE-18.4-001（ASA-FREEZE-18.4-001）  
+**Freeze Identifier:** ARCH-18.4-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-18.4-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-SYSTEM-GOVERNANCE-INTEGRATION-001 Draft 0.2  
+**Architecture:** ASA-ARCH-18.0 Draft 1.8（acceptance） → Draft 1.9（post-freeze）  
+**Baseline:** `docs/baselines/ASA-ARCH-18.0.md`（Phase 18.4 Frozen / Baseline 18.4）  
+**Git tag:** `arch-18.4-freeze`  
+**Freeze Date:** 2026-07-25  
+**Regression:** 493 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 0.2（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** SystemGovernanceEffect is terminal; SystemPolicy propagation out of scope.  
+**NB-3（Non-blocking）:** Hash verification of audit chain deferred（ID / timestamp integrity only）.  
+**NB-4（Non-blocking）:** Production source remains outside freeze commit（governance metadata only）.
+
+Production source unchanged（governance documents only）. Phases 15.x–18.4 Frozen.
+
+---
+
 ## [arch-18.3-freeze] — 2026-07-25
 
 ### Architecture 18.3 — Governance Runtime — Frozen

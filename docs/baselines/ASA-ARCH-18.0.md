@@ -2,8 +2,8 @@
 
 **Baseline ID:** ASA-ARCH-18.0  
 **Title:** Meta-Architecture / Convergence（successor to ASA-ARCH-17.0 Synthesis）  
-**Version:** Draft 1.7（Phase 18.0–18.3 Frozen; Phase 18.4 Open）  
-**Status:** Open — Active Draft（Phase 18.0–18.3 Frozen; Phase 18.4 Open）  
+**Version:** Draft 1.9（Phase 18.0–18.4 Frozen）  
+**Status:** Open — Active Draft（Phase 18.0–18.4 Frozen）  
 **Category:** Architecture Evolution  
 **Document Type:** Architecture Baseline  
 **Previous Baseline:** ASA-ARCH-17.0（Presentation→Synthesis — Phase 17.1–17.9 Frozen）  
@@ -21,6 +21,9 @@
 **Freeze（18.3）:** ASA-IMPL-REQ-ARCH-FREEZE-18.3-001  
 **Acceptance（18.3）:** ASA-VERIFY-ARCH-18.3-ACCEPTANCE-001 — PASS WITH NON-BLOCKING NOTES  
 **Freeze Identifier（18.3）:** ARCH-18.3-FREEZE  
+**Freeze（18.4）:** ASA-IMPL-REQ-ARCH-FREEZE-18.4-001  
+**Acceptance（18.4）:** ASA-VERIFY-ARCH-18.4-ACCEPTANCE-001 — PASSED  
+**Freeze Identifier（18.4）:** ARCH-18.4-FREEZE  
 
 ---
 
@@ -34,7 +37,7 @@
 * **Phase 18.1 Runtime Orchestration is Frozen / Accepted（Baseline 18.1）**  
 * **Phase 18.2 Lifecycle Control is Frozen / Accepted（Baseline 18.2）**  
 * **Phase 18.3 Governance Runtime is Frozen / Accepted（Baseline 18.3）**  
-* Phase 18.4 System Integration Freeze remains Open  
+* **Phase 18.4 System Governance Integration is Frozen / Accepted（Baseline 18.4）**  
 
 ---
 
@@ -45,6 +48,7 @@ Architecture 18.0 Phase 18.0 defines runtime topology only.
 Phase 18.1 defines orchestration plans only（no scheduling / execution / workers）.
 Phase 18.2 defines lifecycle state control only（no runtime execution / approval execution）.
 Governance runtime executes approval / contracts / audit only（no scheduling）.
+Phase 18.4 integrates GovernanceDecision into SystemGovernanceEffect（pure / idempotent）.
 ```
 
 | Area | Change | Status |
@@ -53,7 +57,7 @@ Governance runtime executes approval / contracts / audit only（no scheduling）
 | Phase 18.1 Runtime Orchestration | ConvergenceManifest + GovernanceRegistry + HistoricalMetrics → OrchestrationPlan | **Frozen / Accepted** |
 | Phase 18.2 Lifecycle Control | OrchestrationPlan + GovernanceRegistry + HistoricalMetrics → LifecycleManifest | **Frozen / Accepted** |
 | Phase 18.3 Governance Runtime | LifecycleManifest + GovernanceRegistry + RuntimeContext → GovernanceDecision | **Frozen / Accepted** |
-| Phase 18.4 System Integration Freeze | （Open） | **Open** |
+| Phase 18.4 System Governance Integration | GovernanceDecision + SystemGovernanceRegistry + IntegrationContext → SystemGovernanceEffect | **Frozen / Accepted** |
 
 ---
 
@@ -69,7 +73,8 @@ Governance runtime executes approval / contracts / audit only（no scheduling）
 | — | ASA-IMPL-REQ-ARCH-FREEZE-18.2-001 — Phase 18.2 Freeze | **Implemented** |
 | 3 | ASA-IMPL-REQ-GOVERNANCE-RUNTIME-001 Draft 0.1 — Governance Runtime | **Frozen** |
 | — | ASA-IMPL-REQ-ARCH-FREEZE-18.3-001 — Phase 18.3 Freeze | **Implemented** |
-| 4 | ASA-IMPL-REQ-ARCH-FREEZE-18.4-001 — System Integration Freeze | **Open** |
+| 4 | ASA-IMPL-REQ-SYSTEM-GOVERNANCE-INTEGRATION-001 Draft 0.2 — System Governance Integration | **Frozen** |
+| — | ASA-IMPL-REQ-ARCH-FREEZE-18.4-001 — Phase 18.4 Freeze | **Implemented** |
 
 ---
 
@@ -401,60 +406,148 @@ Production behavior unchanged by this freeze（governance documents only）.
 
 ---
 
-## 8. Dependency Inheritance
+## 8. Phase 18.4 — System Governance Integration
+
+**Status:** Frozen / Accepted  
+**Baseline:** 18.4 Frozen  
+**Git tag:** `arch-18.4-freeze`  
+**Freeze Date:** 2026-07-25  
+**Freeze Identifier:** ARCH-18.4-FREEZE  
+
+**Normative spec:** `auto-scribe-ai/impl/system_governance_integration_spec.md`  
+
+**Public input:** `GovernanceDecision` + `SystemGovernanceRegistry` + `IntegrationContext`  
+
+**Public output:** `SystemGovernanceEffect`  
+
+**Deliverables:**
+
+| Kind | Path |
+|---|---|
+| Spec | `auto-scribe-ai/impl/system_governance_integration_spec.md` |
+| Integrator | `auto-scribe-ai/src/system_governance_integration/integrator.py` |
+| Models | `auto-scribe-ai/src/system_governance_integration/models.py` |
+| Registry | `auto-scribe-ai/src/system_governance_integration/registry.py` |
+| Validation | `auto-scribe-ai/src/system_governance_integration/validation.py` |
+| Exceptions | `auto-scribe-ai/src/system_governance_integration/exceptions.py` |
+| Unit tests | `auto-scribe-ai/tests/test_system_governance_integration.py` |
+| Pipeline tests | `auto-scribe-ai/tests/test_system_governance_integration_pipeline.py` |
+
+**Contracts（summary）:**
+
+* Pure / idempotent `apply` — no I/O, logging, mutation, caching, wall-clock, randomness  
+* Decision mapping: APPROVED→ALLOW / DENIED→BLOCK / DEFERRED→PENDING  
+* Registry mandatory contracts in fixed order（fail-fast）  
+* Validation: Schema → Ownership → Contract → Determinism → Traceability  
+* `effect_id = SHA256(normalize(decision_id)|normalize(audit_reference_id)|normalize(timestamp))`  
+* Audit chain terminal at SystemGovernanceEffect（no SystemPolicy propagation）  
+
+Phase 18.0–18.3 contracts remain Frozen and unmodified.
+
+### 8.1 Acceptance & Freeze Record
+
+| Field | Value |
+|---|---|
+| Freeze Instruction | ASA-FREEZE-18.4-001 |
+| Acceptance Review | ASA-VERIFY-ARCH-18.4-ACCEPTANCE-001 |
+| Acceptance Result | **PASSED** |
+| Acceptance Status | **ACCEPTED** |
+| Architecture Review | **PASSED** |
+| Eligible for Baseline Freeze | **YES** |
+| Freeze Request | ASA-IMPL-REQ-ARCH-FREEZE-18.4-001 |
+| Freeze Identifier | **ARCH-18.4-FREEZE** |
+| Implementation | ASA-IMPL-REQ-SYSTEM-GOVERNANCE-INTEGRATION-001 Draft 0.2 |
+| Architecture Version | ASA-ARCH-18.0 Draft 1.8（at acceptance） / Draft 1.9（post-freeze） |
+| Phase status | **Frozen / Accepted** |
+| Baseline | **18.4 Frozen** |
+| Freeze Date | **2026-07-25** |
+| Freeze Scope | Phases 15.x–18.4 Frozen |
+| Regression | **493 passed** |
+
+### 8.2 Freeze Notes — Non-blocking
+
+| ID | Topic | Detail | Status |
+|---|---|---|---|
+| NB-1 | Spec maturity | Spec remains Draft 0.2（Finalization recorded at freeze） | Non-blocking |
+| NB-2 | Terminal effect | SystemGovernanceEffect is terminal; SystemPolicy out of scope | Non-blocking |
+| NB-3 | Hash verification | Audit-chain hash verification deferred | Non-blocking |
+| NB-4 | Freeze commit scope | Production source outside freeze commit（governance metadata only） | Non-blocking |
+
+No contract violations. No blocking issues. System Governance Integration baseline fixed.  
+No production behavior changes during freeze.
+
+### 8.3 Phase 18.4 Freeze Rule
 
 ```text
-GovernanceRuntime → Lifecycle → Orchestration → Convergence → Synthesis → Evolution → Reflection → Feedback → Distribution
+Architecture 18.4 System Governance Integration SHALL be immutable.
+Future Integration contract changes SHALL NOT mutate Phase 18.4
+except through Change Requests that supersede via a later Architecture phase.
+No functional / API / contract / validation-order / exception hierarchy changes
+without formal architectural approval.
+```
+
+Production behavior unchanged by this freeze（governance documents only）.
+
+---
+
+## 9. Dependency Inheritance
+
+```text
+SystemGovernanceIntegration → GovernanceRuntime → Lifecycle → Orchestration → Convergence → Synthesis
+  → Evolution → Reflection → Feedback → Distribution
   → Integration → NaturalLanguage → Rendering → Presentation
   → Recommendation → Reasoning → Audit → Decision
   → Checker → Graph → Query → Facade → Store
 ```
 
+System Governance Integration consumes **GovernanceDecision**, **SystemGovernanceRegistry**, and **IntegrationContext** only.  
 Governance Runtime consumes **LifecycleManifest**, **GovernanceRegistryModel**, and **RuntimeContext** only.  
-Lifecycle consumes **OrchestrationPlan**, **GovernanceRegistryModel**, and **HistoricalMetricsModel** only.  
-Orchestration consumes **ConvergenceManifest**, **GovernanceRegistryModel**, and **HistoricalMetricsModel** only.  
-Convergence consumes **SynthesisReport**, **GovernanceRegistryModel**, and **HistoricalMetricsModel** only.  
+Lifecycle / Orchestration / Convergence contracts remain Frozen and unmodified.  
 Architecture 15.0 / 16.0 / 17.1–17.9 source and baselines remain unchanged.  
-Phase 18.0–18.3 remain Frozen and unmodified.
+Phase 18.0–18.4 remain Frozen and unmodified.
 
 ---
 
-## 9. Status
+## 10. Status
 
 | Field | Value |
 |---|---|
 | Registration | Open — Active Draft |
-| Spec version | Draft 1.7 |
+| Spec version | Draft 1.9 |
 | Phase 18.0 | **Frozen / Accepted（Baseline 18.0）** |
 | Phase 18.1 | **Frozen / Accepted（Baseline 18.1）** |
 | Phase 18.2 | **Frozen / Accepted（Baseline 18.2）** |
 | Phase 18.3 | **Frozen / Accepted（Baseline 18.3）** |
-| Phase 18.4 | **Open** |
+| Phase 18.4 | **Frozen / Accepted（Baseline 18.4）** |
 | Based on | ASA-ARCH-17.0 Draft 1.5（Phase 17.1–17.9 Frozen） |
 | Production SoT for Synthesis | **ASA-ARCH-17.0 Phase 17.9（Frozen）** |
 | Production SoT for Convergence | **ASA-ARCH-18.0 Phase 18.0（Frozen）** |
 | Production SoT for Orchestration | **ASA-ARCH-18.0 Phase 18.1（Frozen）** |
 | Production SoT for Lifecycle | **ASA-ARCH-18.0 Phase 18.2（Frozen）** |
 | Production SoT for Governance Runtime | **ASA-ARCH-18.0 Phase 18.3（Frozen）** |
+| Production SoT for System Governance Integration | **ASA-ARCH-18.0 Phase 18.4（Frozen）** |
 | Phase 18.0 Git tag | `arch-18.0-freeze` |
 | Phase 18.1 Git tag | `arch-18.1-freeze` |
 | Phase 18.2 Git tag | `arch-18.2-freeze` |
 | Phase 18.3 Git tag | `arch-18.3-freeze` |
+| Phase 18.4 Git tag | `arch-18.4-freeze` |
 | Freeze Identifier（18.0） | ARCH-18.0-FREEZE |
 | Freeze Identifier（18.1） | ARCH-18.1-FREEZE |
 | Freeze Identifier（18.2） | ARCH-18.2-FREEZE |
 | Freeze Identifier（18.3） | ARCH-18.3-FREEZE |
+| Freeze Identifier（18.4） | ARCH-18.4-FREEZE |
 
 ---
 
-## 10. Governance
+## 11. Governance
 
 | Role | Rule |
 |---|---|
-| Editable baseline | **ASA-ARCH-18.0** for Phase 18.4+ draft updates（Phase 18.0–18.3 frozen） |
+| Editable baseline | **ASA-ARCH-18.0** for post-18.4 evolution only via formal change control（Phase 18.0–18.4 frozen） |
 | Constraint | MUST NOT mutate ASA-ARCH-15.0 / 16.0 / 17.0 Phase 17.1–17.9 freeze contracts |
-| Upstream | Convergence / Orchestration / Lifecycle / Governance Runtime and all prior frozen phases remain Final / frozen |
+| Upstream | Convergence / Orchestration / Lifecycle / Governance Runtime / System Governance Integration remain Final / frozen |
 | Phase 18.0 | Immutable after `arch-18.0-freeze` |
 | Phase 18.1 | Immutable after `arch-18.1-freeze` |
 | Phase 18.2 | Immutable after `arch-18.2-freeze` |
 | Phase 18.3 | Immutable after `arch-18.3-freeze` |
+| Phase 18.4 | Immutable after `arch-18.4-freeze` |
