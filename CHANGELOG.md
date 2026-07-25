@@ -4,6 +4,29 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-20.4-freeze] — 2026-07-25
+
+### Architecture 20.4 — Runtime Lifecycle — Frozen
+
+Phase 20.4 accepted and frozen. Runtime Lifecycle Architecture Test Specification（Draft 1.1）+ `runtime_lifecycle` production surface established. 20.0 / 20.3 checksums retained.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.3 | Frozen layers | Frozen / Accepted |
+| 20.4 | Runtime Lifecycle | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-ARCH-20.4-001  
+**Freeze Identifier:** ARCH-20.4-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-20.4-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Tests:** 50 passed  
+**Regression:** 900 passed  
+**Git tag:** `arch-20.4-freeze`  
+**Baseline:** `docs/baselines/ASA-ARCH-20.4.md`  
+
+Phase 20.4 Frozen / Accepted.
+
+---
+
 ## [arch-20.3-freeze] — 2026-07-25
 
 ### Architecture 20.3 — Runtime Scheduler Architecture Tests — Frozen
