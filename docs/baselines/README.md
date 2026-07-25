@@ -12,7 +12,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-15.0** | **Final v9** | **CLOSED — Trace Intelligence Layer（Frozen）** | `docs/baselines/ASA-ARCH-15.0.md` |
 | **ASA-ARCH-16.0** | **Final 1.0** | **CLOSED — Decision→Recommendation（Frozen）** | `docs/baselines/ASA-ARCH-16.0.md` |
 | **ASA-ARCH-17.0** | **Baseline 17.9** | **Open — Phase 17.1–17.9 Frozen** | `docs/baselines/ASA-ARCH-17.0.md` |
-| **ASA-ARCH-18.0** | **Baseline 18.4** | **Open — Phase 18.0–18.4 Frozen** | `docs/baselines/ASA-ARCH-18.0.md` |
+| **ASA-ARCH-18.0** | **Baseline 18.5** | **Open — Phase 18.0–18.5 Frozen** | `docs/baselines/ASA-ARCH-18.0.md` |
 
 ## Layer Stack
 
@@ -23,7 +23,7 @@ ASA-ARCH-14.0                 → Traceability Layer
 ASA-ARCH-15.0                 → Trace Intelligence Layer（CLOSED / Frozen）
 ASA-ARCH-16.0                 → Decision / Audit / Reasoning / Recommendation（CLOSED / Frozen）
 ASA-ARCH-17.0                 → Presentation / Rendering / NL / Integration / Distribution / Feedback / Reflection / Evolution / Synthesis（Phase 17.1–17.9 Frozen）
-ASA-ARCH-18.0                 → Meta-Architecture / Convergence / Orchestration / Lifecycle / Governance Runtime / System Governance Integration（Phase 18.0–18.4 Frozen）
+ASA-ARCH-18.0                 → Meta-Architecture … / System Governance Integration / Runtime Binding（Phase 18.0–18.5 Frozen）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -45,7 +45,8 @@ Convergence SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.0**
 Orchestration SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.1**  
 Lifecycle SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.2**  
 Governance Runtime SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.3**  
-System Governance Integration SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.4**
+System Governance Integration SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.4**  
+Runtime Binding SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.5**
 
 ## Architecture Status
 
@@ -67,6 +68,7 @@ System Governance Integration SoT（production / frozen）: **ASA-ARCH-18.0 Phas
 | ARCH-18.0 Phase 18.2 | Frozen |
 | ARCH-18.0 Phase 18.3 | Frozen |
 | ARCH-18.0 Phase 18.4 | Frozen |
+| ARCH-18.0 Phase 18.5 | Frozen |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 
@@ -155,3 +157,5 @@ System Governance Integration SoT（production / frozen）: **ASA-ARCH-18.0 Phas
 | ASA-IMPL-REQ-ARCH-FREEZE-18.3-001 | Architecture 18.3 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-18.3-freeze` |
 | ASA-IMPL-REQ-SYSTEM-GOVERNANCE-INTEGRATION-001 | System Governance Integration Implementation Request | Issued — Implemented（Draft 0.2） / Phase 18.4 Frozen | `auto-scribe-ai/impl/system_governance_integration_spec.md` |
 | ASA-IMPL-REQ-ARCH-FREEZE-18.4-001 | Architecture 18.4 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-18.4-freeze` |
+| ASA-IMPL-REQ-SYSTEM-GOVERNANCE-RUNTIME-BINDING-001 | System Governance Runtime Binding Implementation Request | Issued — Implemented（Draft 0.2） / Phase 18.5 Frozen | `auto-scribe-ai/impl/system_governance_runtime_binding_spec.md` |
+| ASA-IMPL-REQ-ARCH-FREEZE-18.5-001 | Architecture 18.5 Freeze | Issued — Implemented | `CHANGELOG.md` / tag `arch-18.5-freeze` |
