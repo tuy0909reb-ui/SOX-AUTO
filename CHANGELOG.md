@@ -4,6 +4,74 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-20.1-freeze] — 2026-07-25
+
+### Architecture 20.1 — Runtime Orchestration Boundary — Frozen
+
+Phase 20.1 accepted and frozen. Runtime Orchestration Boundary baseline established. No production source modifications during freeze. 20.0 Core checksum retained.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.0 | Frozen layers | Frozen / Accepted |
+| 20.1 | Runtime Orchestration Boundary | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-REQ-ARCH-20.1-001 / ASA-FREEZE-ARCH-20.1-001  
+**Freeze Identifier:** ARCH-20.1-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-20.1-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Implementation:** ASA-IMPL-REQ-ARCH-20.1-001  
+**Architecture:** ASA-ARCH-20.1 Draft 1.0  
+**Baseline:** `docs/baselines/ASA-ARCH-20.1.md`（Phase 20.1 Frozen）  
+**Git tag:** `arch-20.1-freeze`  
+**Freeze Date:** 2026-07-25  
+**Unit / Architecture / Pipeline Tests:** 14 passed  
+**Regression:** 782 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 1.0.  
+**NB-2（Non-blocking）:** Algorithms deferred to 20.2–20.5.  
+**NB-3（Non-blocking）:** BoundaryOrchestrator does not replace 20.0 RuntimeOrchestrator.  
+**NB-4（Non-blocking）:** Freeze commit is governance metadata only.
+
+Production source unchanged during freeze（governance documents only）. Phase 20.1 Frozen / Accepted.
+
+---
+
+## [arch-20.1-accepted] — 2026-07-25
+
+### Architecture 20.1 — Runtime Orchestration Boundary — Accepted
+
+Phase 20.1 accepted against ASA-ARCH-20.1 Draft 1.0. Full regression **782 passed / 0 failed**. No blocking issues. Eligible for baseline freeze（proceeded immediately）.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.0 | Frozen layers | Frozen / Accepted |
+| 20.1 | Runtime Orchestration Boundary | Accepted → Frozen |
+
+**Acceptance:** ASA-VERIFY-ARCH-20.1-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+**Baseline:** `docs/baselines/ASA-ARCH-20.1.md`  
+**Package:** `auto-scribe-ai/src/runtime_orchestration/`  
+
+---
+
+## [arch-20.1-implemented] — 2026-07-25
+
+### Architecture 20.1 — Runtime Orchestration Boundary — Implemented
+
+Phase 20.1 Boundary Contract layer implemented. Ownership / dependency / Policy·Scheduler·Lifecycle·Events Protocols; immutable SchedulingPlan owned by BoundaryOrchestrator; Event notification-only rules; ValidationResult validators. No algorithm implementations. ASA-ARCH-20.0 Core unmodified（checksum-verified）.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–20.0 | Frozen layers | Frozen / Accepted |
+| 20.1 | Runtime Orchestration Boundary | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-20.1-001  
+**Implementation Spec:** `auto-scribe-ai/impl/runtime_orchestration_spec.md`  
+**Architecture:** ASA-ARCH-20.1 Draft 1.0（Phase 20.1 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-20.1.md`  
+**Package:** `auto-scribe-ai/src/runtime_orchestration/`  
+
+---
+
 ## [arch-20.0-freeze] — 2026-07-25
 
 ### Architecture 20.0 — Runtime Core — Frozen
