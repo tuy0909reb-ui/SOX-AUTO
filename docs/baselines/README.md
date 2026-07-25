@@ -15,6 +15,7 @@ Auto Scribe AI / Framework Architecture Baseline の索引。
 | **ASA-ARCH-18.0** | **Baseline 18.9 / Draft 3.0** | **Open — Phase 18.0–18.9 Frozen** | `docs/baselines/ASA-ARCH-18.0.md` |
 | **ASA-ARCH-19.0** | **Draft 1.0** | **Open — Phase 19.0 Accepted（Pending Freeze）** | `docs/baselines/ASA-ARCH-19.0.md` |
 | **ASA-ARCH-19.1** | **Draft 0.6** | **Open — Phase 19.1 Frozen / Accepted** | `docs/baselines/ASA-ARCH-19.1.md` |
+| **ASA-ARCH-19.2** | **Draft 0.2** | **Open — Phase 19.2 Frozen / Accepted** | `docs/baselines/ASA-ARCH-19.2.md` |
 
 ## Layer Stack
 
@@ -28,6 +29,7 @@ ASA-ARCH-17.0                 → Presentation / Rendering / NL / Integration / 
 ASA-ARCH-18.0                 → Meta-Architecture … / Execution Control / Execution Scheduler（Phase 18.0–18.9 Frozen）
 ASA-ARCH-19.0                 → Core Platform（Phase 19.0 Accepted — Pending Freeze）
 ASA-ARCH-19.1                 → Workflow Engine（Phase 19.1 Frozen / Accepted）
+ASA-ARCH-19.2                 → Capability Layer（Phase 19.2 Frozen / Accepted）
 ```
 
 Current Event Layer SoT（detailed）: **ASA-ARCH-2.0**  
@@ -56,7 +58,8 @@ Runtime Execution SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.7**
 Runtime Execution Control SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.8**  
 Runtime Execution Scheduler SoT（production / frozen）: **ASA-ARCH-18.0 Phase 18.9**  
 Core Platform SoT（production / accepted）: **ASA-ARCH-19.0 Phase 19.0**  
-Workflow Engine SoT（production / frozen）: **ASA-ARCH-19.1 Phase 19.1**
+Workflow Engine SoT（production / frozen）: **ASA-ARCH-19.1 Phase 19.1**  
+Capability Layer SoT（production / frozen）: **ASA-ARCH-19.2 Phase 19.2**
 
 ## Architecture Status
 
@@ -85,6 +88,7 @@ Workflow Engine SoT（production / frozen）: **ASA-ARCH-19.1 Phase 19.1**
 | ARCH-18.0 Phase 18.9 | Frozen |
 | ARCH-19.0 Phase 19.0 | Accepted（Pending Freeze） |
 | ARCH-19.1 Phase 19.1 | Frozen |
+| ARCH-19.2 Phase 19.2 | Frozen |
 
 ## Child Implementation Specs（ASA-ARCH-2.0 / ASA-ARCH-12.0）
 

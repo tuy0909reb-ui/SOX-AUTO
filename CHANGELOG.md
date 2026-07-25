@@ -4,6 +4,89 @@ All notable architecture and platform changes for Auto Scribe AI are recorded he
 
 ---
 
+## [arch-19.2-freeze] — 2026-07-25
+
+### Architecture 19.2 — Capability Layer — Frozen
+
+Phase 19.2 accepted and frozen. Capability Layer baseline established. No production source modifications.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Accepted（Pending Freeze） |
+| 19.1 | Workflow Engine | Frozen / Accepted |
+| 19.2 | Capability Layer | Frozen / Accepted |
+
+**Freeze:** ASA-FREEZE-ARCH-19.2-001  
+**Freeze Identifier:** ARCH-19.2-FREEZE  
+**Acceptance:** ASA-VERIFY-ARCH-19.2-ACCEPTANCE-001 — PASSED（ACCEPTED）  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Implementation:** ASA-IMPL-REQ-ARCH-19.2-001  
+**Architecture:** ASA-ARCH-19.2 Draft 0.2  
+**Baseline:** `docs/baselines/ASA-ARCH-19.2.md`（Phase 19.2 Frozen）  
+**Git tag:** `arch-19.2-freeze`  
+**Freeze Date:** 2026-07-25  
+**Unit / Architecture / Pipeline Tests:** 22 passed  
+**Regression:** 695 passed  
+
+**NB-1（Non-blocking）:** Spec remains Draft 0.2（Finalization recorded at freeze）.  
+**NB-2（Non-blocking）:** ContractDefinition reused from Phase 19.1; Workflow Frozen.  
+**NB-3（Non-blocking）:** WorkflowStep → Capability wiring remains deferred.  
+**NB-4（Non-blocking）:** Production source remains outside freeze commit（governance metadata only）.
+
+Production source unchanged（governance documents only）. Phase 19.2 Frozen / Accepted.
+
+---
+
+## [arch-19.2-accepted] — 2026-07-25
+
+### Architecture 19.2 — Capability Layer — Accepted
+
+Phase 19.2 Capability Layer acceptance verification passed. Eligible for baseline freeze（`ARCH-19.2-FREEZE`）.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Accepted（Pending Freeze） |
+| 19.1 | Workflow Engine | Frozen / Accepted |
+| 19.2 | Capability Layer | Accepted（Pending Freeze） |
+
+**Acceptance:** ASA-VERIFY-ARCH-19.2-ACCEPTANCE-001 — **PASSED（ACCEPTED）**  
+**Architecture Review:** PASSED  
+**Eligible for Baseline Freeze:** YES  
+**Blocking Issues:** NONE  
+**Verification Record:** `docs/change_requests/asa_verify_arch_19_2_acceptance_001.md`  
+**Architecture:** ASA-ARCH-19.2 Draft 0.2  
+**Baseline:** `docs/baselines/ASA-ARCH-19.2.md`  
+**Regression:** 695 passed / 0 failed  
+
+---
+
+## [arch-19.2-implemented] — 2026-07-25
+
+### Architecture 19.2 — Capability Layer — Implemented
+
+Phase 19.2 Capability Layer implemented. Immutable definition-only Capability / CapabilitySet; reuses Phase 19.1 ContractDefinition; pure validation; Core-compatible serialization. Phases 15.x–19.1 unmodified.
+
+| Phase | Component | Status |
+|---|---|---|
+| 15.x–18.9 | Frozen layers | Frozen |
+| 19.0 | Core Platform | Accepted（Pending Freeze） |
+| 19.1 | Workflow Engine | Frozen / Accepted |
+| 19.2 | Capability Layer | Implemented |
+
+**Implementation:** ASA-IMPL-REQ-ARCH-19.2-001  
+**Implementation Spec:** `auto-scribe-ai/impl/capability_layer_spec.md`  
+**Architecture:** ASA-ARCH-19.2 Draft 0.2（Phase 19.2 Implemented）  
+**Baseline:** `docs/baselines/ASA-ARCH-19.2.md`  
+**Package:** `auto-scribe-ai/src/capability/`  
+**Depends On:** ASA-ARCH-19.0 Core · ASA-ARCH-19.1 ContractDefinition  
+**Unit / Architecture / Pipeline Tests:** 22 passed  
+**Regression:** 695 passed  
+
+---
+
 ## [arch-19.1-freeze] — 2026-07-25
 
 ### Architecture 19.1 — Workflow Engine — Frozen
