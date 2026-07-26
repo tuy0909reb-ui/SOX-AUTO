@@ -3,7 +3,7 @@
 Status: FROZEN  
 Version: 1.0  
 Freeze Tag: ASA-ARCH-20.8-FREEZE  
-Commit: <freeze 時に記入>
+Commit: cce74c22568344bf53cd0d933d281da5b0cc5876
 
 ---
 
