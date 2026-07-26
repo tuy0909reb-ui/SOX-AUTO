@@ -17,7 +17,9 @@
   },
   "include": [
     "src/runtime_execution/**/*.ts",
-    "tests/runtime_execution/**/*.ts"
+    "src/orchestration/**/*.ts",
+    "tests/runtime_execution/**/*.ts",
+    "tests/orchestration/**/*.ts"
   ],
   "exclude": [
     "node_modules",
