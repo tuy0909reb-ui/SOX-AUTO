@@ -13,13 +13,16 @@ function importsOf(filePath: string): string[] {
     return [...body.matchAll(/from\s+["']([^"']+)["']/g)].map((m) => m[1]);
 }
 
-describe("20.9.1 architecture constraints", () => {
+describe("20.9.1 / 20.9.2 architecture constraints", () => {
     test("internal component dependency graph is acyclic", () => {
         const components = [
             "Dispatcher.ts",
+            "DispatchStrategy.ts",
             "ExecutionCoordinator.ts",
+            "EnginePool.ts",
             "EngineRegistry.ts",
             "ResultCollector.ts",
+            "ErrorPolicy.ts",
             "LifecycleController.ts",
         ];
 
@@ -28,15 +31,13 @@ describe("20.9.1 architecture constraints", () => {
             const specifiers = importsOf(path.join(ORCH_DIR, file));
             edges[file] = specifiers
                 .filter((s) => s.startsWith("./"))
-                .map((s) => path.basename(s) + (s.endsWith(".ts") ? "" : ".ts"))
-                .map((s) => s.replace(/\.ts\.ts$/, ".ts"))
+                .map((s) => {
+                    const base = path.basename(s);
+                    return base.endsWith(".ts") ? base : `${base}.ts`;
+                })
                 .filter((s) => components.includes(s));
         }
 
-        // Expected allowed deps (import direction):
-        // ExecutionCoordinator → Dispatcher, EngineRegistry, ResultCollector
-        // ResultCollector → LifecycleController
-        // leaves: Dispatcher, EngineRegistry, LifecycleController
         const visiting = new Set<string>();
         const visited = new Set<string>();
         const visit = (node: string): void => {
@@ -85,12 +86,12 @@ describe("20.9.1 architecture constraints", () => {
         expect(files.sort()).toEqual(required.sort());
     });
 
-    test("orchestration sources do not import EnginePool/Scheduler/Workflow/Pipeline", () => {
+    test("orchestration sources do not import Workflow/Pipeline/Observability", () => {
         for (const file of listTs(ORCH_DIR)) {
             const lower = file.toLowerCase();
-            expect(lower).not.toMatch(/enginepool|scheduler|workflow|pipeline|observability/);
+            expect(lower).not.toMatch(/workflow|pipeline|observability/);
             const body = fs.readFileSync(path.join(ORCH_DIR, file), "utf8").toLowerCase();
-            expect(body).not.toMatch(/class\s+enginepool|class\s+scheduler/);
+            expect(body).not.toMatch(/class\s+workflow|class\s+pipeline/);
         }
     });
 });

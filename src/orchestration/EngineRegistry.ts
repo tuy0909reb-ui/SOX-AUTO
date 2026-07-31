@@ -1,33 +1,60 @@
 import { ExecutionEngine } from "../runtime_execution/ExecutionEngine";
+import { EngineDefinition } from "./EngineDefinition";
 import { NodeID } from "./types";
 
 /**
- * Lookup service only: NodeID → ExecutionEngine.
- * SHALL NOT create engines, manage lifecycle, or participate in flow control.
+ * Owns engine definitions and metadata only (20.9.2).
+ * SHALL NOT own runtime engine instances.
  */
 export class EngineRegistry {
-    private readonly engines = new Map<NodeID, ExecutionEngine>();
+    private readonly definitions = new Map<NodeID, EngineDefinition>();
 
-    /**
-     * Bind mapping during Orchestrator initialize.
-     * Not orchestration flow control — registration of lookup entries only.
-     */
-    bind(nodeId: NodeID, engine: ExecutionEngine): void {
-        if (this.engines.has(nodeId)) {
-            throw new Error(`NodeID already bound: ${nodeId}`);
+    registerDefinition(definition: EngineDefinition): void {
+        if (this.definitions.has(definition.nodeId)) {
+            throw new Error(`Definition already registered for NodeID: ${definition.nodeId}`);
         }
-        this.engines.set(nodeId, engine);
+        this.definitions.set(definition.nodeId, {
+            nodeId: definition.nodeId,
+            metadata: Object.freeze({ ...definition.metadata }),
+            create: definition.create,
+        });
     }
 
-    resolveEngine(nodeId: NodeID): ExecutionEngine {
-        const engine = this.engines.get(nodeId);
-        if (!engine) {
-            throw new Error(`No ExecutionEngine registered for NodeID: ${nodeId}`);
+    resolveDefinition(nodeId: NodeID): EngineDefinition {
+        const def = this.definitions.get(nodeId);
+        if (!def) {
+            throw new Error(`No EngineDefinition registered for NodeID: ${nodeId}`);
         }
-        return engine;
+        return def;
     }
 
     has(nodeId: NodeID): boolean {
-        return this.engines.has(nodeId);
+        return this.definitions.has(nodeId);
+    }
+
+    /**
+     * Compatibility helper (20.9.1 call sites): register a definition whose factory
+     * produces engines. Does not store the runtime instance in the registry.
+     */
+    bind(nodeId: NodeID, engineOrFactory: ExecutionEngine | (() => ExecutionEngine)): void {
+        const create =
+            typeof engineOrFactory === "function"
+                ? (engineOrFactory as () => ExecutionEngine)
+                : () => engineOrFactory;
+        this.registerDefinition({
+            nodeId,
+            metadata: {},
+            create,
+        });
+    }
+
+    /**
+     * @deprecated 20.9.2 — runtime instances are owned by EnginePool.
+     * Retained only for definition existence checks in legacy tests; does not return a pooled instance.
+     */
+    resolveEngine(nodeId: NodeID): ExecutionEngine {
+        // Create a throwaway instance for legacy callers that still invoke resolveEngine.
+        // Orchestration dispatch path MUST use EnginePool.acquire instead.
+        return this.resolveDefinition(nodeId).create();
     }
 }

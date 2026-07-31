@@ -2,7 +2,9 @@ import {
     DefaultExecutionEngine,
     ExecutionEngine,
 } from "../runtime_execution/ExecutionEngine";
+import { DefaultDispatchStrategy, DispatchStrategy } from "./DispatchStrategy";
 import { Dispatcher } from "./Dispatcher";
+import { EnginePool } from "./EnginePool";
 import { EngineRegistry } from "./EngineRegistry";
 import { ErrorPolicy } from "./ErrorPolicy";
 import { ExecutionCoordinator } from "./ExecutionCoordinator";
@@ -12,29 +14,59 @@ import { GraphValidator } from "./GraphValidator";
 import { LifecycleController } from "./LifecycleController";
 import { OrchestrationContext } from "./OrchestrationContext";
 import { ResultCollector } from "./ResultCollector";
+import { Scheduler } from "./Scheduler";
+import {
+    FifoSchedulingPolicy,
+    PrioritySchedulingPolicy,
+    SchedulingPolicy,
+} from "./SchedulingPolicy";
 import { NodeID, OrchestrationResult, RuntimePlan } from "./types";
 
 export type EngineFactory = (nodeId: NodeID) => ExecutionEngine;
 
+export interface OrchestratorOptions {
+    engineFactory?: EngineFactory;
+    strategy?: DispatchStrategy;
+    schedulingPolicy?: SchedulingPolicy;
+}
+
 /**
- * Orchestrator — public façade over 20.9.1 internal responsibilities.
- * Preserves 20.9.0 lifecycle contracts without modifying Runtime Execution Layer.
+ * Orchestrator — public façade (20.9.0 contract preserved).
+ * 20.9.3: Scheduling Cycle → ScheduledNodeQueue → DispatchStrategy → Coordinator.
  */
 export class Orchestrator {
     private readonly lifecycle = new LifecycleController();
     private readonly registry = new EngineRegistry();
     private readonly dispatcher = new Dispatcher();
     private readonly engineFactory: EngineFactory;
+    private readonly strategy: DispatchStrategy;
+    private readonly schedulingPolicyOverride?: SchedulingPolicy;
 
     private context: OrchestrationContext | null = null;
     private graph: ExecutionGraph | null = null;
     private errorPolicy: ErrorPolicy | null = null;
     private resultCollector: ResultCollector | null = null;
     private coordinator: ExecutionCoordinator | null = null;
+    private pool: EnginePool | null = null;
+    private scheduler: Scheduler | null = null;
     private executed = false;
 
-    constructor(engineFactory?: EngineFactory) {
-        this.engineFactory = engineFactory ?? ((_nodeId) => new DefaultExecutionEngine());
+    constructor(
+        engineFactoryOrOptions?: EngineFactory | OrchestratorOptions,
+        strategy?: DispatchStrategy
+    ) {
+        if (typeof engineFactoryOrOptions === "function" || engineFactoryOrOptions === undefined) {
+            this.engineFactory =
+                (engineFactoryOrOptions as EngineFactory | undefined) ??
+                ((_nodeId) => new DefaultExecutionEngine());
+            this.strategy = strategy ?? new DefaultDispatchStrategy();
+        } else {
+            this.engineFactory =
+                engineFactoryOrOptions.engineFactory ??
+                ((_nodeId) => new DefaultExecutionEngine());
+            this.strategy = engineFactoryOrOptions.strategy ?? new DefaultDispatchStrategy();
+            this.schedulingPolicyOverride = engineFactoryOrOptions.schedulingPolicy;
+        }
     }
 
     get state() {
@@ -49,6 +81,10 @@ export class Orchestrator {
         return this.graph;
     }
 
+    get enginePool(): EnginePool | null {
+        return this.pool;
+    }
+
     initialize(plan: RuntimePlan): void {
         if (!this.lifecycle.canInitialize()) {
             throw new Error(`initialize() allowed only from Created; current=${this.lifecycle.state}`);
@@ -59,26 +95,58 @@ export class Orchestrator {
             GraphValidator.validate(graph);
 
             const context = new OrchestrationContext();
-            const errorPolicy = new ErrorPolicy(plan.errorPolicy ?? "STOP_ON_ERROR");
+            const errorPolicy = new ErrorPolicy(
+                plan.errorPolicy ?? "STOP_ON_ERROR",
+                this.lifecycle,
+                context
+            );
 
-            // Create engines (Orchestrator responsibility) and bind lookup entries.
             for (const nodeId of graph.nodeIds) {
-                this.registry.bind(nodeId, this.engineFactory(nodeId));
+                const id = nodeId;
+                this.registry.registerDefinition({
+                    nodeId: id,
+                    metadata: {},
+                    create: () => this.engineFactory(id),
+                });
             }
+
+            const priorities = new Map<NodeID, number>();
+            for (const n of plan.nodes) {
+                priorities.set(n.id, n.priority ?? 0);
+            }
+
+            const policy =
+                this.schedulingPolicyOverride ??
+                (plan.schedulingPolicy === "priority"
+                    ? new PrioritySchedulingPolicy()
+                    : new FifoSchedulingPolicy());
+
+            const scheduler = new Scheduler({
+                policy,
+                concurrencyLimit: plan.maxConcurrency ?? Number.POSITIVE_INFINITY,
+                priorities,
+            });
+
+            const pool = new EnginePool(this.registry);
+            const resultCollector = new ResultCollector(context, errorPolicy);
+            const coordinator = new ExecutionCoordinator(
+                this.dispatcher,
+                resultCollector,
+                graph,
+                pool,
+                this.strategy
+            );
 
             this.graph = graph;
             this.context = context;
             this.errorPolicy = errorPolicy;
-            this.resultCollector = new ResultCollector(context, errorPolicy, this.lifecycle);
-            this.coordinator = new ExecutionCoordinator(
-                this.dispatcher,
-                this.resultCollector,
-                graph
-            );
+            this.resultCollector = resultCollector;
+            this.coordinator = coordinator;
+            this.pool = pool;
+            this.scheduler = scheduler;
 
-            // Created → Initialized → Ready
-            this.lifecycle.transition("INITIALIZE_SUCCESS"); // → Initialized
-            this.lifecycle.transition("MARK_READY"); // → Ready
+            this.lifecycle.transition("INITIALIZE_SUCCESS");
+            this.lifecycle.transition("MARK_READY");
             context.setState(this.lifecycle.state);
         } catch (err) {
             this.lifecycle.transition("INITIALIZE_FAILURE");
@@ -101,7 +169,13 @@ export class Orchestrator {
         if (this.executed) {
             throw new Error("execute() may be invoked at most once per lifecycle");
         }
-        if (!this.graph || !this.context || !this.coordinator || !this.resultCollector) {
+        if (
+            !this.graph ||
+            !this.context ||
+            !this.coordinator ||
+            !this.resultCollector ||
+            !this.scheduler
+        ) {
             throw new Error("Orchestrator is not initialized");
         }
 
@@ -112,15 +186,23 @@ export class Orchestrator {
         const completed = new Set<NodeID>();
 
         while (this.lifecycle.state === "Running") {
-            const executable = this.coordinator.selectExecutable(completed);
+            // Sync context completed → local completed for Dispatcher retrieve path.
+            for (const id of this.context.completedNodes) {
+                completed.add(id);
+            }
+
+            // Scheduling Cycle: Dispatcher → ExecutableNodeSet
+            const executable = this.dispatcher.retrieveExecutableNodeSet(
+                this.context,
+                this.graph,
+                this.coordinator.getDispatchedNodes()
+            );
 
             if (executable.size === 0) {
-                // Termination: all nodes completed, or no remaining work.
                 if (completed.size === this.graph.size) {
                     this.lifecycle.transition("COMPLETE");
                     this.context.setState(this.lifecycle.state);
                 } else if (this.context.errors.length > 0) {
-                    // Remaining nodes blocked after errors under CONTINUE/COLLECT — complete with errors recorded.
                     this.lifecycle.transition("COMPLETE");
                     this.context.setState(this.lifecycle.state);
                 } else {
@@ -130,21 +212,60 @@ export class Orchestrator {
                 break;
             }
 
-            this.coordinator.dispatch(executable, this.registry);
+            // Immutable CompletedNodeSet view for this scheduling cycle.
+            const completedView: ReadonlySet<NodeID> = new Set(completed);
 
-            // Sync completed set from context (ResultCollector updates context first).
+            const scheduled = this.scheduler.schedule(
+                executable,
+                this.graph,
+                completedView
+            );
+
+            if (!scheduled.ok) {
+                // No partial queue; report to ErrorPolicy via ResultCollector.
+                this.resultCollector.collect({
+                    nodeId: "__schedule__",
+                    error: scheduled.error,
+                });
+                if (this.resultCollector.getLastDecision() === "TERMINATE") {
+                    break;
+                }
+                // Non-terminating policies: fail the cycle without spinning forever.
+                this.lifecycle.transition("FAIL");
+                this.context.setState(this.lifecycle.state);
+                break;
+            }
+
+            const dispatchedBefore = this.coordinator.getDispatchedNodes().size;
+            const completedBefore = completed.size;
+
+            // ScheduledNodeQueue → DispatchStrategy → Coordinator → EnginePool
+            this.coordinator.dispatchQueue(scheduled.queue, this.registry);
+
             for (const id of this.context.completedNodes) {
                 completed.add(id);
             }
 
             const decision = this.resultCollector.getLastDecision();
             if (decision === "TERMINATE") {
-                // Context already updated; LifecycleController already transitioned to Failed.
                 break;
             }
 
             if (completed.size === this.graph.size) {
                 this.lifecycle.transition("COMPLETE");
+                this.context.setState(this.lifecycle.state);
+                break;
+            }
+
+            if (
+                this.coordinator.getDispatchedNodes().size === dispatchedBefore &&
+                completed.size === completedBefore
+            ) {
+                if (this.context.errors.length > 0) {
+                    this.lifecycle.transition("COMPLETE");
+                } else {
+                    this.lifecycle.transition("FAIL");
+                }
                 this.context.setState(this.lifecycle.state);
                 break;
             }

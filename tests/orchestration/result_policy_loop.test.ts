@@ -23,8 +23,8 @@ describe("ResultCollector, ErrorPolicy, Dispatch loop", () => {
         lifecycle.transition("MARK_READY");
         lifecycle.transition("START_EXECUTE");
         const context = new OrchestrationContext();
-        const policy = new ErrorPolicy("STOP_ON_ERROR");
-        const collector = new ResultCollector(context, policy, lifecycle);
+        const policy = new ErrorPolicy("STOP_ON_ERROR", lifecycle, context);
+        const collector = new ResultCollector(context, policy);
 
         collector.collect({
             nodeId: "a",
@@ -45,8 +45,7 @@ describe("ResultCollector, ErrorPolicy, Dispatch loop", () => {
         const context = new OrchestrationContext();
         const collector = new ResultCollector(
             context,
-            new ErrorPolicy("CONTINUE"),
-            lifecycle
+            new ErrorPolicy("CONTINUE", lifecycle, context)
         );
         collector.collect({ nodeId: "a", error: new Error("x") });
         expect(collector.getLastDecision()).toBe("CONTINUE");
@@ -87,21 +86,18 @@ describe("ResultCollector, ErrorPolicy, Dispatch loop", () => {
     test("context update path: engines do not mutate context directly", () => {
         const context = new OrchestrationContext();
         const snapshotBefore = context.snapshot();
-        // Engine path must go through ResultCollector
         const lifecycle = new LifecycleController();
         lifecycle.transition("INITIALIZE_SUCCESS");
         lifecycle.transition("MARK_READY");
         lifecycle.transition("START_EXECUTE");
         const collector = new ResultCollector(
             context,
-            new ErrorPolicy("COLLECT_ERRORS"),
-            lifecycle
+            new ErrorPolicy("COLLECT_ERRORS", lifecycle, context)
         );
         collector.collect({ nodeId: "n", result: { ok: true }, error: null });
         const snapshotAfter = context.snapshot();
         expect(snapshotBefore.completedNodes).toEqual([]);
         expect(snapshotAfter.completedNodes).toEqual(["n"]);
-        // Prior snapshot remains stable
         expect(snapshotBefore.completedNodes).toEqual([]);
     });
 });

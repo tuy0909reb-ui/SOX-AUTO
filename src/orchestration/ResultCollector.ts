@@ -1,12 +1,15 @@
 import { ErrorPolicy } from "./ErrorPolicy";
-import { LifecycleController } from "./LifecycleController";
 import { OrchestrationContext } from "./OrchestrationContext";
 import { EngineOutcome, ErrorPolicyDecision } from "./types";
 
 /**
- * Centralized collection of Result / Error / Event.
- * Updates OrchestrationContext, evaluates ErrorPolicy, notifies LifecycleController.
- * ExecutionEngine SHALL NOT update OrchestrationContext directly.
+ * Collects Success / Failure / Event; updates OrchestrationContext;
+ * provides outcomes to ErrorPolicy.
+ *
+ * ResultCollector SHALL NOT dispatch Engine.
+ * ResultCollector SHALL NOT modify the execution graph structure.
+ * ResultCollector SHALL NOT initiate orchestration state transitions.
+ * (ErrorPolicy notifies LifecycleController.)
  */
 export class ResultCollector {
     private lastDecision: ErrorPolicyDecision = "CONTINUE";
@@ -14,8 +17,11 @@ export class ResultCollector {
     constructor(
         private readonly context: OrchestrationContext,
         private readonly errorPolicy: ErrorPolicy,
-        private readonly lifecycle: LifecycleController
-    ) {}
+        /** @deprecated 20.9.2 — retained for call-site compatibility; unused for transitions. */
+        _lifecycle?: unknown
+    ) {
+        void _lifecycle;
+    }
 
     getLastDecision(): ErrorPolicyDecision {
         return this.lastDecision;
@@ -46,21 +52,12 @@ export class ResultCollector {
             });
         }
 
-        // Provide outcomes to ErrorPolicy AFTER context update (auditability).
+        // Context updated first, then ErrorPolicy evaluation (auditability).
         this.lastDecision = this.errorPolicy.evaluate([engineResult]);
-
-        if (this.lastDecision === "TERMINATE") {
-            // State change MUST go through LifecycleController.
-            if (this.lifecycle.state === "Running") {
-                this.lifecycle.transition("FAIL");
-                this.context.setState(this.lifecycle.state);
-            }
-        }
     }
 
     collectBatch(outcomes: readonly EngineOutcome[]): ErrorPolicyDecision {
         for (const outcome of outcomes) {
-            // Update context for each outcome first.
             const now = Date.now();
             if (outcome.events) {
                 for (const event of outcome.events) {
@@ -85,10 +82,6 @@ export class ResultCollector {
         }
 
         this.lastDecision = this.errorPolicy.evaluate(outcomes);
-        if (this.lastDecision === "TERMINATE" && this.lifecycle.state === "Running") {
-            this.lifecycle.transition("FAIL");
-            this.context.setState(this.lifecycle.state);
-        }
         return this.lastDecision;
     }
 }

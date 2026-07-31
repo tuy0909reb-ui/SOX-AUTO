@@ -26,6 +26,8 @@ export interface RuntimePlanNode {
     id: NodeID;
     /** Predecessor node IDs that must complete before this node is executable. */
     dependencies: NodeID[];
+    /** Higher value schedules earlier under Priority policy. Default 0. Not mutated by Scheduler. */
+    priority?: number;
     input?: {
         type: string;
         payload: unknown;
@@ -33,9 +35,15 @@ export interface RuntimePlanNode {
     };
 }
 
+export type SchedulingPolicyKind = "fifo" | "priority";
+
 export interface RuntimePlan {
     nodes: RuntimePlanNode[];
     errorPolicy?: ErrorPolicyKind;
+    /** 20.9.3 scheduling policy selection. Default: fifo */
+    schedulingPolicy?: SchedulingPolicyKind;
+    /** 20.9.3 concurrency limit applied by ConcurrencyPolicy. Default: unlimited */
+    maxConcurrency?: number;
 }
 
 export interface EventRecord {
