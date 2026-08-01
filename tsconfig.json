@@ -47,6 +47,8 @@
     "tests/architecture_extension/**/*.ts",
     "src/architecture_evolution_layer/**/*.ts",
     "tests/architecture_evolution_layer/**/*.ts",
+    "src/architecture_intelligence/**/*.ts",
+    "tests/architecture_intelligence/**/*.ts",
     "tests/runtime_execution/**/*.ts",
     "tests/orchestration/**/*.ts",
     "tests/workflow/**/*.ts",

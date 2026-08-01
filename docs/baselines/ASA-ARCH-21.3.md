@@ -1,7 +1,7 @@
 # ASA-ARCH-21.3 — Pipeline Composition
 
-Status: FROZEN — Chapter 1 + Chapter 2 + Chapter 3 + Chapter 4 + Chapter 5 + Chapter 6 + Chapter 7 + Chapter 8 + Chapter 9 + Chapter 10 + Chapter 11 + Chapter 12 + Chapter 13 + Chapter 14 + Chapter 15 + Chapter 16 + Chapter 17 + Chapter 18 + Chapter 19 + Chapter 20 + Chapter 21（ASA-ARCH-21.0） + Chapter 22（ASA-ARCH-22.0） + Chapter 23（ASA-ARCH-23.0） + Chapter 24（ASA-ARCH-24.0） + Chapter 25（ASA-ARCH-25.0） + Chapter 26（ASA-ARCH-26.0） + Chapter 27（ASA-ARCH-27.0） + Chapter 28（ASA-ARCH-28.0） + Chapter 29（ASA-ARCH-29.0） + Chapter 30（ASA-ARCH-30.0） + Chapter 31（ASA-ARCH-31.0） + Chapter 32（ASA-ARCH-32.0） + Chapter 33（ASA-ARCH-33.0） + Chapter 34（ASA-ARCH-34.0） + Chapter 35（ASA-ARCH-35.0 Extension Governance Layer） + Chapter 35.1（ASA-ARCH-35.1 Extension Development Framework） + Chapter 36（ASA-ARCH-36.0 ASA-OPS Operational Extension Layer） + Chapter 37（ASA-ARCH-37.0 ASA-CONNECT External Integration Boundary Layer） + Chapter 38（ASA-ARCH-38.0 ASA-AI Extension Intelligence Layer — FROZEN） + Chapter 39（ASA-ARCH-39.0 ASA-VALIDATION Extension Validation & Assurance Layer — FROZEN） + Chapter 40（ASA-ARCH-40.0 ASA-COORDINATION Extension Coordination Layer — FROZEN） + Chapter 41（ASA-ARCH-41.0 ASA-SCENARIO Extension Scenario Definition Layer — FROZEN） + Chapter 42（ASA-ARCH-42.0 Architecture Evolution Intelligence Layer — FROZEN） + Chapter 43（ASA-ARCH-43.0 Architecture Validation Intelligence Layer — FROZEN） + Chapter 44（ASA-ARCH-44.0 Architecture Operations Layer — FROZEN） + Chapter 45（ASA-ARCH-45.0 Architecture Extension Boundary Layer — FROZEN） + Chapter 46（ASA-ARCH-46.0 Architecture Evolution Layer — FROZEN）  
-Version: Draft 0.4（Chapters 1–3, 5–7, 26/ASA-ARCH-26.0, 28/ASA-ARCH-28.0, 33/ASA-ARCH-33.0, 34/ASA-ARCH-34.0, 36/ASA-ARCH-36.0, 39/ASA-ARCH-39.0, 40/ASA-ARCH-40.0） / Draft 0.7（Chapters 4, 22/ASA-ARCH-22.0, 43/ASA-ARCH-43.0） / Draft 0.2（Chapters 8, 10–14, 31/ASA-ARCH-31.0, 35.1/ASA-ARCH-35.1, 45/ASA-ARCH-45.0 Architecture+ImplDesign） / Draft 0.3（Chapters 9, 15–16, 18, 25/ASA-ARCH-25.0, 29/ASA-ARCH-29.0, 30/ASA-ARCH-30.0, 32/ASA-ARCH-32.0, 35/ASA-ARCH-35.0, 37/ASA-ARCH-37.0, 45/ASA-ARCH-45.0 Contract, 46/ASA-ARCH-46.0） / Draft 0.5（Chapters 17, 21/ASA-ARCH-21.0, 27/ASA-ARCH-27.0, 38/ASA-ARCH-38.0, 41/ASA-ARCH-41.0） / Draft 0.6（Chapters 42/ASA-ARCH-42.0, 44/ASA-ARCH-44.0） / Draft 1.1（Chapters 19, 24/ASA-ARCH-24.0） / Draft 1.0（Chapter 20） / Draft 1.4（Chapter 23/ASA-ARCH-23.0）  
+Status: FROZEN — Chapter 1 + Chapter 2 + Chapter 3 + Chapter 4 + Chapter 5 + Chapter 6 + Chapter 7 + Chapter 8 + Chapter 9 + Chapter 10 + Chapter 11 + Chapter 12 + Chapter 13 + Chapter 14 + Chapter 15 + Chapter 16 + Chapter 17 + Chapter 18 + Chapter 19 + Chapter 20 + Chapter 21（ASA-ARCH-21.0） + Chapter 22（ASA-ARCH-22.0） + Chapter 23（ASA-ARCH-23.0） + Chapter 24（ASA-ARCH-24.0） + Chapter 25（ASA-ARCH-25.0） + Chapter 26（ASA-ARCH-26.0） + Chapter 27（ASA-ARCH-27.0） + Chapter 28（ASA-ARCH-28.0） + Chapter 29（ASA-ARCH-29.0） + Chapter 30（ASA-ARCH-30.0） + Chapter 31（ASA-ARCH-31.0） + Chapter 32（ASA-ARCH-32.0） + Chapter 33（ASA-ARCH-33.0） + Chapter 34（ASA-ARCH-34.0） + Chapter 35（ASA-ARCH-35.0 Extension Governance Layer） + Chapter 35.1（ASA-ARCH-35.1 Extension Development Framework） + Chapter 36（ASA-ARCH-36.0 ASA-OPS Operational Extension Layer） + Chapter 37（ASA-ARCH-37.0 ASA-CONNECT External Integration Boundary Layer） + Chapter 38（ASA-ARCH-38.0 ASA-AI Extension Intelligence Layer — FROZEN） + Chapter 39（ASA-ARCH-39.0 ASA-VALIDATION Extension Validation & Assurance Layer — FROZEN） + Chapter 40（ASA-ARCH-40.0 ASA-COORDINATION Extension Coordination Layer — FROZEN） + Chapter 41（ASA-ARCH-41.0 ASA-SCENARIO Extension Scenario Definition Layer — FROZEN） + Chapter 42（ASA-ARCH-42.0 Architecture Evolution Intelligence Layer — FROZEN） + Chapter 43（ASA-ARCH-43.0 Architecture Validation Intelligence Layer — FROZEN） + Chapter 44（ASA-ARCH-44.0 Architecture Operations Layer — FROZEN） + Chapter 45（ASA-ARCH-45.0 Architecture Extension Boundary Layer — FROZEN） + Chapter 46（ASA-ARCH-46.0 Architecture Evolution Layer — FROZEN） + Chapter 47（ASA-ARCH-47.0 Architecture Intelligence Layer — FROZEN）  
+Version: Draft 0.4（Chapters 1–3, 5–7, 26/ASA-ARCH-26.0, 28/ASA-ARCH-28.0, 33/ASA-ARCH-33.0, 34/ASA-ARCH-34.0, 36/ASA-ARCH-36.0, 39/ASA-ARCH-39.0, 40/ASA-ARCH-40.0） / Draft 0.7（Chapters 4, 22/ASA-ARCH-22.0, 43/ASA-ARCH-43.0） / Draft 0.2（Chapters 8, 10–14, 31/ASA-ARCH-31.0, 35.1/ASA-ARCH-35.1, 45/ASA-ARCH-45.0 Architecture+ImplDesign） / Draft 0.3（Chapters 9, 15–16, 18, 25/ASA-ARCH-25.0, 29/ASA-ARCH-29.0, 30/ASA-ARCH-30.0, 32/ASA-ARCH-32.0, 35/ASA-ARCH-35.0, 37/ASA-ARCH-37.0, 45/ASA-ARCH-45.0 Contract, 46/ASA-ARCH-46.0） / Draft 1.1（Chapter 47/ASA-ARCH-47.0） / Draft 0.5（Chapters 17, 21/ASA-ARCH-21.0, 27/ASA-ARCH-27.0, 38/ASA-ARCH-38.0, 41/ASA-ARCH-41.0） / Draft 0.6（Chapters 42/ASA-ARCH-42.0, 44/ASA-ARCH-44.0） / Draft 1.1（Chapters 19, 24/ASA-ARCH-24.0） / Draft 1.0（Chapter 20） / Draft 1.4（Chapter 23/ASA-ARCH-23.0）  
 Freeze Tags:
 - `ASA-ARCH-21.3-CH1-FREEZE`（authorized: ASA-FREEZE-ARCH-21.3-CH1-001）
 - `ASA-ARCH-21.3-CH2-FREEZE`（authorized: ASA-FREEZE-ARCH-21.3-CH2-001；git tag not issued — unless requested）
@@ -1028,6 +1028,16 @@ Note: Chapter 22 `CDD-*` IDs are distinct from Chapter 19 Construction Definitio
 | Ch46 Verification | `docs/reports/ASA-VERIFY-ARCH-46.0-001.md` |
 | Ch46 Registration + Freeze | `docs/reports/ASA-REGISTER-FREEZE-ARCH-46.0-001.md` |
 | Ch46 Checksum | `docs/reports/asa_arch_46_0_checksum_verification.md` |
+| Ch47 Architecture Definition | `docs/specs/asa_arch_47_0_architecture_intelligence.md` |
+| Ch47 Baseline | `docs/baselines/ASA-ARCH-47.0.md` |
+| Ch47 Architecture Registration | `docs/reports/ASA-REGISTER-ARCH-47.0-001.md` |
+| Ch47 Implementation Design | `docs/specs/asa_arch_47_0_implementation_design.md` |
+| Ch47 Implementation Authorization | `docs/reports/ASA-AUTH-ARCH-47.0-001.md` |
+| Ch47 Source | `src/architecture_intelligence/`（VERIFIED；35 files） |
+| Ch47 Tests | `tests/architecture_intelligence/`（8 PASS） |
+| Ch47 Verification | `docs/reports/ASA-VERIFY-ARCH-47.0-001.md` |
+| Ch47 Freeze Authorization | `docs/reports/ASA-FREEZE-ARCH-47.0-001.md` |
+| Ch47 Checksum | `docs/reports/asa_arch_47_0_checksum_verification.md` |
 
 ---
 
@@ -1039,6 +1049,12 @@ ASA Foundation v1.0 Registration : COMPLETE — REGISTERED（ASA-REGISTER-FOUNDA
 ASA Foundation v1.0 Verification : PASS — Baseline VERIFIED（ASA-VERIFY-FOUNDATION-1.0-001）
 ASA Foundation v1.0 Freeze : COMPLETE — FROZEN（ASA-FREEZE-FOUNDATION-1.0-001）
 ASA Foundation v1.0 Established : COMPLETE — Baseline ESTABLISHED
+Chapter 47 / ASA-ARCH-47.0 Architecture Design : APPROVED（Draft 1.1）
+Chapter 47 / ASA-ARCH-47.0 Architecture Registration : COMPLETE（ASA-REGISTER-ARCH-47.0-001）
+Chapter 47 / ASA-ARCH-47.0 Implementation Authorization : APPROVED（ASA-AUTH-ARCH-47.0-001）
+Chapter 47 / ASA-ARCH-47.0 Implementation : COMPLETE
+Chapter 47 / ASA-ARCH-47.0 Full Verification : PASS（ASA-VERIFY-ARCH-47.0-001）
+Chapter 47 / ASA-ARCH-47.0 Freeze : COMPLETE（ASA-FREEZE-ARCH-47.0-001）
 Chapter 46 / ASA-ARCH-46.0 Architecture Design : APPROVED（Draft 0.3）
 Chapter 46 / ASA-ARCH-46.0 Registration Authorization : APPROVED（ASA-AUTH-REGISTER-ARCH-46.0-001）
 Chapter 46 / ASA-ARCH-46.0 Implementation Authorization : APPROVED（ASA-AUTH-IMPLEMENT-ARCH-46.0-001）
@@ -1072,6 +1088,7 @@ Architecture Operations         : FROZEN
 Extension Boundary              : FROZEN
 ASA Foundation v1.0             : FROZEN — Baseline ESTABLISHED（ASA-FREEZE-FOUNDATION-1.0-001）
 ASA-ARCH-46.0 Evolution Layer   : FROZEN（ASA-REGISTER-FREEZE-ARCH-46.0-001）
-Git Commit / Tag                  : ISSUED — ASA-FOUNDATION-1.0-FROZEN；ASA-ARCH-46.0-FROZEN
+ASA-ARCH-47.0 Intelligence Layer: FROZEN（ASA-FREEZE-ARCH-47.0-001）
+Git Commit / Tag                  : ISSUED — ASA-FOUNDATION-1.0-FROZEN；ASA-ARCH-46.0-FROZEN；ASA-ARCH-47.0-FROZEN
 Blocking Issues                   : NONE
 ```
