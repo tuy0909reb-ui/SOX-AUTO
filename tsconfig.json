@@ -49,6 +49,8 @@
     "tests/architecture_evolution_layer/**/*.ts",
     "src/architecture_intelligence/**/*.ts",
     "tests/architecture_intelligence/**/*.ts",
+    "src/architecture_traceability/**/*.ts",
+    "tests/architecture_traceability/**/*.ts",
     "tests/runtime_execution/**/*.ts",
     "tests/orchestration/**/*.ts",
     "tests/workflow/**/*.ts",
