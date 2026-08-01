@@ -34,6 +34,7 @@ module.exports = {
     "<rootDir>/tests/architecture_evolution_layer",
     "<rootDir>/tests/architecture_intelligence",
     "<rootDir>/tests/architecture_traceability",
+    "<rootDir>/tests/architecture_recommendation",
   ],
   testMatch: ["**/*.test.ts", "**/*.spec.ts"],
   moduleFileExtensions: ["ts", "js", "json"],

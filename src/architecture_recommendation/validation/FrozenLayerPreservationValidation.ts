@@ -1,0 +1,46 @@
+import * as crypto from "crypto";
+import * as fs from "fs";
+import * as path from "path";
+import {
+    freezeInspectionResult,
+    type RecommendationInspectionResult,
+} from "./inspectionResult";
+
+export const FROZEN_LAYER_DIGEST_EXPECTATIONS = Object.freeze([
+    {
+        layer: "Ch47",
+        artifactPath: "src/architecture_intelligence/index.ts",
+        expectedSha256:
+            "249b8fa2b9536b25a4329b8f6e9bc876cacbc1ffaf4477f8f5fbba8afc15c09b",
+    },
+    {
+        layer: "Ch48",
+        artifactPath: "src/architecture_traceability/index.ts",
+        expectedSha256:
+            "057018b94b839a0c36ebfe04d472e8f8c6d885cf6e5d1a8dabfb74cd0f8ae6c2",
+    },
+]);
+
+export function inspectFrozenLayerPreservation(
+    repoRoot: string = process.cwd()
+): RecommendationInspectionResult {
+    const findings: string[] = [];
+    for (const item of FROZEN_LAYER_DIGEST_EXPECTATIONS) {
+        const full = path.join(repoRoot, item.artifactPath);
+        if (!fs.existsSync(full)) {
+            findings.push(`missing frozen artifact: ${item.artifactPath}`);
+            continue;
+        }
+        const got = crypto
+            .createHash("sha256")
+            .update(fs.readFileSync(full))
+            .digest("hex");
+        if (got !== item.expectedSha256) {
+            findings.push(`digest drift ${item.layer}`);
+        }
+    }
+    return freezeInspectionResult({
+        passed: findings.length === 0,
+        findings,
+    });
+}
