@@ -53,6 +53,8 @@
     "tests/architecture_traceability/**/*.ts",
     "src/architecture_recommendation/**/*.ts",
     "tests/architecture_recommendation/**/*.ts",
+    "src/architecture_completion/**/*.ts",
+    "tests/architecture_completion/**/*.ts",
     "tests/runtime_execution/**/*.ts",
     "tests/orchestration/**/*.ts",
     "tests/workflow/**/*.ts",
