@@ -9,7 +9,8 @@
 **Design Baseline:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
 **Design Digest:** `9cf1d708280df88a0158065712795d47c99bb4fe9753b5dfeae61382754efafd`  
 **Prior Design Digest:** `c733dd740bdd4b0c1f54809e75e163b68b0ad71803f1b9eff92005ca4b921579`  
-**Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`（initial；correction pending commit）  
+**Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`（initial freeze）  
+**Correction Commit:** `1c876d7513b76c6b765d47feed132c38b3ffec19`（quantity Fact restoration）  
 
 ---
 
@@ -127,6 +128,7 @@ Human Trade Report Port / Fact Journal v1.0
 
 IMPLEMENTATION FREEZE: COMPLETE (quantity Fact CORRECTION)
 Commit (initial): 1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638
+Correction Commit: 1c876d7513b76c6b765d47feed132c38b3ffec19
 Digest: 9cf1d708280df88a0158065712795d47c99bb4fe9753b5dfeae61382754efafd
 Tests: 35 passed
 Baseline: ASA-TAXABLE-HTR-PORT-FJ-1.0
