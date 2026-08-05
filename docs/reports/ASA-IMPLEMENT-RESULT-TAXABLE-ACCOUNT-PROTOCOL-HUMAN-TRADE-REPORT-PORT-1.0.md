@@ -8,7 +8,7 @@
 **Status:** **FROZEN IMPLEMENTATION**  
 **Design Baseline:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
 **Design Digest:** `c733dd740bdd4b0c1f54809e75e163b68b0ad71803f1b9eff92005ca4b921579`  
-**Implementation Commit:** `PENDING_AFTER_COMMIT`  
+**Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`  
 
 ---
 
@@ -113,7 +113,7 @@ ASA-TAXABLE-ACCOUNT-PROTOCOL
 Human Trade Report Port / Fact Journal v1.0
 
 IMPLEMENTATION FREEZE: COMPLETE
-Commit: PENDING_AFTER_COMMIT
+Commit: 1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638
 Tests: 33 passed
 Baseline: ASA-TAXABLE-HTR-PORT-FJ-1.0
 Status: FROZEN IMPLEMENTATION

@@ -38,6 +38,7 @@ The following are **frozen for normal operations**. Changes require a new change
   Registration: `docs/reports/ASA-REGISTER-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`  
   Implementation Result: `docs/reports/ASA-IMPLEMENT-RESULT-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`  
   Status: **FROZEN IMPLEMENTATION**（Design `ASA-TAXABLE-HTR-PORT-FJ-1.0`）  
+  Implementation Commit: `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`  
   Live fill confirmation premise: `auto_fill=False`（paper/test may differ）  
   Ops transport: `--report-buy`（Trade Report）; `--record-entry` remains ENTRY_READY-only  
 

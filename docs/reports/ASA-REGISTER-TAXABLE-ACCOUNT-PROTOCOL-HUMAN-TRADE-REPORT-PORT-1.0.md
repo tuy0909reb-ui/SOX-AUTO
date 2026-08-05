@@ -14,7 +14,7 @@
 **Implementation Authorization:** **AUTHORIZED**（Freeze範囲内のみ）  
 **Implementation Result:** **PASS → FROZEN IMPLEMENTATION**  
 **Implementation Result Record:** `docs/reports/ASA-IMPLEMENT-RESULT-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`  
-**Implementation Commit:** `PENDING_AFTER_COMMIT`  
+**Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`  
 
 ---
 
@@ -110,6 +110,6 @@ Status: FROZEN IMPLEMENTATION
 Freeze Record: ASA-TAXABLE-HTR-PORT-FJ-1.0
 Digest: c733dd740bdd4b0c1f54809e75e163b68b0ad71803f1b9eff92005ca4b921579
 Implementation: FROZEN
-Implementation Commit: PENDING_AFTER_COMMIT
+Implementation Commit: 1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638
 Tests: 33 passed
 ```
