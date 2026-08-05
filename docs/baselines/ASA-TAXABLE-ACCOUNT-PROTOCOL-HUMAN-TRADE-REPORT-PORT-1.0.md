@@ -1,0 +1,215 @@
+# ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0
+
+# Human Trade Report Port / Fact Journal — Freeze Design Record
+
+**Status:** **FROZEN**  
+**Version:** `1.0`  
+**Date:** 2026-08-05  
+**Freeze ID:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
+**Classification:** Operational Interface Extension + Runtime Extension + Operational Data Layer  
+**Protocol Rule Change:** **NO**  
+**Implementation Authorization:** **AUTHORIZED**（本Freeze範囲内のみ）  
+
+**Parent / authority:**
+
+- Final Design Review: APPROVE（Architecture / Runtime Owner）
+- Human Decision: APPROVE FREEZE
+- Related: `ASA-TAXABLE-ACCOUNT-PROTOCOL-RUNTIME-FREEZE-1.0`（Entry/Exit/Risk/Selection 条件は非改訂）
+- Related: `ASA-TAXABLE-ACCOUNT-PROTOCOL-DETAILED-SPEC-1.0`（Position SoT / ENTRY_FILLED 意味を維持）
+
+---
+
+## 1. Freeze meaning
+
+本記録は、証券世界の取引事実を Runtime へ接続する**正式入力境界**と、
+その証拠保存（Fact Journal）を固定する。
+
+変更には明示的な Human 認可と再 Design Review が必要。  
+ad-hoc 実装拡張で本境界を歪めてはならない。
+
+---
+
+## 2. Human Trade Report Port（外部入力境界）
+
+```text
+Human / Broker
+    ↓
+Trade Fact Input Port
+    ↓
+Validation
+    ↓
+Fact Journal append
+    ↓
+Domain Event Routing
+    ↓
+Position State
+```
+
+### Fixed rules
+
+| Rule | Definition |
+|---|---|
+| External contract | Trade Fact のみ（asset / side / trade_date / trade_price / confirm 等） |
+| Forbidden input | Internal Event 名（`DELAYED_FILL_RECOVERY` 等）を人間に選ばせない |
+| Fact ≠ command | Trade Fact は事実報告であり State 変更命令ではない |
+| No direct State write | Input → Domain Event → State のみ。POSITION_ACTIVE 直書き禁止 |
+
+### First-wave Human fields（BUY）
+
+**Required from Human:**
+
+- `asset`
+- `side`（schema上 BUY/SELL。v1.0 実装は BUY routing 必須）
+- `trade_date`
+- `trade_price`
+- `confirm_flag`
+
+**Attached by Runtime（not Human-authored internal knowledge）:**
+
+- `reported_at`
+- `source`
+- `report_id`
+- `signal_date`（State/機会から。無ければ null / 補完規則は実装CR）
+- `regime_at_report`
+- `position_before` / `position_after`
+- `routed_event`
+- `reject_reason`（拒否時）
+
+`quantity` は optional 予約可。v1.0 で必須化・会計利用しない。
+
+---
+
+## 3. Fact Journal
+
+| Property | Value |
+|---|---|
+| Role | Operational Evidence / Analysis Fact |
+| Mutability | append-only / immutable records |
+| Coverage | success **and** reject |
+| Not | Position State の代替 SoT |
+| Not | Protocol 自動変更の入力 |
+
+Offline Analysis → Human Review → 別 CR / 再 Freeze のみ。  
+Fact Journal から Decision Engine へ直接フィードバックしない。
+
+---
+
+## 4. Routing Rules（frozen）
+
+### Normal BUY
+
+```text
+ENTRY_READY
+  → ENTRY_FILLED
+  → POSITION_ACTIVE
+```
+
+### Delayed BUY（internal only）
+
+External: Trade Fact BUY  
+Internal Event: `DELAYED_FILL_RECOVERY`（人間非公開）
+
+**Guards（all required）:**
+
+- `regime == SWING_ACTIVE`
+- `held_asset == CASH`
+- position in WATCH-like（`WATCH` / `REENTRY_WAIT`）
+- `confirm_flag` required
+- `asset ∈ {NIKKEI_LEV_1570, SEMI_282A}`
+- `entry_price` / `trade_price` required
+- `entry_date` / `trade_date` required（実約定日；入力日で置換しない）
+
+**Internal processing（State Machine invariant）:**
+
+```text
+technical READY restoration（Selection/Sensor 再評価なし）
+  → existing ENTRY_FILLED path
+  → POSITION_ACTIVE
+```
+
+Time Exit / Risk Stop 起算は**実約定** `entry_date` / `entry_price`（既存算式のまま）。
+
+### Forbidden
+
+- `WATCH → POSITION_ACTIVE` direct transition
+- Growth 中の通常 Delayed Recovery
+- Selection / Detection / Sensor 再評価を Recovery で実行
+- 新 `PositionState` 追加
+- Live 運用での paper `auto_fill=True` 前提（Live は fill 確認入力前提）
+
+---
+
+## 5. Explicitly out of this freeze（別CR）
+
+- 本格 Trade Ledger
+- quantity 会計 / 平均取得単価 / 部分約定 / 実現損益
+- Broker Adapter
+- Discord Interaction / Dashboard
+- Protocol 自動改善
+- SELL 本番 routing（schema 予約可；v1.0 必須実装ではない）
+- Growth 例外SOPの自動化
+
+---
+
+## 6. Classification vs Protocol Freeze
+
+| Item | Status |
+|---|---|
+| Entry conditions | **UNCHANGED** |
+| Exit conditions | **UNCHANGED** |
+| Risk formula | **UNCHANGED** |
+| Asset Selection | **UNCHANGED** |
+| Detection | **UNCHANGED** |
+| PositionState enum | **UNCHANGED**（追加禁止） |
+
+本Freezeは Protocol Rule 変更ではない。
+
+---
+
+## 7. Re-review triggers（implementation中〜後）
+
+以下が発生したら Implementation を止め、再 Design Review:
+
+- Entry / Exit 条件変更
+- Risk 計算変更
+- State Machine 意味変更（FILLED が READY 前提でない直遷移の正式化など）
+- PositionState 追加
+- Fact を Decision Engine へ直接投入
+- Journal の SoT 化
+
+---
+
+## 8. Implementation baseline
+
+Implementation CR MUST stay within §2–4 and §5 OUT list.
+
+Suggested package touchpoints（拘束ではなく実装ガイド）:
+
+- `taxable_account/` Trade Report Port + Journal writer
+- `domain/events.py` internal `DELAYED_FILL_RECOVERY`
+- `engine` / `position_manager` recovery path preserving ENTRY_FILLED invariants
+- CLI as transport for Trade Report（Event名選択UIにしない）
+- tests: routing / guards / journal append / no selection recompute
+
+Live ops premise: `auto_fill=False`（paper/test のみ True）。
+
+---
+
+## 9. Unfreeze rule
+
+1. Explicit Human authorization  
+2. New Design Review（APPROVE）  
+3. New version record（e.g. `…-PORT-1.1`）— 本 v1.0 を上書きしない  
+
+---
+
+## 10. Version tag
+
+```text
+ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0
+```
+
+Canonical digest for this freeze record is published only in the registration report
+（self-referential digest footer is intentionally omitted from this file）:
+
+`docs/reports/ASA-REGISTER-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`
