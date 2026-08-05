@@ -44,6 +44,8 @@ The following are **frozen for normal operations**. Changes require a new change
   Design Digest: `5b499d9b47ccc9b56adc8a4db21ca75b61c18db2ee529e6bb1574c70ce108e06`  
   Live fill confirmation premise: `auto_fill=False`（paper/test may differ）  
   Ops transport: `--report-buy` / `--report-sell` + `--quantity --confirm --trade-date`（Journal Fact only）  
+  Discord Interaction transport: `python -m taxable_account.ops.discord_trade_bot`  
+  （slash + confirm → `DiscordTradeInputAdapter` → Port；Projection webhook とは分離）  
 
 ### Explicitly not authorized by this freeze
 

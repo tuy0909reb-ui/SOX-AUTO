@@ -188,9 +188,12 @@ Exit 条件式・Risk・Time Exit 計算は変更しない。
 - 平均取得単価 / 部分約定 / 残数量管理 / 実現損益 / 税務処理  
   （※ `quantity` の Fact 保存自体は **IN**。会計・Ledger 化のみ OUT）
 - Broker Adapter
-- Discord Interaction / Dashboard
+- Discord Dashboard（資産管理画面化）
 - Protocol 自動改善
 - Growth 例外SOPの自動化
+
+**IN（Input Adapter）:** Discord Trade Report Interaction  
+（slash + confirm → 既存 Port。Projection とは役割分離。Business Logic なし）
 
 ---
 

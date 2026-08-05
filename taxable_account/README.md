@@ -48,6 +48,11 @@ python -m taxable_account.ops --state-file data/ops/taxable_state.json \
   --report-sell 1570 900 --trade-date 2024-03-20 --quantity 10 --confirm --view-state-only
 # quantity is Journal Fact only (not Position/Risk/Time control; not Ledger)
 
+# Discord Trade Report Interaction (Fact transport only; not Projection)
+# Env: DISCORD_TOKEN, TAXABLE_DISCORD_OPERATOR_IDS, TAXABLE_STATE_FILE, TAXABLE_FACT_JOURNAL
+python -m taxable_account.ops.discord_trade_bot
+# slash: /report_buy /report_sell → Confirm Fact button → TradeReportPort
+
 # ENTRY_READY-only protocol fill (not delayed recovery)
 python -m taxable_account.ops --state-file data/ops/taxable_state.json \
   --record-entry 1570 1000 --entry-date 2024-03-05 --view-state-only
