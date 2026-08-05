@@ -1,67 +1,48 @@
 # ASA-IMPLEMENT-RESULT-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0
 
-# Implementation Result Record — Human Trade Report Port / Fact Journal v1.0
+# Implementation Result — Human Trade Report Port / Fact Journal (BUY/SELL)
 
 **Date:** 2026-08-05  
-**Timestamp:** 2026-08-05T22:29:35+09:00  
-**Title:** Runtime Implementation Freeze against Design Baseline  
-**Status:** **FROZEN IMPLEMENTATION**（v1.0 quantity Fact CORRECTION）  
+**Timestamp:** 2026-08-05T23:45:00+09:00  
+**Status:** **FROZEN IMPLEMENTATION**（BUY/SELL common Port complete）  
 **Design Baseline:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
-**Design Digest:** `9cf1d708280df88a0158065712795d47c99bb4fe9753b5dfeae61382754efafd`  
-**Prior Design Digest:** `c733dd740bdd4b0c1f54809e75e163b68b0ad71803f1b9eff92005ca4b921579`  
-**Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`（initial freeze）  
-**Correction Commit:** `1c876d7513b76c6b765d47feed132c38b3ffec19`（quantity Fact restoration）  
+**Design Digest:** `5b499d9b47ccc9b56adc8a4db21ca75b61c18db2ee529e6bb1574c70ce108e06`  
+**BUY/SELL Completion Commit:** `PENDING_AFTER_COMMIT`  
 
 ---
 
 ## Purpose
 
-Fix the Runtime implementation that connects Frozen Design  
-`ASA-TAXABLE-HTR-PORT-FJ-1.0` to operational Trade Fact intake.
-
-This record freezes **implementation result**, not Protocol rules.
-
 ```text
 Human Trade Report = Runtime 同期 + 取引 Fact 蓄積
 ```
 
-Correction: `quantity` is first-class append-only Trade Fact（not Ledger; not Position control）.
+Trade Fact は発生した取引事実。Position State は Runtime 現在状態のみ。  
+Trade Report は Command ではない。既存 Protocol を変更せず事実同期のみ行う。
 
 ---
 
-## Confirmation (gates)
+## Confirmation
 
 | Gate | Result |
 |---|---|
-| Changes within Frozen Design scope only | **PASS** |
-| Tests PASS | **PASS** (35 passed after quantity correction) |
 | Protocol Rule Change | **NO** |
 | PositionState Addition | **NO** |
-| Detection / Selection / Risk / Time modification | **NO** |
-| quantity drives Position/Risk/Time | **NO**（禁止をテストで保証） |
+| Entry/Exit/Risk/Time/Detection/Selection change | **NO** |
+| quantity drives Runtime control | **NO** |
+| Ledgerization | **NO** |
+| Tests | **42 passed** |
 
 ---
 
-## Delivered scope
+## Delivered
 
-1. **Trade Fact Input Port** — `taxable_account/trade/port.py`  
-2. **Fact Journal** — append-only JSONL（includes **quantity**）  
-3. **Routing** — Case A `ENTRY_FILLED`; Case B internal `DELAYED_FILL_RECOVERY` → existing FILLED path  
-4. **CLI** — `--report-buy` / `--trade-date` / `--quantity` / `--confirm`; Live `auto_fill=False` default  
-5. **Schema** — `docs/schemas/taxable_account_trade_fact.schema.json`  
-6. **Tests** — `tests/test_taxable_account_trade_report_port.py` + regression suite  
-
----
-
-## Explicit non-changes
-
-- Detection logic  
-- Sensor logic  
-- Asset Selection  
-- Entry / Exit conditions  
-- Risk calculation  
-- Time Exit calculation  
-- PositionState enum  
+- BUY/SELL 共通 Schema + Journal（`quantity` required）  
+- BUY routing（ENTRY_FILLED / DELAYED_FILL_RECOVERY）  
+- SELL routing（EXIT_FILLED；ACTIVE 時は既存 ABNORMAL_EXIT→EXIT_FILLED）  
+- CLI `--report-buy` / `--report-sell`（`--trade-date` `--quantity` `--confirm`）  
+- duplicate `report_id` reject  
+- Schema: `docs/schemas/taxable_account_trade_fact.schema.json`  
 
 ---
 
@@ -75,48 +56,7 @@ pytest tests/test_taxable_account_trade_report_port.py \
        tests/test_taxable_account_foundation.py -q
 ```
 
-**Result:** `35 passed`
-
-Covered:
-
-- ENTRY_READY + BUY → ENTRY_FILLED → POSITION_ACTIVE  
-- WATCH + SWING + confirm → DELAYED_FILL_RECOVERY → POSITION_ACTIVE  
-- Past `trade_date` drives Time Exit / Risk bases  
-- Rejects: no confirm / Growth BUY / POSITION_ACTIVE BUY  
-- No WATCH→ACTIVE direct; Recovery does not call Selection/Sensor  
-- `quantity` persisted in Journal; does not alter entry_price / stop / hold days  
-- non-positive `quantity` rejected when provided  
-
----
-
-## Files (implementation surface)
-
-| Path | Role |
-|---|---|
-| `taxable_account/trade/` | Port + Fact models + Journal |
-| `taxable_account/domain/events.py` | `DELAYED_FILL_RECOVERY` |
-| `taxable_account/engine.py` | Recovery without Selection sync |
-| `taxable_account/position/position_manager.py` | Technical READY → ENTRY_FILLED |
-| `taxable_account/ops/__main__.py` | `--report-buy` transport |
-| `taxable_account/README.md` | Live ops contract |
-| `tests/test_taxable_account_trade_report_port.py` | HTR Port tests |
-
----
-
-## Out of scope (unchanged / not implemented)
-
-Trade Ledger / 平均取得単価 / 部分約定 / 残数量管理 / 実現損益 / 税務 /  
-Broker Adapter / Discord UI / Dashboard / NOT_BUY full / Protocol auto-improve  
-
-（`quantity` Fact 保存は OUT ではない）
-
----
-
-## Parent records
-
-- Design: `docs/baselines/ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`  
-- Design Registration: `docs/reports/ASA-REGISTER-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`  
-- Runtime Freeze: `docs/baselines/ASA-TAXABLE-ACCOUNT-PROTOCOL-RUNTIME-FREEZE-1.0.md`  
+**Result:** `42 passed`
 
 ---
 
@@ -124,13 +64,11 @@ Broker Adapter / Discord UI / Dashboard / NOT_BUY full / Protocol auto-improve
 
 ```text
 ASA-TAXABLE-ACCOUNT-PROTOCOL
-Human Trade Report Port / Fact Journal v1.0
+Human Trade Report Port / Fact Journal
 
-IMPLEMENTATION FREEZE: COMPLETE (quantity Fact CORRECTION)
-Commit (initial): 1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638
-Correction Commit: 1c876d7513b76c6b765d47feed132c38b3ffec19
-Digest: 9cf1d708280df88a0158065712795d47c99bb4fe9753b5dfeae61382754efafd
-Tests: 35 passed
+IMPLEMENTATION: COMPLETE
+Commit: PENDING_AFTER_COMMIT
+Tests: 42 passed
 Baseline: ASA-TAXABLE-HTR-PORT-FJ-1.0
 Status: FROZEN IMPLEMENTATION
 ```

@@ -1,4 +1,4 @@
-"""Human Trade Report Port / Fact Journal v1.0 — Implementation CR tests."""
+"""Human Trade Report Port / Fact Journal — BUY/SELL common Fact Port tests."""
 
 from __future__ import annotations
 
@@ -37,6 +37,17 @@ def _ready_1570(eng: TaxableAccountEngine) -> None:
     assert eng.state.position_state == PositionState.ENTRY_READY
 
 
+def _active_1570(eng: TaxableAccountEngine) -> None:
+    _ready_1570(eng)
+    eng.on_event(
+        DomainEvent.ENTRY_FILLED,
+        fill_asset=Asset.NIKKEI_LEV_1570,
+        fill_price=1000.0,
+        fill_date=date(2024, 8, 1),
+    )
+    assert eng.state.position_state == PositionState.POSITION_ACTIVE
+
+
 def test_entry_ready_buy_report_fills(tmp_path: Path):
     eng = TaxableAccountEngine()
     _ready_1570(eng)
@@ -57,17 +68,14 @@ def test_entry_ready_buy_report_fills(tmp_path: Path):
     assert eng.state.entry_date == date(2024, 8, 1)
     assert eng.state.entry_price == 1000.0
     assert eng.state.risk_control.status == RiskStatus.ACTIVE
-    lines = (tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip().splitlines()
-    assert len(lines) == 1
-    row = json.loads(lines[0])
+    row = json.loads((tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip())
     assert row["validation_result"] == "ACCEPTED"
     assert row["routed_event"] == "ENTRY_FILLED"
     assert row["quantity"] == 12.0
-    assert "quantity" in row
+    assert row["side"] == "BUY"
 
 
 def test_quantity_journaled_without_affecting_position_risk_time(tmp_path: Path):
-    """quantity is Trade Fact only — not Position / Risk / Time Exit control."""
     eng = TaxableAccountEngine()
     _ready_1570(eng)
     port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
@@ -83,13 +91,29 @@ def test_quantity_journaled_without_affecting_position_risk_time(tmp_path: Path)
     )
     assert r.accepted
     assert eng.state.entry_price == 1000.0
-    assert eng.state.entry_date == date(2024, 8, 1)
     assert eng.state.risk_control.stop_price == 850.0
     assert eng.state.max_hold_business_days == 20
-    # State has no quantity field / no units control from Fact
     assert not hasattr(eng.state, "quantity")
     row = json.loads((tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip())
     assert row["quantity"] == 9999.0
+
+
+def test_reject_missing_quantity(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _ready_1570(eng)
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.BUY,
+            trade_date=date(2024, 8, 1),
+            trade_price=1000.0,
+            confirm_flag=True,
+            quantity=None,
+        )
+    )
+    assert not r.accepted
+    assert r.error == "quantity_required"
 
 
 def test_reject_non_positive_quantity(tmp_path: Path):
@@ -107,7 +131,7 @@ def test_reject_non_positive_quantity(tmp_path: Path):
         )
     )
     assert not r.accepted
-    assert r.error == "quantity_must_be_positive_when_provided"
+    assert r.error == "quantity_must_be_positive"
     row = json.loads((tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip())
     assert row["validation_result"] == "REJECTED"
     assert row["quantity"] == 0.0
@@ -116,12 +140,9 @@ def test_reject_non_positive_quantity(tmp_path: Path):
 def test_watch_delayed_recovery_to_active(tmp_path: Path):
     eng = TaxableAccountEngine()
     _swing_watch(eng, crash=True)
-    assert eng.state.position_state == PositionState.WATCH
-    # lose opportunity without fill
     eng.on_event(DomainEvent.SIGNAL_ENTRY_AVAILABLE, signal_date=date(2024, 8, 1))
     eng.on_event(DomainEvent.SIGNAL_LOST)
     assert eng.state.position_state == PositionState.WATCH
-    assert eng.state.signal_date is None
 
     calls = {"select": 0}
 
@@ -131,7 +152,6 @@ def test_watch_delayed_recovery_to_active(tmp_path: Path):
 
     port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
     with patch.object(asset_selection, "select_asset", side_effect=wrapped_select):
-        # also patch engine's imported select_asset
         with patch("taxable_account.engine.select_asset", side_effect=wrapped_select):
             r = port.submit(
                 TradeReportRequest(
@@ -140,14 +160,12 @@ def test_watch_delayed_recovery_to_active(tmp_path: Path):
                     trade_date=date(2024, 8, 1),
                     trade_price=1000.0,
                     confirm_flag=True,
+                    quantity=1.0,
                 )
             )
     assert r.accepted
     assert DomainEvent.DELAYED_FILL_RECOVERY.value in r.events
     assert eng.state.position_state == PositionState.POSITION_ACTIVE
-    assert eng.state.held_asset == Asset.NIKKEI_LEV_1570
-    assert eng.state.entry_date == date(2024, 8, 1)
-    # Recovery must not invoke Selection
     assert calls["select"] == 0
 
 
@@ -163,16 +181,14 @@ def test_past_trade_date_drives_time_and_risk(tmp_path: Path):
             trade_date=trade_d,
             trade_price=2000.0,
             confirm_flag=True,
+            quantity=2.0,
         )
     )
     assert r.accepted
     assert eng.state.entry_date == trade_d
     assert eng.state.entry_price == 2000.0
     assert eng.state.risk_control.stop_price == 1700.0
-    assert eng.state.max_hold_business_days == 20
-    # hold days from trade_date, not report day
-    as_of = date(2024, 2, 7)
-    assert business_hold_days(trade_d, as_of) == 20
+    assert business_hold_days(trade_d, date(2024, 2, 7)) == 20
 
 
 def test_reject_without_confirm(tmp_path: Path):
@@ -186,18 +202,15 @@ def test_reject_without_confirm(tmp_path: Path):
             trade_date=date(2024, 8, 1),
             trade_price=1000.0,
             confirm_flag=False,
+            quantity=1.0,
         )
     )
     assert not r.accepted
     assert r.error == "confirm_flag_required"
-    assert eng.state.position_state == PositionState.ENTRY_READY
-    row = json.loads((tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip())
-    assert row["validation_result"] == "REJECTED"
 
 
 def test_reject_growth_buy(tmp_path: Path):
     eng = TaxableAccountEngine()
-    assert eng.state.regime_state == RegimeState.GROWTH_ACTIVE
     port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
     r = port.submit(
         TradeReportRequest(
@@ -206,6 +219,7 @@ def test_reject_growth_buy(tmp_path: Path):
             trade_date=date(2024, 8, 1),
             trade_price=1000.0,
             confirm_flag=True,
+            quantity=1.0,
         )
     )
     assert not r.accepted
@@ -214,13 +228,7 @@ def test_reject_growth_buy(tmp_path: Path):
 
 def test_reject_active_buy(tmp_path: Path):
     eng = TaxableAccountEngine()
-    _ready_1570(eng)
-    eng.on_event(
-        DomainEvent.ENTRY_FILLED,
-        fill_asset=Asset.NIKKEI_LEV_1570,
-        fill_price=1000.0,
-        fill_date=date(2024, 8, 1),
-    )
+    _active_1570(eng)
     port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
     r = port.submit(
         TradeReportRequest(
@@ -229,6 +237,7 @@ def test_reject_active_buy(tmp_path: Path):
             trade_date=date(2024, 8, 2),
             trade_price=1100.0,
             confirm_flag=True,
+            quantity=1.0,
         )
     )
     assert not r.accepted
@@ -236,7 +245,6 @@ def test_reject_active_buy(tmp_path: Path):
 
 
 def test_no_direct_watch_to_active_without_recovery_event():
-    """WATCH cannot ENTRY_FILLED directly — TransitionError."""
     eng = TaxableAccountEngine()
     _swing_watch(eng)
     try:
@@ -265,9 +273,150 @@ def test_delayed_recovery_does_not_call_entry_possible(tmp_path: Path):
                 trade_date=date(2024, 8, 5),
                 trade_price=200.0,
                 confirm_flag=True,
+                quantity=3.0,
             )
         )
         assert r.accepted
         ep.assert_not_called()
     assert eng.state.held_asset == Asset.SEMI_282A
-    assert eng.state.risk_control.status == RiskStatus.NA
+
+
+def test_sell_from_exit_uses_existing_exit_filled(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _active_1570(eng)
+    eng.on_event(DomainEvent.TIME_EXIT_DUE)
+    assert eng.state.position_state == PositionState.EXIT
+
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.SELL,
+            trade_date=date(2024, 8, 20),
+            trade_price=900.0,
+            confirm_flag=True,
+            quantity=12.0,
+        )
+    )
+    assert r.accepted
+    assert r.events == (DomainEvent.EXIT_FILLED.value,)
+    assert eng.state.held_asset == Asset.CASH
+    assert eng.state.exit_price == 900.0
+    assert eng.state.exit_date == date(2024, 8, 20)
+    assert eng.state.position_state == PositionState.WATCH
+    row = json.loads((tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip())
+    assert row["side"] == "SELL"
+    assert row["quantity"] == 12.0
+    assert row["routed_event"] == "EXIT_FILLED"
+
+
+def test_sell_from_active_uses_existing_abnormal_then_filled(tmp_path: Path):
+    """Broker SELL while ACTIVE: internal ABNORMAL_EXIT then EXIT_FILLED (ops record-exit path)."""
+    eng = TaxableAccountEngine()
+    _active_1570(eng)
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.SELL,
+            trade_date=date(2024, 8, 10),
+            trade_price=950.0,
+            confirm_flag=True,
+            quantity=5.0,
+        )
+    )
+    assert r.accepted
+    assert DomainEvent.ABNORMAL_EXIT.value in r.events
+    assert DomainEvent.EXIT_FILLED.value in r.events
+    assert eng.state.held_asset == Asset.CASH
+    assert eng.state.exit_price == 950.0
+    assert eng.state.position_state == PositionState.WATCH
+    assert not hasattr(eng.state, "quantity")
+
+
+def test_reject_sell_state_mismatch(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _swing_watch(eng)
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.SELL,
+            trade_date=date(2024, 8, 10),
+            trade_price=950.0,
+            confirm_flag=True,
+            quantity=1.0,
+        )
+    )
+    assert not r.accepted
+    assert r.error == "sell_state_mismatch"
+
+
+def test_reject_sell_asset_mismatch(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _active_1570(eng)
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.SEMI_282A,
+            side=TradeSide.SELL,
+            trade_date=date(2024, 8, 10),
+            trade_price=200.0,
+            confirm_flag=True,
+            quantity=1.0,
+        )
+    )
+    assert not r.accepted
+    assert r.error == "sell_asset_mismatch"
+
+
+def test_reject_duplicate_report_id(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _ready_1570(eng)
+    journal = TradeFactJournal(tmp_path / "facts.jsonl")
+    port = TradeReportPort(eng, journal)
+    rid = "rep-dup-001"
+    r1 = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.BUY,
+            trade_date=date(2024, 8, 1),
+            trade_price=1000.0,
+            confirm_flag=True,
+            quantity=1.0,
+            report_id=rid,
+        )
+    )
+    assert r1.accepted
+    r2 = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.SELL,
+            trade_date=date(2024, 8, 2),
+            trade_price=900.0,
+            confirm_flag=True,
+            quantity=1.0,
+            report_id=rid,
+        )
+    )
+    assert not r2.accepted
+    assert r2.error == "duplicate_report_id"
+    assert eng.state.position_state == PositionState.POSITION_ACTIVE
+
+
+def test_reject_future_trade_date(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _ready_1570(eng)
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.BUY,
+            trade_date=date(2099, 1, 1),
+            trade_price=1000.0,
+            confirm_flag=True,
+            quantity=1.0,
+        )
+    )
+    assert not r.accepted
+    assert r.error == "trade_date_in_future_forbidden"

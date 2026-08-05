@@ -72,22 +72,17 @@ Position State
 `quantity` 保存は **Ledger 化ではない**。  
 平均取得単価・部分約定・残数量・損益・税務は別 CR。
 
-### First-wave Human fields（BUY）
+### Human fields（BUY / SELL 共通）
 
-**Required from Human（routing）:**
+**Required from Human（routing + Fact）:**
 
 - `asset`
-- `side`（schema上 BUY/SELL。v1.0 実装は BUY routing 必須）
+- `side`（`BUY` / `SELL`）
 - `trade_date`
 - `trade_price`
-- `confirm_flag`
-
-**Human Fact field（Journal 保存対象）:**
-
-- `quantity` — 約定数量。取引事実として append-only Journal に保持する一次データ  
-  - 未報告時は `null` 可（routing 拒否理由にはしない）  
-  - 値が付与される場合は正の数  
+- `quantity` — 約定数量。取引事実として append-only Journal に保持する一次データ（正の数必須）  
   - **禁止:** Position 制御 / Risk 変更 / Time Exit 変更 / Entry・Exit 判定への利用
+- `confirm_flag`
 
 **Attached by Runtime（not Human-authored internal knowledge）:**
 
@@ -156,13 +151,34 @@ technical READY restoration（Selection/Sensor 再評価なし）
 
 Time Exit / Risk Stop 起算は**実約定** `entry_date` / `entry_price`（既存算式のまま）。
 
+### SELL（既存 Exit 経路）
+
+```text
+Trade Fact(SELL)
+  → Validation
+  → Fact Journal
+  → existing Exit path
+  → EXIT_FILLED
+  → Position State
+```
+
+| Case | Guard | Internal route（Human非公開） |
+|---|---|---|
+| A | `position_state == EXIT` かつ `held_asset == asset` | `EXIT_FILLED` only |
+| B | `position_state == POSITION_ACTIVE` かつ `held_asset == asset` | existing `ABNORMAL_EXIT` → `EXIT_FILLED`（ops `--record-exit` と同経路） |
+
+SELL は取引事実報告であり Exit 条件変更ではない。  
+Exit 条件式・Risk・Time Exit 計算は変更しない。
+
 ### Forbidden
 
 - `WATCH → POSITION_ACTIVE` direct transition
+- `POSITION_ACTIVE → Flat` direct（EXIT 経由必須）
 - Growth 中の通常 Delayed Recovery
 - Selection / Detection / Sensor 再評価を Recovery で実行
 - 新 `PositionState` 追加
 - Live 運用での paper `auto_fill=True` 前提（Live は fill 確認入力前提）
+- Human が内部 Event 名を指定すること
 
 ---
 
@@ -174,7 +190,6 @@ Time Exit / Risk Stop 起算は**実約定** `entry_date` / `entry_price`（既�
 - Broker Adapter
 - Discord Interaction / Dashboard
 - Protocol 自動改善
-- SELL 本番 routing（schema 予約可；v1.0 必須実装ではない）
 - Growth 例外SOPの自動化
 
 ---

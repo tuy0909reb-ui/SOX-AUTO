@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "taxable_account_trade_fact.schema.json",
   "title": "TaxableAccountTradeFact",
-  "description": "Append-only Trade Fact Journal record (Human Trade Report Port / Fact Journal v1.0). Quantity is primary trade fact for future analysis; never Position/Risk/Time control input.",
+  "description": "Append-only Trade Fact Journal record (Human Trade Report Port / Fact Journal — BUY/SELL). Quantity is primary trade fact for future analysis; never Position/Risk/Time control input.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -27,7 +27,7 @@
     "trade_date": { "type": "string", "format": "date" },
     "trade_price": { "type": "number" },
     "quantity": {
-      "description": "Traded units as occurred. Null only when not reported. Not used for Position/Risk/Time.",
+      "description": "Traded units as occurred. Required positive for ACCEPTED; may be null on early REJECT. Not used for Position/Risk/Time.",
       "type": ["number", "null"]
     },
     "reported_at": { "type": "string", "format": "date-time" },

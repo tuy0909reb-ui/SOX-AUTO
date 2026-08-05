@@ -41,7 +41,7 @@ class TradeFact:
     source: str
     confirm_flag: bool
     validation_result: str  # ACCEPTED | REJECTED
-    quantity: Optional[float] = None  # traded units Fact; analysis SoT, not Position control
+    quantity: Optional[float] = None  # required for ACCEPTED; Fact only, not Position control
     routed_event: Optional[str] = None
     reject_reason: Optional[str] = None
     signal_date: Optional[date] = None

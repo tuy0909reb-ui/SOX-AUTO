@@ -3,12 +3,13 @@ CLI: daily operational view / Trade Report / manual fill recording.
 
 Examples:
   python -m taxable_account.ops --as-of 2024-01-05 --state-file data/ops/taxable_state.json --no-auto-fill
-  python -m taxable_account.ops --state-file ... --report-buy 1570 1000 --trade-date 2024-03-05 --confirm
+  python -m taxable_account.ops --state-file ... --report-buy 1570 1000 --trade-date 2024-03-05 --quantity 10 --confirm
+  python -m taxable_account.ops --state-file ... --report-sell 1570 900 --trade-date 2024-03-20 --quantity 10 --confirm
   python -m taxable_account.ops --state-file ... --record-entry NIKKEI_LEV_1570 1000 --entry-date 2024-03-05
   python -m taxable_account.ops --state-file ... --record-exit 840 --exit-date 2024-03-07
 
-Live premise (HTR Port v1.0): auto_fill=False by default.
-Trade Report is the external Fact boundary; --record-entry remains ENTRY_READY-only.
+Live premise (HTR Port): auto_fill=False by default.
+Trade Report is the Human/Broker Fact boundary (BUY/SELL); --record-entry remains ENTRY_READY-only.
 Does not place broker orders. Discord send only with --discord-live + webhook.
 """
 
@@ -103,18 +104,24 @@ def main(argv: list[str] | None = None) -> int:
         help="Human Trade Report BUY (Fact Port; routes FILLED or internal delayed recovery)",
     )
     p.add_argument(
+        "--report-sell",
+        nargs=2,
+        metavar=("ASSET", "PRICE"),
+        help="Human Trade Report SELL (Fact Port; routes existing Exit path → EXIT_FILLED)",
+    )
+    p.add_argument(
         "--trade-date",
-        help="YYYY-MM-DD actual trade date for --report-buy (required; no today substitution)",
+        help="YYYY-MM-DD actual trade date for --report-buy/--report-sell (required; no today substitution)",
     )
     p.add_argument(
         "--confirm",
         action="store_true",
-        help="required confirm_flag for --report-buy (broker held fact)",
+        help="required confirm_flag for Trade Report (broker held fact)",
     )
     p.add_argument(
         "--quantity",
         type=float,
-        help="traded quantity Fact for --report-buy (Journal only; not Position/Risk/Time control)",
+        help="required traded quantity Fact for Trade Report (Journal only; not Position/Risk/Time control)",
     )
     p.add_argument(
         "--fact-journal",
@@ -192,27 +199,44 @@ def main(argv: list[str] | None = None) -> int:
 
         eng = TaxableAccountEngine(store)
 
+        report_cmd = None
+        report_side = None
         if args.report_buy:
-            from taxable_account.trade.facts import TradeReportRequest, TradeSide
+            report_cmd = args.report_buy
+            from taxable_account.trade.facts import TradeSide as _TS
+
+            report_side = _TS.BUY
+        elif args.report_sell:
+            report_cmd = args.report_sell
+            from taxable_account.trade.facts import TradeSide as _TS
+
+            report_side = _TS.SELL
+
+        if report_cmd is not None:
+            from taxable_account.trade.facts import TradeReportRequest
             from taxable_account.trade.journal import TradeFactJournal
             from taxable_account.trade.port import TradeReportPort, default_journal_path
 
+            label = "--report-buy" if report_side.value == "BUY" else "--report-sell"
             if not args.trade_date:
-                print("ERROR: --trade-date is required for --report-buy", file=sys.stderr)
+                print(f"ERROR: --trade-date is required for {label}", file=sys.stderr)
                 return 2
             if not args.confirm:
-                print("ERROR: --confirm is required for --report-buy", file=sys.stderr)
+                print(f"ERROR: --confirm is required for {label}", file=sys.stderr)
+                return 2
+            if args.quantity is None:
+                print(f"ERROR: --quantity is required for {label}", file=sys.stderr)
                 return 2
             jpath = Path(args.fact_journal) if args.fact_journal else default_journal_path(args.state_file)
             port = TradeReportPort(eng, TradeFactJournal(jpath))
             result = port.submit(
                 TradeReportRequest(
-                    asset=_parse_asset(args.report_buy[0]),
-                    side=TradeSide.BUY,
+                    asset=_parse_asset(report_cmd[0]),
+                    side=report_side,
                     trade_date=date.fromisoformat(args.trade_date),
-                    trade_price=float(args.report_buy[1]),
+                    trade_price=float(report_cmd[1]),
                     confirm_flag=True,
-                    quantity=args.quantity,
+                    quantity=float(args.quantity),
                     source="HUMAN_CLI",
                 )
             )
@@ -254,7 +278,12 @@ def main(argv: list[str] | None = None) -> int:
 
         if args.view_state_only or (
             args.as_of is None
-            and (args.record_entry or args.record_exit is not None or args.report_buy)
+            and (
+                args.record_entry
+                or args.record_exit is not None
+                or args.report_buy
+                or args.report_sell
+            )
         ):
             mark = None
             vm = project_view_model(eng.state, current_price=mark, as_of=date.today())

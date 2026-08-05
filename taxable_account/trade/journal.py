@@ -27,3 +27,19 @@ class TradeFactJournal:
         with self.path.open("a", encoding="utf-8", newline="\n") as fh:
             fh.write(line + "\n")
         return self.path
+
+    def has_report_id(self, report_id: str) -> bool:
+        if not report_id or not self.path.is_file():
+            return False
+        with self.path.open("r", encoding="utf-8") as fh:
+            for raw in fh:
+                line = raw.strip()
+                if not line:
+                    continue
+                try:
+                    row = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if row.get("report_id") == report_id:
+                    return True
+        return False
