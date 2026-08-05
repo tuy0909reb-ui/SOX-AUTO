@@ -46,6 +46,7 @@ The following are **frozen for normal operations**. Changes require a new change
   Ops transport: `--report-buy` / `--report-sell` + `--quantity --confirm --trade-date`（Journal Fact only）  
   Discord Interaction transport: `python -m taxable_account.ops.discord_trade_bot`  
   （slash + confirm → `DiscordTradeInputAdapter` → Port；Projection webhook とは分離）  
+  Discord Adapter Commit: `6d6d0eb0334da25d72672616723ca33b007225d9`  
 
 ### Explicitly not authorized by this freeze
 
