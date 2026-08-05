@@ -40,6 +40,7 @@ The following are **frozen for normal operations**. Changes require a new change
   Status: **FROZEN IMPLEMENTATION**（Design `ASA-TAXABLE-HTR-PORT-FJ-1.0`；BUY/SELL common Port）  
   Implementation Commit: `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`  
   Correction Commit: `1c876d7513b76c6b765d47feed132c38b3ffec19`（quantity Fact）  
+  BUY/SELL Completion Commit: `1a97622d1bdebf328cd7641bef905b914d7faa19`  
   Design Digest: `5b499d9b47ccc9b56adc8a4db21ca75b61c18db2ee529e6bb1574c70ce108e06`  
   Live fill confirmation premise: `auto_fill=False`（paper/test may differ）  
   Ops transport: `--report-buy` / `--report-sell` + `--quantity --confirm --trade-date`（Journal Fact only）  

@@ -15,7 +15,7 @@
 **Implementation Result Record:** `docs/reports/ASA-IMPLEMENT-RESULT-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`  
 **Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`（initial）  
 **Correction Commit:** `1c876d7513b76c6b765d47feed132c38b3ffec19`（quantity）  
-**BUY/SELL Completion Commit:** `PENDING_AFTER_COMMIT`  
+**BUY/SELL Completion Commit:** `1a97622d1bdebf328cd7641bef905b914d7faa19`  
 
 ---
 
@@ -80,6 +80,6 @@ Human Trade Report Port / Fact Journal
 Status: FROZEN IMPLEMENTATION (BUY/SELL common Port)
 Freeze Record: ASA-TAXABLE-HTR-PORT-FJ-1.0
 Digest: 5b499d9b47ccc9b56adc8a4db21ca75b61c18db2ee529e6bb1574c70ce108e06
-BUY/SELL Completion Commit: PENDING_AFTER_COMMIT
+BUY/SELL Completion Commit: 1a97622d1bdebf328cd7641bef905b914d7faa19
 Tests: 42 passed
 ```

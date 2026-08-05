@@ -7,7 +7,7 @@
 **Status:** **FROZEN IMPLEMENTATION**（BUY/SELL common Port complete）  
 **Design Baseline:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
 **Design Digest:** `5b499d9b47ccc9b56adc8a4db21ca75b61c18db2ee529e6bb1574c70ce108e06`  
-**BUY/SELL Completion Commit:** `PENDING_AFTER_COMMIT`  
+**BUY/SELL Completion Commit:** `1a97622d1bdebf328cd7641bef905b914d7faa19`  
 
 ---
 
@@ -67,7 +67,7 @@ ASA-TAXABLE-ACCOUNT-PROTOCOL
 Human Trade Report Port / Fact Journal
 
 IMPLEMENTATION: COMPLETE
-Commit: PENDING_AFTER_COMMIT
+Commit: 1a97622d1bdebf328cd7641bef905b914d7faa19
 Tests: 42 passed
 Baseline: ASA-TAXABLE-HTR-PORT-FJ-1.0
 Status: FROZEN IMPLEMENTATION
