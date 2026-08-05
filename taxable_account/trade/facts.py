@@ -1,4 +1,12 @@
-"""Trade Fact models — external contract for Human / Broker reports."""
+"""Trade Fact models — external contract for Human / Broker reports.
+
+Trade Fact stores what actually happened in the securities world.
+Position State manages Runtime state only.
+
+quantity is primary Fact data for future analysis (append-only Journal).
+It must never drive Position / Risk / Time Exit / Entry-Exit decisions.
+Saving quantity is not Ledgerization.
+"""
 
 from __future__ import annotations
 
@@ -33,9 +41,9 @@ class TradeFact:
     source: str
     confirm_flag: bool
     validation_result: str  # ACCEPTED | REJECTED
+    quantity: Optional[float] = None  # traded units Fact; analysis SoT, not Position control
     routed_event: Optional[str] = None
     reject_reason: Optional[str] = None
-    quantity: Optional[float] = None  # optional reservation; unused in v1.0
     signal_date: Optional[date] = None
     regime_at_report: Optional[str] = None
     position_before: Optional[str] = None
@@ -48,13 +56,13 @@ class TradeFact:
             "side": self.side.value,
             "trade_date": self.trade_date.isoformat(),
             "trade_price": self.trade_price,
+            "quantity": self.quantity,
             "reported_at": self.reported_at.isoformat(),
             "source": self.source,
             "confirm_flag": self.confirm_flag,
             "validation_result": self.validation_result,
             "routed_event": self.routed_event,
             "reject_reason": self.reject_reason,
-            "quantity": self.quantity,
             "signal_date": None if self.signal_date is None else self.signal_date.isoformat(),
             "regime_at_report": self.regime_at_report,
             "position_before": self.position_before,
@@ -71,7 +79,7 @@ class TradeReportRequest:
     trade_date: date
     trade_price: float
     confirm_flag: bool
-    quantity: Optional[float] = None
+    quantity: Optional[float] = None  # Fact field; not a Position command
     source: str = "HUMAN_CLI"
     report_id: Optional[str] = None
     reported_at: datetime = field(default_factory=_utc_now)

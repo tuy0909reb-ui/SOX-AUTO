@@ -3,6 +3,9 @@ Trade Fact Input Port — validate + route to Domain Events.
 
 Does not re-run Selection / Detection / Sensors.
 DELAYED_FILL_RECOVERY is internal only (never a Human field).
+
+quantity is validated/stored as Trade Fact only — never passed into
+Position / Risk / Time Exit / Selection paths.
 """
 
 from __future__ import annotations
@@ -123,6 +126,8 @@ class TradeReportPort:
             return "confirm_flag_required"
         if request.trade_price is None or float(request.trade_price) <= 0:
             return "trade_price_must_be_positive"
+        if request.quantity is not None and float(request.quantity) <= 0:
+            return "quantity_must_be_positive_when_provided"
         if request.trade_date is None:
             return "trade_date_required"
         # today substitution forbidden — past and today allowed; future rejected

@@ -41,9 +41,10 @@ Market Data → Detection → Decision/Selection → State
 python -m taxable_account.ops --as-of 2024-01-05 --state-file data/ops/taxable_state.json
 python -m taxable_account.ops --state-file data/ops/taxable_state.json --view-state-only
 
-# Human Trade Report (Fact Port — broker fills / delayed recovery)
+# Human Trade Report (Runtime sync + Trade Fact accumulation)
 python -m taxable_account.ops --state-file data/ops/taxable_state.json \
-  --report-buy 1570 1000 --trade-date 2024-03-05 --confirm --view-state-only
+  --report-buy 1570 1000 --trade-date 2024-03-05 --quantity 10 --confirm --view-state-only
+# quantity is Journal Fact only (not Position/Risk/Time control; not Ledger)
 
 # ENTRY_READY-only protocol fill (not delayed recovery)
 python -m taxable_account.ops --state-file data/ops/taxable_state.json \

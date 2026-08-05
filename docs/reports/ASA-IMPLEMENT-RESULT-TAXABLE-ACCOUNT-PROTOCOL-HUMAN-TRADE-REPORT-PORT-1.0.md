@@ -5,10 +5,11 @@
 **Date:** 2026-08-05  
 **Timestamp:** 2026-08-05T22:29:35+09:00  
 **Title:** Runtime Implementation Freeze against Design Baseline  
-**Status:** **FROZEN IMPLEMENTATION**  
+**Status:** **FROZEN IMPLEMENTATION**（v1.0 quantity Fact CORRECTION）  
 **Design Baseline:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
-**Design Digest:** `c733dd740bdd4b0c1f54809e75e163b68b0ad71803f1b9eff92005ca4b921579`  
-**Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`  
+**Design Digest:** `9cf1d708280df88a0158065712795d47c99bb4fe9753b5dfeae61382754efafd`  
+**Prior Design Digest:** `c733dd740bdd4b0c1f54809e75e163b68b0ad71803f1b9eff92005ca4b921579`  
+**Implementation Commit:** `1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638`（initial；correction pending commit）  
 
 ---
 
@@ -19,6 +20,12 @@ Fix the Runtime implementation that connects Frozen Design
 
 This record freezes **implementation result**, not Protocol rules.
 
+```text
+Human Trade Report = Runtime 同期 + 取引 Fact 蓄積
+```
+
+Correction: `quantity` is first-class append-only Trade Fact（not Ledger; not Position control）.
+
 ---
 
 ## Confirmation (gates)
@@ -26,20 +33,22 @@ This record freezes **implementation result**, not Protocol rules.
 | Gate | Result |
 |---|---|
 | Changes within Frozen Design scope only | **PASS** |
-| Tests PASS | **PASS** (33 passed) |
+| Tests PASS | **PASS** (35 passed after quantity correction) |
 | Protocol Rule Change | **NO** |
 | PositionState Addition | **NO** |
 | Detection / Selection / Risk / Time modification | **NO** |
+| quantity drives Position/Risk/Time | **NO**（禁止をテストで保証） |
 
 ---
 
 ## Delivered scope
 
 1. **Trade Fact Input Port** — `taxable_account/trade/port.py`  
-2. **Fact Journal** — append-only JSONL (`trade/journal.py`, `trade/facts.py`)  
+2. **Fact Journal** — append-only JSONL（includes **quantity**）  
 3. **Routing** — Case A `ENTRY_FILLED`; Case B internal `DELAYED_FILL_RECOVERY` → existing FILLED path  
-4. **CLI** — `--report-buy` / `--trade-date` / `--confirm`; Live `auto_fill=False` default  
-5. **Tests** — `tests/test_taxable_account_trade_report_port.py` + regression suite  
+4. **CLI** — `--report-buy` / `--trade-date` / `--quantity` / `--confirm`; Live `auto_fill=False` default  
+5. **Schema** — `docs/schemas/taxable_account_trade_fact.schema.json`  
+6. **Tests** — `tests/test_taxable_account_trade_report_port.py` + regression suite  
 
 ---
 
@@ -65,7 +74,7 @@ pytest tests/test_taxable_account_trade_report_port.py \
        tests/test_taxable_account_foundation.py -q
 ```
 
-**Result:** `33 passed`
+**Result:** `35 passed`
 
 Covered:
 
@@ -74,6 +83,8 @@ Covered:
 - Past `trade_date` drives Time Exit / Risk bases  
 - Rejects: no confirm / Growth BUY / POSITION_ACTIVE BUY  
 - No WATCH→ACTIVE direct; Recovery does not call Selection/Sensor  
+- `quantity` persisted in Journal; does not alter entry_price / stop / hold days  
+- non-positive `quantity` rejected when provided  
 
 ---
 
@@ -93,8 +104,10 @@ Covered:
 
 ## Out of scope (unchanged / not implemented)
 
-Trade Ledger / quantity accounting / partial fills / realized PnL /  
+Trade Ledger / 平均取得単価 / 部分約定 / 残数量管理 / 実現損益 / 税務 /  
 Broker Adapter / Discord UI / Dashboard / NOT_BUY full / Protocol auto-improve  
+
+（`quantity` Fact 保存は OUT ではない）
 
 ---
 
@@ -112,9 +125,10 @@ Broker Adapter / Discord UI / Dashboard / NOT_BUY full / Protocol auto-improve
 ASA-TAXABLE-ACCOUNT-PROTOCOL
 Human Trade Report Port / Fact Journal v1.0
 
-IMPLEMENTATION FREEZE: COMPLETE
-Commit: 1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638
-Tests: 33 passed
+IMPLEMENTATION FREEZE: COMPLETE (quantity Fact CORRECTION)
+Commit (initial): 1d6ee0ea7cfbbcfbdc4f4b3bfa4f6f1940e69638
+Digest: 9cf1d708280df88a0158065712795d47c99bb4fe9753b5dfeae61382754efafd
+Tests: 35 passed
 Baseline: ASA-TAXABLE-HTR-PORT-FJ-1.0
 Status: FROZEN IMPLEMENTATION
 ```

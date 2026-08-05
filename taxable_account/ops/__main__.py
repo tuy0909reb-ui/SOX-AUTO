@@ -112,6 +112,11 @@ def main(argv: list[str] | None = None) -> int:
         help="required confirm_flag for --report-buy (broker held fact)",
     )
     p.add_argument(
+        "--quantity",
+        type=float,
+        help="traded quantity Fact for --report-buy (Journal only; not Position/Risk/Time control)",
+    )
+    p.add_argument(
         "--fact-journal",
         help="path for Trade Fact Journal JSONL (default: beside state-file or data/ops/...)",
     )
@@ -207,6 +212,7 @@ def main(argv: list[str] | None = None) -> int:
                     trade_date=date.fromisoformat(args.trade_date),
                     trade_price=float(args.report_buy[1]),
                     confirm_flag=True,
+                    quantity=args.quantity,
                     source="HUMAN_CLI",
                 )
             )

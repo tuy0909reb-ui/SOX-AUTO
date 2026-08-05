@@ -48,6 +48,7 @@ def test_entry_ready_buy_report_fills(tmp_path: Path):
             trade_date=date(2024, 8, 1),
             trade_price=1000.0,
             confirm_flag=True,
+            quantity=12.0,
         )
     )
     assert r.accepted
@@ -61,6 +62,55 @@ def test_entry_ready_buy_report_fills(tmp_path: Path):
     row = json.loads(lines[0])
     assert row["validation_result"] == "ACCEPTED"
     assert row["routed_event"] == "ENTRY_FILLED"
+    assert row["quantity"] == 12.0
+    assert "quantity" in row
+
+
+def test_quantity_journaled_without_affecting_position_risk_time(tmp_path: Path):
+    """quantity is Trade Fact only — not Position / Risk / Time Exit control."""
+    eng = TaxableAccountEngine()
+    _ready_1570(eng)
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.BUY,
+            trade_date=date(2024, 8, 1),
+            trade_price=1000.0,
+            confirm_flag=True,
+            quantity=9999.0,
+        )
+    )
+    assert r.accepted
+    assert eng.state.entry_price == 1000.0
+    assert eng.state.entry_date == date(2024, 8, 1)
+    assert eng.state.risk_control.stop_price == 850.0
+    assert eng.state.max_hold_business_days == 20
+    # State has no quantity field / no units control from Fact
+    assert not hasattr(eng.state, "quantity")
+    row = json.loads((tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip())
+    assert row["quantity"] == 9999.0
+
+
+def test_reject_non_positive_quantity(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _ready_1570(eng)
+    port = TradeReportPort(eng, TradeFactJournal(tmp_path / "facts.jsonl"))
+    r = port.submit(
+        TradeReportRequest(
+            asset=Asset.NIKKEI_LEV_1570,
+            side=TradeSide.BUY,
+            trade_date=date(2024, 8, 1),
+            trade_price=1000.0,
+            confirm_flag=True,
+            quantity=0.0,
+        )
+    )
+    assert not r.accepted
+    assert r.error == "quantity_must_be_positive_when_provided"
+    row = json.loads((tmp_path / "facts.jsonl").read_text(encoding="utf-8").strip())
+    assert row["validation_result"] == "REJECTED"
+    assert row["quantity"] == 0.0
 
 
 def test_watch_delayed_recovery_to_active(tmp_path: Path):

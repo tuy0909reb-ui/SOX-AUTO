@@ -1,4 +1,8 @@
-"""Append-only Trade Fact Journal (Operational Data Layer)."""
+"""Append-only Trade Fact Journal (Operational Data Layer).
+
+Stores Trade Facts (including quantity) for evidence / future analysis.
+Not Position SoT. Not a Ledger. Not Decision Engine input.
+"""
 
 from __future__ import annotations
 
@@ -12,7 +16,7 @@ PathLike = Union[str, Path]
 
 
 class TradeFactJournal:
-    """JSONL append-only writer. Not a Position SoT."""
+    """JSONL append-only writer. Not a Position SoT / Ledger."""
 
     def __init__(self, path: PathLike) -> None:
         self.path = Path(path)

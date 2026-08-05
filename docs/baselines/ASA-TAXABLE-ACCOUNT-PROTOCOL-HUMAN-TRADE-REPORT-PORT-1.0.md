@@ -2,7 +2,7 @@
 
 # Human Trade Report Port / Fact Journal — Freeze Design Record
 
-**Status:** **FROZEN**  
+**Status:** **FROZEN**（v1.0 CORRECTION applied）  
 **Version:** `1.0`  
 **Date:** 2026-08-05  
 **Freeze ID:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
@@ -14,6 +14,7 @@
 
 - Final Design Review: APPROVE（Architecture / Runtime Owner）
 - Human Decision: APPROVE FREEZE
+- Human Correction: quantity を Trade Fact 保存項目へ復元（Protocol 条件変更ではない）
 - Related: `ASA-TAXABLE-ACCOUNT-PROTOCOL-RUNTIME-FREEZE-1.0`（Entry/Exit/Risk/Selection 条件は非改訂）
 - Related: `ASA-TAXABLE-ACCOUNT-PROTOCOL-DETAILED-SPEC-1.0`（Position SoT / ENTRY_FILLED 意味を維持）
 
@@ -23,6 +24,13 @@
 
 本記録は、証券世界の取引事実を Runtime へ接続する**正式入力境界**と、
 その証拠保存（Fact Journal）を固定する。
+
+```text
+Human Trade Report = Runtime 同期 + 取引 Fact 蓄積
+```
+
+「第一CR範囲を小さくする」ことを理由に、将来価値のある Fact 情報を削除してはならない。  
+quantity の Fact 保存は本 Port の本来目的への復元であり、Protocol 条件変更ではない。
 
 変更には明示的な Human 認可と再 Design Review が必要。  
 ad-hoc 実装拡張で本境界を歪めてはならない。
@@ -49,20 +57,37 @@ Position State
 
 | Rule | Definition |
 |---|---|
-| External contract | Trade Fact のみ（asset / side / trade_date / trade_price / confirm 等） |
+| External contract | Trade Fact のみ（asset / side / trade_date / trade_price / quantity / confirm 等） |
 | Forbidden input | Internal Event 名（`DELAYED_FILL_RECOVERY` 等）を人間に選ばせない |
 | Fact ≠ command | Trade Fact は事実報告であり State 変更命令ではない |
 | No direct State write | Input → Domain Event → State のみ。POSITION_ACTIVE 直書き禁止 |
 
+### Responsibility separation
+
+| Layer | Role |
+|---|---|
+| **Trade Fact** | 実際に発生した取引事実を保存する（証拠 / 将来分析の一次データ） |
+| **Position State** | 現在の Runtime 状態管理のみ行う |
+
+`quantity` 保存は **Ledger 化ではない**。  
+平均取得単価・部分約定・残数量・損益・税務は別 CR。
+
 ### First-wave Human fields（BUY）
 
-**Required from Human:**
+**Required from Human（routing）:**
 
 - `asset`
 - `side`（schema上 BUY/SELL。v1.0 実装は BUY routing 必須）
 - `trade_date`
 - `trade_price`
 - `confirm_flag`
+
+**Human Fact field（Journal 保存対象）:**
+
+- `quantity` — 約定数量。取引事実として append-only Journal に保持する一次データ  
+  - 未報告時は `null` 可（routing 拒否理由にはしない）  
+  - 値が付与される場合は正の数  
+  - **禁止:** Position 制御 / Risk 変更 / Time Exit 変更 / Entry・Exit 判定への利用
 
 **Attached by Runtime（not Human-authored internal knowledge）:**
 
@@ -75,8 +100,6 @@ Position State
 - `routed_event`
 - `reject_reason`（拒否時）
 
-`quantity` は optional 予約可。v1.0 で必須化・会計利用しない。
-
 ---
 
 ## 3. Fact Journal
@@ -86,11 +109,15 @@ Position State
 | Role | Operational Evidence / Analysis Fact |
 | Mutability | append-only / immutable records |
 | Coverage | success **and** reject |
+| Minimum saved fields | `report_id`, `asset`, `side`, `trade_date`, `trade_price`, **`quantity`**, `reported_at`, `source`, `confirm_flag`, `validation_result`, `routed_event`, `reject_reason` + Runtime 付与項目 |
 | Not | Position State の代替 SoT |
 | Not | Protocol 自動変更の入力 |
+| Not | Ledger / 会計エンジン |
 
 Offline Analysis → Human Review → 別 CR / 再 Freeze のみ。  
 Fact Journal から Decision Engine へ直接フィードバックしない。
+
+Schema: `docs/schemas/taxable_account_trade_fact.schema.json`
 
 ---
 
@@ -142,7 +169,8 @@ Time Exit / Risk Stop 起算は**実約定** `entry_date` / `entry_price`（既�
 ## 5. Explicitly out of this freeze（別CR）
 
 - 本格 Trade Ledger
-- quantity 会計 / 平均取得単価 / 部分約定 / 実現損益
+- 平均取得単価 / 部分約定 / 残数量管理 / 実現損益 / 税務処理  
+  （※ `quantity` の Fact 保存自体は **IN**。会計・Ledger 化のみ OUT）
 - Broker Adapter
 - Discord Interaction / Dashboard
 - Protocol 自動改善

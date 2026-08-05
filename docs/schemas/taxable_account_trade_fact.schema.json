@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "taxable_account_trade_fact.schema.json",
+  "title": "TaxableAccountTradeFact",
+  "description": "Append-only Trade Fact Journal record (Human Trade Report Port / Fact Journal v1.0). Quantity is primary trade fact for future analysis; never Position/Risk/Time control input.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_id",
+    "asset",
+    "side",
+    "trade_date",
+    "trade_price",
+    "reported_at",
+    "source",
+    "confirm_flag",
+    "validation_result",
+    "quantity"
+  ],
+  "properties": {
+    "report_id": { "type": "string", "minLength": 1 },
+    "asset": {
+      "type": "string",
+      "enum": ["NIKKEI_LEV_1570", "SEMI_282A", "NOMURA_SEMI", "CASH"]
+    },
+    "side": { "type": "string", "enum": ["BUY", "SELL"] },
+    "trade_date": { "type": "string", "format": "date" },
+    "trade_price": { "type": "number" },
+    "quantity": {
+      "description": "Traded units as occurred. Null only when not reported. Not used for Position/Risk/Time.",
+      "type": ["number", "null"]
+    },
+    "reported_at": { "type": "string", "format": "date-time" },
+    "source": { "type": "string" },
+    "confirm_flag": { "type": "boolean" },
+    "validation_result": { "type": "string", "enum": ["ACCEPTED", "REJECTED"] },
+    "routed_event": { "type": ["string", "null"] },
+    "reject_reason": { "type": ["string", "null"] },
+    "signal_date": { "type": ["string", "null"], "format": "date" },
+    "regime_at_report": { "type": ["string", "null"] },
+    "position_before": { "type": ["string", "null"] },
+    "position_after": { "type": ["string", "null"] }
+  }
+}
