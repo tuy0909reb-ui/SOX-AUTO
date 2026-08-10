@@ -1,0 +1,41 @@
+{
+  "status": "SEALED",
+  "sealed_at": "2026-08-10T23:50:00+09:00",
+  "authority": "HUMAN_ARCHITECT",
+  "purpose": "Stop Legacy SOX sensor Discord notifications; taxable_account detection is the live ops sensor path.",
+  "blocks": [
+    "discord_webhook_send_from_sox_protocol",
+    "discord_webhook_send_from_silicon_protocol",
+    "discord_webhook_send_from_pm_sox_protocol",
+    "discord_bot_post_from_discord_morning_bot",
+    "github_actions_scheduled_or_dispatch_discord_path_for_legacy_sox"
+  ],
+  "does_not_block": [
+    "code_retention",
+    "offline_print_compute",
+    "backtest_and_review_runners",
+    "taxable_account_runtime",
+    "shared_DISCORD_WEBHOOK_URL_secret_itself",
+    "ndx_ops_and_portfolio_schedulers"
+  ],
+  "inventory": {
+    "protocols": [
+      "sox_protocol.py",
+      "silicon_protocol.py",
+      "pm_sox_protocol.py",
+      "discord_morning_bot.py",
+      "sox_utils.py"
+    ],
+    "workflows": [
+      ".github/workflows/sox_protocol.yml",
+      ".github/workflows/pm.yml",
+      ".github/workflows/discord_morning.yml"
+    ],
+    "discord_helper": "sox_utils.send_discord → DISCORD_WEBHOOK_URL"
+  },
+  "unseal": [
+    "1. Set status to ACTIVE in this file (or delete this file).",
+    "2. Re-enable Discord path by removing seal gates in protocols / workflows if desired.",
+    "3. Only then restore GitHub Actions schedule if intentional (not recommended while taxable live)."
+  ]
+}

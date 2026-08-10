@@ -1,9 +1,7 @@
 name: PM SOX PROTOCOL
 
+# LEGACY SOX SENSOR — SEALED (no schedule; Discord path gated)
 on:
-  schedule:
-    - cron: "0 3 * * *"   # JST 12:00（速報）
-    - cron: "0 5 * * *"   # JST 14:00（本判定）
   workflow_dispatch:
 
 jobs:
@@ -14,12 +12,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Legacy SOX sensor seal gate
+        id: seal
+        run: python legacy_sox_sensor_seal.py --ci-gate
+
+      - name: Skip when sealed
+        if: steps.seal.outputs.sealed == 'true'
+        run: |
+          echo "Legacy SOX sensor is SEALED — refusing Discord notification path."
+
       - name: Set up Python
+        if: steps.seal.outputs.sealed != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
+        if: steps.seal.outputs.sealed != 'true'
         run: |
           pip install yfinance
           pip install pandas
@@ -27,6 +36,7 @@ jobs:
           pip install requests
 
       - name: Download morning baseline from SOX protocol
+        if: steps.seal.outputs.sealed != 'true'
         uses: actions/download-artifact@v4
         with:
           name: morning-input
@@ -34,6 +44,7 @@ jobs:
         continue-on-error: true
 
       - name: Run PM SOX PROTOCOL
+        if: steps.seal.outputs.sealed != 'true'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python pm_sox_protocol.py

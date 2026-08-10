@@ -1,6 +1,7 @@
 import json
 import os
 import datetime
+from legacy_sox_sensor_seal import send_discord_if_allowed
 from sox_utils import fetch_with_retry, safe_float, send_discord
 
 MORNING_INPUT_FILE = "morning_input.json"
@@ -50,7 +51,7 @@ def pm_12_check():
         judge = "騙しなし（午前判定維持）"
 
     msg = f"【12時速報】\nSOX先物: {pm_move:.2f}%\n→ {judge}"
-    send_discord(msg)
+    send_discord_if_allowed(msg, context="pm_sox_protocol.py:12", send_fn=send_discord)
     print(msg)
 
 
@@ -78,7 +79,7 @@ def pm_14_final():
         f"→ 午前判定を最終確定：{direction}"
     )
 
-    send_discord(msg)
+    send_discord_if_allowed(msg, context="pm_sox_protocol.py:14", send_fn=send_discord)
     print(msg)
 
 

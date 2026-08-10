@@ -5,6 +5,7 @@ import re
 import discord
 from discord import Intents
 
+from legacy_sox_sensor_seal import allow_legacy_sox_discord, note_discord_blocked
 from sox_protocol import execute_sox_protocol
 
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
@@ -90,6 +91,10 @@ async def on_ready():
 
 
 def main():
+    if not allow_legacy_sox_discord():
+        note_discord_blocked("discord_morning_bot.py")
+        print("Exiting without Discord connection (Legacy SOX sensor sealed).")
+        return
     if not DISCORD_TOKEN:
         raise RuntimeError("DISCORD_TOKEN が設定されていません。")
     asyncio.run(client.start(DISCORD_TOKEN))

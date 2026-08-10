@@ -1,6 +1,7 @@
 import os
 import datetime
 import json
+from legacy_sox_sensor_seal import send_discord_if_allowed
 from sox_utils import calc_RSI, fetch_with_retry, get_env_float, safe_float, send_discord
 
 
@@ -298,4 +299,6 @@ JPY: {round(JPY, 2)} ({round(jpy_move, 2)}%)
 if __name__ == "__main__":
     message = execute_sox_protocol()
     print(message)
-    send_discord(message)
+    send_discord_if_allowed(
+        message, context="sox_protocol.py", send_fn=send_discord
+    )

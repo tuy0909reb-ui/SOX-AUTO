@@ -1,8 +1,7 @@
 name: Discord Morning SOX Protocol
 
+# LEGACY SOX SENSOR — SEALED (no schedule; Discord bot path gated)
 on:
-  schedule:
-    - cron: '0 23 * * *'   # JST 08:00 朝プロトコル
   workflow_dispatch:
 
 jobs:
@@ -12,12 +11,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Legacy SOX sensor seal gate
+        id: seal
+        run: python legacy_sox_sensor_seal.py --ci-gate
+
+      - name: Skip when sealed
+        if: steps.seal.outputs.sealed == 'true'
+        run: |
+          echo "Legacy SOX sensor is SEALED — refusing Discord bot path."
+
       - name: Set up Python
+        if: steps.seal.outputs.sealed != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
+        if: steps.seal.outputs.sealed != 'true'
         run: |
           pip install discord.py
           pip install yfinance
@@ -27,6 +37,7 @@ jobs:
           pip install pytz
 
       - name: Run Discord morning protocol
+        if: steps.seal.outputs.sealed != 'true'
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
           INPUT_CHANNEL_ID: ${{ vars.INPUT_CHANNEL_ID }}

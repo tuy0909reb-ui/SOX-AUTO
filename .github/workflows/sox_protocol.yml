@@ -1,28 +1,39 @@
 name: SOX PROTOCOL v2
 
+# LEGACY SOX SENSOR — SEALED
+# - No schedule (auto Discord path stopped)
+# - workflow_dispatch kept for emergency unseal recovery only
+# - Runtime Discord blocked by legacy_sox_sensor_seal.json while SEALED
+# Code retained for archive / possible future unseal.
 on:
-  # 日本時間08時に自動実行（UTC 23時、前日）
-  schedule:
-    - cron: "0 23 * * *"
-    - cron: "0 3 * * *"
-  # 手動実行ボタン（Run workflow）を有効化
   workflow_dispatch:
 
 jobs:
   run-python:
-    if: github.event_name != 'schedule' || github.event.schedule == '0 23 * * *'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Legacy SOX sensor seal gate
+        id: seal
+        run: python legacy_sox_sensor_seal.py --ci-gate
+
+      - name: Skip when sealed
+        if: steps.seal.outputs.sealed == 'true'
+        run: |
+          echo "Legacy SOX sensor is SEALED — refusing Discord notification path."
+          echo "Unseal: set legacy_sox_sensor_seal.json status to ACTIVE (Human Architect only)."
+
       - name: Set up Python
+        if: steps.seal.outputs.sealed != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
+        if: steps.seal.outputs.sealed != 'true'
         run: |
           pip install yfinance
           pip install pandas
@@ -31,6 +42,7 @@ jobs:
           pip install pytz
 
       - name: Run SOX PROTOCOL
+        if: steps.seal.outputs.sealed != 'true'
         env:
           SOX_MOTOMOTO: ${{ secrets.SOX_MOTOMOTO }}
           SOX_HYOKA: ${{ secrets.SOX_HYOKA }}
@@ -38,6 +50,7 @@ jobs:
         run: python sox_protocol.py
 
       - name: Upload morning baseline for PM protocol
+        if: steps.seal.outputs.sealed != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: morning-input
@@ -45,24 +58,35 @@ jobs:
           retention-days: 1
 
       - name: Run SILICON PROTOCOL
+        if: steps.seal.outputs.sealed != 'true'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python silicon_protocol.py
 
   silicon_midday_check:
-    if: github.event_name != 'schedule' || github.event.schedule == '0 3 * * *'
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Legacy SOX sensor seal gate
+        id: seal
+        run: python legacy_sox_sensor_seal.py --ci-gate
+
+      - name: Skip when sealed
+        if: steps.seal.outputs.sealed == 'true'
+        run: |
+          echo "Legacy SOX sensor is SEALED — refusing Discord notification path."
+
       - name: Set up Python
+        if: steps.seal.outputs.sealed != 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Install dependencies
+        if: steps.seal.outputs.sealed != 'true'
         run: |
           pip install yfinance
           pip install pandas
@@ -71,6 +95,7 @@ jobs:
           pip install pytz
 
       - name: Run SILICON PROTOCOL
+        if: steps.seal.outputs.sealed != 'true'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: python silicon_protocol.py

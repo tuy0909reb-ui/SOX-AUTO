@@ -3,6 +3,7 @@ import pytz
 import requests
 from datetime import datetime
 
+from legacy_sox_sensor_seal import send_discord_if_allowed
 from sox_utils import fetch_with_retry, safe_float, send_discord
 
 DEFENSE_DROP_EXIT_PCT = 25.0
@@ -161,7 +162,9 @@ TSMC YoY : {sensor_2}
 ================================================================================
 """
     print(output)
-    send_discord(output)
+    send_discord_if_allowed(
+        output, context="silicon_protocol.py", send_fn=send_discord
+    )
 
 # ============================
 #  MAIN（必ず最下部）
