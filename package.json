@@ -7,7 +7,9 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "jest",
-    "test:runtime_execution": "jest --config jest.config.cjs"
+    "test:runtime_execution": "jest --config jest.config.cjs",
+    "test:asa_minimum_runtime": "jest --config jest.config.cjs tests/asa_minimum_runtime",
+    "asa": "node dist/src/asa_minimum_runtime/cli/main.js"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

@@ -1,15 +1,37 @@
 # Python
 __pycache__/
+**/__pycache__/
 *.py[cod]
 *$py.class
 *.pyo
 
+# Regenerable / heavy runtime
+node_modules/
+dist/
+.pytest_cache/
+
 # Local / generated runtime
 morning_input.json
+logs/
 sox_batting_log.json
 data/backtest/
+data/common_backtest/datasets/
+data/common_backtest/catalog.json
+data/common_backtest/reports/
+data/asa_minimum_runtime/
+data/autoscribe/
+data/ops/
+auto-scribe-ai/data/
 
-# Local debug leftovers
+# Local debug leftovers / scrape residue
 _*.py
 _*.txt
+_tmp_*/
+tmp_*/
 *.pyc
+*.html
+
+# Secrets / local environment (Phase6-0)
+.env
+.env.*
+!.env.example

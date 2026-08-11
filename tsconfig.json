@@ -55,6 +55,8 @@
     "tests/architecture_recommendation/**/*.ts",
     "src/architecture_completion/**/*.ts",
     "tests/architecture_completion/**/*.ts",
+    "src/asa_minimum_runtime/**/*.ts",
+    "tests/asa_minimum_runtime/**/*.ts",
     "tests/runtime_execution/**/*.ts",
     "tests/orchestration/**/*.ts",
     "tests/workflow/**/*.ts",
