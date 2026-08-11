@@ -1,24 +1,39 @@
-# ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0
+# ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.1
 
 # Human Trade Report Port / Fact Journal — Freeze Design Record
 
-**Status:** **FROZEN**（v1.0 CORRECTION applied）  
-**Version:** `1.0`  
-**Date:** 2026-08-05  
-**Freeze ID:** `ASA-TAXABLE-HTR-PORT-FJ-1.0`  
+**Status:** **FROZEN**  
+**Version:** `1.1`  
+**Date:** 2026-08-08  
+**Freeze ID:** `ASA-TAXABLE-HTR-PORT-FJ-1.1`  
 **Classification:** Operational Interface Extension + Runtime Extension + Operational Data Layer  
 **Protocol Rule Change:** **NO**  
-**Implementation Authorization:** **AUTHORIZED**（本Freeze範囲内のみ）  
+**Implementation Authorization:** **AUTHORIZED**（本Freeze範囲内のみ；1.0 実装を継承）  
+
+**Predecessor（preserved — do not overwrite）:**
+
+- Design: `docs/baselines/ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`
+- Freeze ID: `ASA-TAXABLE-HTR-PORT-FJ-1.0`
+- Registration: `docs/reports/ASA-REGISTER-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`
+- Digest (1.0): `5b499d9b47ccc9b56adc8a4db21ca75b61c18db2ee529e6bb1574c70ce108e06`
+
+**1.1 delta（additive only — Protocol Rule Change: NO）:**
+
+- §4.1 Asset Registry / Routing dispatch note（parent §4 semantics preserved）
+- Discord Trade Report Interaction = Input Adapter **IN**（Dashboard は OUT のまま）
+- Fact Schema / Journal / Decision / Entry·Exit·Risk 条件は 1.0 と同一
 
 **Parent / authority:**
 
-- Final Design Review: APPROVE（Architecture / Runtime Owner）
-- Human Decision: APPROVE FREEZE
-- Human Correction: quantity を Trade Fact 保存項目へ復元（Protocol 条件変更ではない）
+- Final Design Review: APPROVE（Architecture / Runtime Owner）— 1.0 継承
+- Human Decision: APPROVE FREEZE 1.1（formalize working-tree additive notes；1.0 digest 保持）
+- Human Correction (1.0): quantity を Trade Fact 保存項目へ復元（Protocol 条件変更ではない）
 - Related: `ASA-TAXABLE-ACCOUNT-PROTOCOL-RUNTIME-FREEZE-1.0`（Entry/Exit/Risk/Selection 条件は非改訂）
 - Related: `ASA-TAXABLE-ACCOUNT-PROTOCOL-DETAILED-SPEC-1.0`（Position SoT / ENTRY_FILLED 意味を維持）
+- Related: `ASA-TAXABLE-ACCOUNT-PROTOCOL-ASSET-REGISTRY-ROUTING-1.0.md`
 
 ---
+
 
 ## 1. Freeze meaning
 
@@ -182,15 +197,35 @@ Exit 条件式・Risk・Time Exit 計算は変更しない。
 
 ---
 
+## 4.1 Additive extension — Asset Registry / Routing（2026-08-06）
+
+Parent freeze routing semantics（§4）are preserved.
+Dispatch mechanism upgraded:
+
+```text
+asset → Asset Registry → routing_policy → handler
+```
+
+See: `ASA-TAXABLE-ACCOUNT-PROTOCOL-ASSET-REGISTRY-ROUTING-1.0.md`
+
+- SWING_POSITION: same ENTRY/EXIT/Delayed Recovery paths
+- GROWTH_REGIME: TRANSFER_COMPLETE / RECOVERY_COMPLETE（Regime path）
+- Protocol Rule Change: **NO**
+
+---
+
 ## 5. Explicitly out of this freeze（別CR）
 
 - 本格 Trade Ledger
 - 平均取得単価 / 部分約定 / 残数量管理 / 実現損益 / 税務処理  
   （※ `quantity` の Fact 保存自体は **IN**。会計・Ledger 化のみ OUT）
 - Broker Adapter
-- Discord Interaction / Dashboard
+- Discord Dashboard（資産管理画面化）
 - Protocol 自動改善
 - Growth 例外SOPの自動化
+
+**IN（Input Adapter）:** Discord Trade Report Interaction  
+（slash + confirm → 既存 Port。Projection とは役割分離。Business Logic なし）
 
 ---
 
@@ -224,7 +259,7 @@ Exit 条件式・Risk・Time Exit 計算は変更しない。
 
 ## 8. Implementation baseline
 
-Implementation CR MUST stay within §2–4 and §5 OUT list.
+Implementation CR MUST stay within §2–4.1 and §5 OUT list.
 
 Suggested package touchpoints（拘束ではなく実装ガイド）:
 
@@ -232,6 +267,7 @@ Suggested package touchpoints（拘束ではなく実装ガイド）:
 - `domain/events.py` internal `DELAYED_FILL_RECOVERY`
 - `engine` / `position_manager` recovery path preserving ENTRY_FILLED invariants
 - CLI as transport for Trade Report（Event名選択UIにしない）
+- Discord Trade Report Interaction transport（slash + confirm → Port；Business Logic なし）
 - tests: routing / guards / journal append / no selection recompute
 
 Live ops premise: `auto_fill=False`（paper/test のみ True）。
@@ -242,17 +278,17 @@ Live ops premise: `auto_fill=False`（paper/test のみ True）。
 
 1. Explicit Human authorization  
 2. New Design Review（APPROVE）  
-3. New version record（e.g. `…-PORT-1.1`）— 本 v1.0 を上書きしない  
+3. New version record（e.g. `…-PORT-1.2`）— 本 v1.1 および v1.0 を上書きしない  
 
 ---
 
 ## 10. Version tag
 
 ```text
-ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0
+ASA-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.1
 ```
 
 Canonical digest for this freeze record is published only in the registration report
 （self-referential digest footer is intentionally omitted from this file）:
 
-`docs/reports/ASA-REGISTER-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.0.md`
+`docs/reports/ASA-REGISTER-TAXABLE-ACCOUNT-PROTOCOL-HUMAN-TRADE-REPORT-PORT-1.1.md`

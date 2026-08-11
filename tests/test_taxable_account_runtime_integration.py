@@ -117,7 +117,13 @@ def test_scenario_crash_entry_risk_active():
     assert rt.state.risk_control.stop_price == pytest.approx(850.0)
     assert r1.view_model["current_state"]["position_state"] == "RISK_CONTROL_ACTIVE"
     assert r1.view_model["position"]["risk_stop"]["status"] == "ACTIVE"
-    assert r1.discord.embed["title"] == "特定口座 Protocol"
+    assert r1.discord.embed["title"] == "【大要塞｜特定口座】"
+    assert [f["name"] for f in r1.discord.embed["fields"]] == [
+        "命令",
+        "司令判断",
+        "作戦理由",
+        "戦力状況",
+    ]
 
 
 def test_scenario_risk_stop_exit_reeval():

@@ -136,4 +136,4 @@ def test_view_model_projection():
     assert vm["current_state"]["position_state"] == "RISK_CONTROL_ACTIVE"
     assert vm["position"]["risk_stop"]["stop_price"] == pytest.approx(850.0)
     assert vm["risk"]["stop_price"] == pytest.approx(850.0)
-    assert "1570 Risk Stop ACTIVE" in vm["decision_reason"]["details"]
+    assert "保有中Risk Stop監視" in vm["decision_reason"]["details"]

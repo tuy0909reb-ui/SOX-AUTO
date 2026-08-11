@@ -175,11 +175,17 @@ def test_viewmodel_and_discord_distinguish_signal_and_entry():
     assert vm["entry_status"]["status_label"] == "投入待ち"
     assert vm["entry_status"]["signal_date"] == "2024-08-01"
     assert vm["entry_status"]["entry_date"] is None
-    disc = project_discord_payload(vm, dry_run=True)
-    entry_field = next(f for f in disc.embed["fields"] if f["name"] == "Entry状態")
-    assert "投入待ち" in entry_field["value"]
-    assert "2024-08-01" in entry_field["value"]
-    assert "未投入" in entry_field["value"]
+    disc = project_discord_payload(vm, dry_run=True, state=st)
+    # Peacetime Discord: 4-field Fortress mapping only (timing stays on ViewModel)
+    names = [f["name"] for f in disc.embed["fields"]]
+    assert names[:4] == ["命令", "司令判断", "作戦理由", "戦力状況"]
+    assert next(f for f in disc.embed["fields"] if f["name"] == "命令")["value"] == "1570購入"
+    assert next(f for f in disc.embed["fields"] if f["name"] == "司令判断")["value"] == "出撃準備"
+    # Evidence-1.0: Entry Ready includes 詳細 after the four main fields
+    assert "詳細" in names
+    assert "投入状態: 未保有・投入待ち" in next(
+        f for f in disc.embed["fields"] if f["name"] == "詳細"
+    )["value"]
 
     st.position_state = PositionState.POSITION_ACTIVE
     st.held_asset = Asset.NIKKEI_LEV_1570
@@ -193,7 +199,6 @@ def test_viewmodel_and_discord_distinguish_signal_and_entry():
     assert vm2["entry_status"]["current_holding_days"] == business_hold_days(
         date(2024, 8, 3), date(2024, 8, 10)
     )
-    hold_field = next(
-        f for f in project_discord_payload(vm2, dry_run=True).embed["fields"] if f["name"] == "保有期間 / Exit監視"
-    )
-    assert "/ 20営業日" in hold_field["value"]
+    disc2 = project_discord_payload(vm2, dry_run=True, state=st)
+    assert next(f for f in disc2.embed["fields"] if f["name"] == "戦力状況")["value"] == "1570"
+    assert next(f for f in disc2.embed["fields"] if f["name"] == "司令判断")["value"] == "前線維持"

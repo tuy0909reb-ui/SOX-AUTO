@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "asa://schemas/taxable_account_state/1.0",
+  "title": "TaxableAccountState",
+  "description": "ASA Taxable Account Protocol — runtime state SoT draft (Phase 2 design). Not authorized for live trading.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "updated_at",
+    "regime_state",
+    "position_state",
+    "asset",
+    "held_asset",
+    "alert_on",
+    "risk_control",
+    "signals"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "regime_state": {
+      "type": "string",
+      "enum": [
+        "GROWTH_ACTIVE",
+        "EXIT_PENDING",
+        "SWING_ACTIVE",
+        "REENTRY_PENDING"
+      ]
+    },
+    "position_state": {
+      "type": "string",
+      "enum": [
+        "WAIT",
+        "WATCH",
+        "ENTRY_READY",
+        "POSITION_ACTIVE",
+        "EXIT",
+        "REENTRY_WAIT"
+      ]
+    },
+    "asset": {
+      "description": "Asset Selection output (next intent / candidate).",
+      "type": "string",
+      "enum": [
+        "NOMURA_WORLD_SEMI",
+        "NIKKEI_LEV_1570",
+        "SEMI_282A",
+        "CASH"
+      ]
+    },
+    "held_asset": {
+      "description": "Actually held instrument; CASH if flat.",
+      "type": "string",
+      "enum": [
+        "NOMURA_WORLD_SEMI",
+        "NIKKEI_LEV_1570",
+        "SEMI_282A",
+        "CASH"
+      ]
+    },
+    "selection_reason": {
+      "type": ["string", "null"],
+      "enum": [
+        "growth_default",
+        "crash_15",
+        "semi_signal",
+        "flat",
+        "transitional",
+        null
+      ]
+    },
+    "signal_date": {
+      "description": "Entry condition established date (not used for Time Exit / hold days).",
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "entry_date": {
+      "description": "Actual purchase / fill date (Time Exit basis).",
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "entry_price": {
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0
+    },
+    "exit_date": {
+      "type": ["string", "null"],
+      "format": "date"
+    },
+    "exit_price": {
+      "type": ["number", "null"],
+      "exclusiveMinimum": 0
+    },
+    "exit_reason": {
+      "type": ["string", "null"],
+      "enum": [
+        "TIME",
+        "ABNORMAL",
+        "ALERT_FLATTEN",
+        "STOP_TRIGGERED",
+        "MANUAL",
+        "TRANSFER",
+        null
+      ]
+    },
+    "max_hold_business_days": {
+      "type": ["integer", "null"],
+      "minimum": 1
+    },
+    "alert_on": {
+      "type": "boolean"
+    },
+    "transfer_completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "signals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "dd15_ma200",
+        "crash_15",
+        "semi_signal",
+        "recovery_model_b_met",
+        "recovery_b_days"
+      ],
+      "properties": {
+        "dd15_ma200": { "type": "boolean" },
+        "crash_15": { "type": "boolean" },
+        "semi_signal": { "type": "boolean" },
+        "recovery_model_b_met": { "type": "boolean" },
+        "recovery_b_days": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        }
+      }
+    },
+    "risk_control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "stop_pct", "stop_price", "status"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "stop_pct": {
+          "type": "number",
+          "const": 0.15
+        },
+        "stop_price": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0
+        },
+        "status": {
+          "type": "string",
+          "enum": ["N/A", "ACTIVE", "TRIGGERED", "CANCELLED"]
+        }
+      }
+    },
+    "derived": {
+      "description": "Optional payload for projection; must be recomputable from persistent fields + market.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "current_price": { "type": ["number", "null"] },
+        "pnl_pct": { "type": ["number", "null"] },
+        "hold_business_days": { "type": ["integer", "null"] },
+        "market_condition": {
+          "type": "string",
+          "enum": ["Growth", "Correction", "Crash", "Recovery"]
+        },
+        "decision": {
+          "type": "string",
+          "enum": ["BUY", "HOLD", "SELL", "WAIT"]
+        },
+        "decision_reason": { "type": "string" },
+        "next_action": { "type": "string" },
+        "display_position_mode": {
+          "type": "string",
+          "description": "POSITION_ACTIVE with 1570 risk ACTIVE may surface as RISK_CONTROL_ACTIVE"
+        }
+      }
+    }
+  }
+}

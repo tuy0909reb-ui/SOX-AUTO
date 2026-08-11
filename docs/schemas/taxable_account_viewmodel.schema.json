@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "asa://schemas/taxable_account_viewmodel/2.1",
+  "title": "TaxableAccountViewModel",
+  "description": "Operational Discord/ops projection DTO (2.1). Pure mapping from TaxableAccountState + runtime marks. No new trading rules.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "as_of",
+    "current_state",
+    "decision_reason",
+    "signal",
+    "capital_flow",
+    "entry_timing",
+    "entry_status",
+    "reference",
+    "risk",
+    "next_action",
+    "position"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "2.1" },
+    "as_of": { "type": "string" },
+    "current_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["regime", "asset", "position_state", "decision"],
+      "properties": {
+        "regime": {
+          "type": "string",
+          "enum": [
+            "GROWTH_ACTIVE",
+            "EXIT_PENDING",
+            "SWING_ACTIVE",
+            "REENTRY_PENDING"
+          ]
+        },
+        "asset": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["code", "display_name"],
+          "properties": {
+            "code": {
+              "type": "string",
+              "enum": [
+                "NOMURA_WORLD_SEMI",
+                "NIKKEI_LEV_1570",
+                "SEMI_282A",
+                "CASH"
+              ]
+            },
+            "display_name": { "type": "string" }
+          }
+        },
+        "position_state": { "type": "string" },
+        "decision": {
+          "type": "string",
+          "enum": [
+            "MAINTAIN",
+            "HOLD",
+            "EXIT",
+            "ENTRY_READY",
+            "REENTRY_WAIT",
+            "TRANSFER",
+            "WAIT"
+          ]
+        }
+      }
+    },
+    "decision_reason": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "details"],
+      "properties": {
+        "primary": { "type": "string" },
+        "details": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        }
+      }
+    },
+    "signal": { "type": ["string", "null"] },
+    "capital_flow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "current_asset",
+        "previous_asset",
+        "next_candidate",
+        "reason",
+        "current",
+        "current_asset_code",
+        "steps",
+        "swing_candidates",
+        "next_destination"
+      ],
+      "properties": {
+        "current_asset": { "type": "string" },
+        "previous_asset": { "type": "string" },
+        "next_candidate": { "type": "string" },
+        "reason": { "type": "string" },
+        "current": { "type": "string" },
+        "current_asset_code": { "type": "string" },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "status"],
+            "properties": {
+              "label": { "type": "string" },
+              "status": {
+                "type": "string",
+                "enum": ["current", "active", "candidate", "done"]
+              }
+            }
+          }
+        },
+        "swing_candidates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["when", "asset_code", "asset_display", "active"],
+            "properties": {
+              "when": { "type": "string" },
+              "asset_code": { "type": "string" },
+              "asset_display": { "type": "string" },
+              "active": { "type": "boolean" }
+            }
+          }
+        },
+        "next_destination": { "type": "string" }
+      }
+    },
+    "entry_timing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["asset_code", "asset_display", "status", "reason"],
+      "properties": {
+        "asset_code": { "type": "string" },
+        "asset_display": { "type": "string" },
+        "status": {
+          "type": "string",
+          "enum": ["ENTRY_READY", "WAIT", "N/A"]
+        },
+        "reason": { "type": "string" }
+      }
+    },
+    "entry_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "status_label",
+        "candidate",
+        "blocking_reason",
+        "signal_date",
+        "entry_date",
+        "current_holding_days",
+        "max_hold_business_days",
+        "time_exit_status"
+      ],
+      "properties": {
+        "status": { "type": "string", "enum": ["READY", "WAIT", "FILLED"] },
+        "status_label": { "type": "string" },
+        "candidate": { "type": "string" },
+        "blocking_reason": { "type": "string" },
+        "signal_date": { "type": ["string", "null"], "format": "date" },
+        "entry_date": { "type": ["string", "null"], "format": "date" },
+        "current_holding_days": { "type": ["integer", "null"] },
+        "max_hold_business_days": { "type": ["integer", "null"] },
+        "time_exit_status": {
+          "type": "string",
+          "enum": ["N/A", "MONITORING", "TRIGGERED"]
+        }
+      }
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entry_date",
+        "entry_price",
+        "current_price",
+        "pnl_pct",
+        "holding_days",
+        "drawdown_from_high_pct"
+      ],
+      "properties": {
+        "entry_date": { "type": ["string", "null"] },
+        "entry_price": { "type": ["number", "null"] },
+        "current_price": { "type": ["number", "null"] },
+        "pnl_pct": { "type": ["number", "null"] },
+        "holding_days": { "type": ["integer", "null"] },
+        "drawdown_from_high_pct": { "type": ["number", "null"] }
+      }
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "applicable",
+        "formula",
+        "stop_pct",
+        "stop_price",
+        "status",
+        "distance_pct"
+      ],
+      "properties": {
+        "applicable": { "type": "boolean" },
+        "formula": { "type": ["string", "null"] },
+        "stop_pct": { "type": ["number", "null"] },
+        "stop_price": { "type": ["number", "null"] },
+        "status": {
+          "type": "string",
+          "enum": ["N/A", "ACTIVE", "TRIGGERED", "CANCELLED"]
+        },
+        "distance_pct": { "type": ["number", "null"] }
+      }
+    },
+    "next_action": { "type": "string" },
+    "position": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": [
+        "asset_code",
+        "asset_display",
+        "entry_date",
+        "entry_price",
+        "current_price",
+        "return_pct",
+        "position_state",
+        "risk_stop"
+      ],
+      "properties": {
+        "asset_code": { "type": "string" },
+        "asset_display": { "type": "string" },
+        "entry_date": { "type": ["string", "null"], "format": "date" },
+        "entry_price": { "type": ["number", "null"] },
+        "current_price": { "type": ["number", "null"] },
+        "return_pct": { "type": ["number", "null"] },
+        "position_state": { "type": "string" },
+        "risk_stop": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["formula", "stop_price", "status"],
+          "properties": {
+            "formula": { "type": "string" },
+            "stop_pct": { "type": ["number", "null"] },
+            "stop_price": { "type": ["number", "null"] },
+            "status": {
+              "type": "string",
+              "enum": ["N/A", "ACTIVE", "TRIGGERED", "CANCELLED"]
+            }
+          }
+        }
+      }
+    }
+  }
+}

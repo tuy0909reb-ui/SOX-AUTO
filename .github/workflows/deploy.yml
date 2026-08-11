@@ -1,0 +1,221 @@
+name: Deploy
+
+# Phase6-1 Deployment Automation
+# Spec: docs/specs/deployment_automation_phase6_1.md
+#
+# Requires GitHub Environments named "staging" and "production"
+# (configure required reviewers on production in repository Settings).
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+      action:
+        description: deploy = apply release_tag; rollback = restore release_tag
+        required: true
+        type: choice
+        options:
+          - deploy
+          - rollback
+      release_tag:
+        description: Release tag (e.g. v1.0.0). Rollback uses the tag to restore.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: deploy-${{ github.event.inputs.environment }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validate inputs
+    runs-on: ubuntu-latest
+    outputs:
+      release_tag: ${{ steps.normalize.outputs.release_tag }}
+      commit_sha: ${{ steps.resolve.outputs.commit_sha }}
+    steps:
+      - name: Normalize and validate tag
+        id: normalize
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.inputs.release_tag }}"
+          TAG="${TAG#refs/tags/}"
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([.-][A-Za-z0-9._-]+)?$ ]]; then
+            echo "Invalid release_tag: $TAG (expected v*.*.* )"
+            exit 1
+          fi
+          echo "release_tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "action=${{ github.event.inputs.action }}"
+          echo "environment=${{ github.event.inputs.environment }}"
+
+      - name: Checkout (for tag resolution helpers)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Resolve tag to commit SHA
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.normalize.outputs.release_tag }}"
+          if ! git rev-parse "refs/tags/$TAG" >/dev/null 2>&1; then
+            echo "Tag not found in repository: $TAG"
+            exit 1
+          fi
+          SHA="$(git rev-list -n 1 "refs/tags/$TAG")"
+          echo "commit_sha=$SHA" >> "$GITHUB_OUTPUT"
+          echo "Resolved $TAG -> $SHA"
+
+  quality_gate:
+    name: Quality Gate (production)
+    needs: validate
+    if: github.event.inputs.environment == 'production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require successful Test workflow on release commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          SHA="${{ needs.validate.outputs.commit_sha }}"
+          echo "Checking Quality Gate for commit $SHA"
+
+          # Prefer workflow file test.yml (Phase5-2). Fail closed if none succeeded.
+          RUN_JSON="$(gh run list \
+            --repo "${{ github.repository }}" \
+            --workflow test.yml \
+            --commit "$SHA" \
+            --status completed \
+            --limit 20 \
+            --json databaseId,conclusion,name,headSha 2>/dev/null || true)"
+
+          if [[ -z "$RUN_JSON" || "$RUN_JSON" == "[]" ]]; then
+            echo "No completed Test workflow runs for $SHA"
+            echo "Production deploy requires Phase5-2/5-3 Quality Gate success."
+            exit 1
+          fi
+
+          PASS="$(echo "$RUN_JSON" | jq -r '[.[] | select(.conclusion=="success")] | length')"
+          if [[ "$PASS" -lt 1 ]]; then
+            echo "Test workflow did not succeed for $SHA"
+            echo "$RUN_JSON" | jq .
+            exit 1
+          fi
+
+          echo "Quality Gate OK ($PASS successful Test run(s))"
+
+  deploy:
+    name: Deploy / Rollback
+    needs: [validate, quality_gate]
+    if: |
+      always() &&
+      needs.validate.result == 'success' &&
+      (needs.quality_gate.result == 'success' || needs.quality_gate.result == 'skipped')
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.inputs.environment }}
+    env:
+      # Phase6-0: Secrets from Environment / Repository — never hardcode.
+      # Values are not echoed. Optional deploy credentials when configured.
+      API_KEY: ${{ secrets.API_KEY }}
+      TOKEN: ${{ secrets.TOKEN }}
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Release Artifact (unchanged)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${{ needs.validate.outputs.release_tag }}"
+          ACTION="${{ github.event.inputs.action }}"
+          ENV_NAME="${{ github.event.inputs.environment }}"
+
+          mkdir -p release-artifact deploy-package
+          echo "action=$ACTION environment=$ENV_NAME tag=$TAG"
+
+          if ! gh release view "$TAG" --repo "${{ github.repository }}" >/dev/null 2>&1; then
+            echo "GitHub Release not found for tag: $TAG"
+            echo "Create a release via Release workflow (Phase5-4) first."
+            exit 1
+          fi
+
+          # Download assets as-is; do not mutate artifact contents.
+          if ! gh release download "$TAG" \
+            --repo "${{ github.repository }}" \
+            --dir release-artifact \
+            --clobber; then
+            echo "Failed to download release assets for $TAG"
+            exit 1
+          fi
+
+          if [[ -z "$(ls -A release-artifact 2>/dev/null || true)" ]]; then
+            echo "Release $TAG has no downloadable assets"
+            exit 1
+          fi
+
+          # Deployment package = bit-for-bit copy of release artifacts (no content change).
+          cp -a release-artifact/. deploy-package/
+
+          echo "Artifact listing:"
+          find release-artifact -type f | sort
+
+      - name: Apply environment configuration markers
+        run: |
+          set -euo pipefail
+          # Record target environment only; do not rewrite release payload.
+          {
+            echo "environment=${{ github.event.inputs.environment }}"
+            echo "action=${{ github.event.inputs.action }}"
+            echo "release_tag=${{ needs.validate.outputs.release_tag }}"
+            echo "commit_sha=${{ needs.validate.outputs.commit_sha }}"
+            echo "deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          } > deploy-package/DEPLOYMENT_META.txt
+
+      - name: Verify secrets present without logging values
+        run: |
+          set -euo pipefail
+          # Presence check only — never print secret values.
+          for name in API_KEY TOKEN DISCORD_TOKEN DISCORD_WEBHOOK_URL; do
+            val="$(printenv "$name" || true)"
+            if [[ -z "$val" ]]; then
+              echo "Secret not set in environment '${{ github.event.inputs.environment }}': $name (optional for package-only deploy path)"
+            else
+              echo "Secret present: $name"
+            fi
+          done
+          # Do not fail on optional empty secrets for package-only deploy;
+          # real target auth can be enforced per environment in GitHub settings.
+
+      - name: Publish deployment package as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-${{ github.event.inputs.environment }}-${{ needs.validate.outputs.release_tag }}
+          path: deploy-package/
+          if-no-files-found: error
+
+      - name: Deployment result
+        run: |
+          set -euo pipefail
+          echo "=== Deployment result ==="
+          echo "action=${{ github.event.inputs.action }}"
+          echo "environment=${{ github.event.inputs.environment }}"
+          echo "release_tag=${{ needs.validate.outputs.release_tag }}"
+          echo "commit_sha=${{ needs.validate.outputs.commit_sha }}"
+          echo "status=success"
+          echo "note=Release artifacts staged without content mutation. Host/runtime publish is environment-specific."

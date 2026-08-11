@@ -1,0 +1,158 @@
+name: Operations
+
+# Phase6-3-C Operational Automation — Status Collection / Runbook Assist
+# Spec: docs/specs/operational_automation_phase6_3_c.md
+# Provides judgment materials only. No auto-recovery / auto-rollback / deploy.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: status_collect = snapshot; runbook_assist = checklist + snapshot
+        required: true
+        type: choice
+        options:
+          - status_collect
+          - runbook_assist
+      lookback:
+        description: Number of recent runs to inspect per workflow
+        required: false
+        default: "10"
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: operations-assist
+  cancel-in-progress: false
+
+jobs:
+  assist:
+    name: Status / Runbook Assistance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect status and optional runbook checklist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODE: ${{ github.event.inputs.mode }}
+          LOOKBACK: ${{ github.event.inputs.lookback }}
+        run: |
+          set -euo pipefail
+          mkdir -p ops-assist
+          OUT="ops-assist/status-collection.md"
+          COLLECT_ERROR=0
+          LOOKBACK="${LOOKBACK:-10}"
+
+          {
+            echo "# Operations Status Collection"
+            echo
+            echo "- generated_at_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- mode: ${MODE}"
+            echo "- lookback: ${LOOKBACK}"
+            echo "- run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo
+            echo "## Collected targets (Phase6-3-B aligned)"
+            echo
+            echo "- CI状態 (test.yml)"
+            echo "- Deploy状態 (deploy.yml)"
+            echo "- Workflow履歴 (test/release/deploy/maintenance/operations)"
+            echo "- Incident情報 (Workflow Failure イベントの提示のみ; 人間記録は変更しない)"
+            echo
+            echo "## Snapshot"
+            echo
+          } > "$OUT"
+
+          snap_workflow() {
+            local label="$1"
+            local file="$2"
+            echo "### ${label} (\`${file}\`)" >> "$OUT"
+            if [[ ! -f ".github/workflows/${file}" ]]; then
+              echo "- ERROR: workflow file missing" >> "$OUT"
+              echo >> "$OUT"
+              COLLECT_ERROR=1
+              return
+            fi
+            if ! gh run list \
+              --repo "${{ github.repository }}" \
+              --workflow "$file" \
+              --limit "$LOOKBACK" \
+              --json conclusion,status,url,createdAt,event,displayTitle \
+              > "ops-assist/${file}.json" 2>/dev/null; then
+              echo "- ERROR: collection failed" >> "$OUT"
+              echo >> "$OUT"
+              COLLECT_ERROR=1
+              return
+            fi
+            jq -r '
+              if length==0 then "- none"
+              else .[] | "- \(.createdAt) event=\(.event) status=\(.status) conclusion=\(.conclusion // "null") \(.url)"
+              end
+            ' "ops-assist/${file}.json" >> "$OUT" || {
+              echo "- ERROR: parse failed" >> "$OUT"
+              COLLECT_ERROR=1
+            }
+            echo >> "$OUT"
+          }
+
+          snap_workflow "CI" "test.yml"
+          snap_workflow "Release" "release.yml"
+          snap_workflow "Deploy" "deploy.yml"
+          snap_workflow "Maintenance" "maintenance.yml"
+          snap_workflow "Operations" "operations.yml"
+
+          if [[ "$MODE" == "runbook_assist" ]]; then
+            {
+              echo "## Runbook Assistance Checklist (judgment materials only)"
+              echo
+              echo "Follow \`docs/incident_response.md\` in order. Do not skip steps."
+              echo
+              echo "1. [ ] 通知受信日時を記録した（Secret値なし）"
+              echo "2. [ ] Workflow / Deploy 状態を上表で確認した"
+              echo "3. [ ] 失敗 Step ログを確認した（\`docs/operations.md\`）"
+              echo "4. [ ] 影響範囲チェックリストを実施した"
+              echo "5. [ ] Severity を人間が判定した（\`docs/incident_response.md\` §1）"
+              echo "6. [ ] Rollback 要否を人間が判定した（実行は Phase6-1 Deploy のみ）"
+              echo "7. [ ] \`docs/incident_template.md\` に記録した"
+              echo
+              echo "### Observability Alert条件の照合"
+              echo
+              echo "- Deploy Failure → Incident Response"
+              echo "- CI Failure 連続 → Runbook 確認後に必要なら Incident"
+              echo "- Scheduled Task Failure（Maintenance/Operations）→ Failure 記録・通知経路確認"
+              echo
+              echo "### Automation 境界"
+              echo
+              echo "- 本 Workflow は確認項目提示と状態収集のみ"
+              echo "- 自動復旧・自動Rollback・AI障害判断・無条件デプロイは行わない"
+            } >> "$OUT"
+          fi
+
+          {
+            echo "## Collection result"
+            echo
+            if [[ "$COLLECT_ERROR" -eq 0 ]]; then
+              echo "- collect_status: ok"
+            else
+              echo "- collect_status: error (see ERROR lines above)"
+            fi
+          } >> "$OUT"
+
+          cat "$OUT"
+
+          if [[ "$COLLECT_ERROR" -ne 0 ]]; then
+            echo "Data collection errors present; failing job (no success masking)."
+            exit 1
+          fi
+
+      - name: Upload assistance artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ops-assist-${{ github.event.inputs.mode }}-${{ github.run_id }}
+          path: ops-assist/
+          if-no-files-found: warn

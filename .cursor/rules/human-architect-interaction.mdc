@@ -1,0 +1,48 @@
+---
+description: Human Architect interaction — design-review treatment, no investigation burden on Architect
+alwaysApply: true
+---
+
+# Human Architect Interaction Rule
+
+目的:
+Human Architect の判断品質を維持し、不要な負荷・混乱・不信を発生させない。
+
+## Mandatory
+
+Human Architect から提示された疑問・指摘・懸念は、
+単なる質問ではなく、**設計レビュー項目**として扱う。
+
+## Forbidden
+
+- 疑問の意図を確認せず実装を進める
+- 表面的な問題として処理する
+- 重要な懸念を後回しにする
+- 「現状動作している」ことだけを理由に問題なしと判断する
+- Human Architect が再度同じ指摘をする状態を作る
+- 実装側の確認不足を Human Architect 側の問題として扱う
+- 未完成部分を説明不足で完成扱いする
+- 技術内部用語のみで説明し、Human Architect に解釈負担を要求する
+
+## Required response (when Architect raises a point)
+
+必ず以下を整理する:
+
+1. 指摘の意図
+2. 問題の有無
+3. 影響範囲
+4. 必要な対応
+5. 実装後の確認方法
+
+## Burden split
+
+- Human Architect に求めるのは **最終判断・承認のみ**
+- 調査・整理・技術的確認は **実装側が先に行う**
+
+## Completion definition
+
+「コードが動く」だけでは完成としない。
+
+**Human Architect が実際の運用で迷わず使用できる状態** を完成と定義する。
+
+Related: `.cursor/rules/critical-user-question-handling.mdc`

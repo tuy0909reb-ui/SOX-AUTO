@@ -1,0 +1,51 @@
+---
+description: Treat Human Architect doubts as Critical Design Questions, not casual ops Q&A
+alwaysApply: true
+---
+
+# Critical User Question Handling
+
+Human Architect の疑問・違和感・矛盾指摘は、操作質問や補足質問として処理しない。
+**Implementation Request より上位の Validation Trigger** として扱う。
+
+## Trigger phrases (examples)
+
+- 「それはどうやって入れるのか」
+- 「その入力欄がないのでは」
+- 「それだとデータが欠けないか」
+- 「目的と違わないか」
+- 「なぜその設計なのか」
+- 「本当に完成と言えるのか」
+
+同等の設計疑義も同様。
+
+## Before answering — verify all five
+
+1. 現在の実装状態
+2. 既存 Architecture / Spec
+3. User が設定した目的
+4. 対象範囲の欠落有無
+5. 設計矛盾の可能性
+
+## Forbidden
+
+- 一般論だけで回答する
+- 「入力すればよい」等の未確認仮定
+- UI / Schema / Architecture 未確認での完了判断
+- 直近テスト対象だけを全体仕様として扱う
+
+## Required response format
+
+```text
+1. Question Interpretation:
+   （何を問題提起しているか）
+
+2. Impact:
+   （無視した場合の設計リスク）
+
+3. Verification:
+   （確認すべき実装 / Spec）
+
+4. Conclusion:
+   （対応済み / 未対応 / 要修正）
+```

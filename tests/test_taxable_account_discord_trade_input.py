@@ -130,3 +130,51 @@ def test_adapter_has_no_internal_event_fields():
     assert "DELAYED_FILL_RECOVERY" not in src
     assert "ABNORMAL_EXIT" not in src
     assert "TradeReportPort" in src
+
+
+def test_parse_trade_date_yyyymmdd_and_iso():
+    from datetime import date
+
+    from taxable_account.trade.discord_input import parse_trade_date
+
+    assert parse_trade_date("20260807") == date(2026, 8, 7)
+    assert parse_trade_date("2026-08-07") == date(2026, 8, 7)
+
+
+def test_create_draft_accepts_yyyymmdd_and_human_asset_label(tmp_path: Path):
+    eng = TaxableAccountEngine()
+    _ready_1570(eng)
+    ad = _adapter(tmp_path, eng)
+    draft = ad.create_draft(
+        operator_id="42",
+        asset="1570",
+        side="BUY",
+        trade_date="20260801",
+        trade_price=1000.0,
+        quantity=10.0,
+    )
+    assert draft.trade_date.isoformat() == "2026-08-01"
+    preview = draft.preview_text(eng.state)
+    assert "【大要塞｜特定口座】" in preview
+    assert "2026年8月1日" in preview
+    assert "現在保有" in preview
+
+
+def test_resolve_fortress_display_asset_label_for_growth(tmp_path: Path):
+    from taxable_account.domain.asset_registry import DEFAULT_ASSET_REGISTRY
+    from taxable_account.domain.states import Asset
+
+    assert DEFAULT_ASSET_REGISTRY.resolve("世界半導体株投資") == Asset.NOMURA_WORLD_SEMI
+    eng = TaxableAccountEngine()
+    ad = _adapter(tmp_path, eng)
+    # Growth sell draft path (no state transition here — input only)
+    draft = ad.create_draft(
+        operator_id="42",
+        asset="世界半導体株投資",
+        side="SELL",
+        trade_date="2026-08-07",
+        trade_price=100.0,
+        quantity=1.0,
+    )
+    assert draft.asset == Asset.NOMURA_WORLD_SEMI
+    assert "世界半導体株投資" in draft.preview_text(eng.state)

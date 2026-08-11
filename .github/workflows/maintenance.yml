@@ -1,0 +1,201 @@
+name: Maintenance
+
+# Phase6-3-C Operational Automation — Scheduled Operation
+# Spec: docs/specs/operational_automation_phase6_3_c.md
+# Does not change CI / Release / Deploy workflow logic.
+# Does not deploy, rollback, or modify tools/secretary/.
+
+on:
+  schedule:
+    # Daily 00:00 UTC
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: maintenance-ops
+  cancel-in-progress: false
+
+jobs:
+  scheduled_ops:
+    name: Health Check + Daily Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Collect workflow status and generate report
+        id: collect
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LOOKBACK_LIMIT: "20"
+        run: |
+          set -euo pipefail
+          mkdir -p ops-report
+          REPORT="ops-report/daily-operation-report.md"
+          FAIL_FLAG=0
+          COLLECT_ERROR=0
+
+          {
+            echo "# Daily Operation Report"
+            echo
+            echo "- generated_at_utc: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "- repository: ${{ github.repository }}"
+            echo "- trigger: ${{ github.event_name }}"
+            echo "- run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+            echo
+            echo "## Workflow Status Snapshot"
+            echo
+            echo "| Workflow | Latest conclusion | Latest status | Latest run URL | Note |"
+            echo "|---|---|---|---|---|"
+          } > "$REPORT"
+
+          collect_one() {
+            local name="$1"
+            local file="$2"
+            local note=""
+            local conclusion="unknown"
+            local status="unknown"
+            local url=""
+            local json=""
+
+            if [[ ! -f ".github/workflows/${file}" ]]; then
+              note="workflow file missing"
+              conclusion="missing"
+              status="n/a"
+              COLLECT_ERROR=1
+              echo "| ${name} | ${conclusion} | ${status} | | ${note} |" >> "$REPORT"
+              return
+            fi
+
+            if ! json="$(gh run list \
+              --repo "${{ github.repository }}" \
+              --workflow "$file" \
+              --limit 1 \
+              --json databaseId,conclusion,status,url,displayTitle,createdAt,headBranch 2>/dev/null)"; then
+              note="status collection failed"
+              conclusion="error"
+              status="error"
+              COLLECT_ERROR=1
+              echo "| ${name} | ${conclusion} | ${status} | | ${note} |" >> "$REPORT"
+              return
+            fi
+
+            if [[ -z "$json" || "$json" == "[]" ]]; then
+              note="no runs found"
+              conclusion="none"
+              status="none"
+              echo "| ${name} | ${conclusion} | ${status} | | ${note} |" >> "$REPORT"
+              return
+            fi
+
+            conclusion="$(echo "$json" | jq -r '.[0].conclusion // "null"')"
+            status="$(echo "$json" | jq -r '.[0].status // "null"')"
+            url="$(echo "$json" | jq -r '.[0].url // ""')"
+            echo "| ${name} | ${conclusion} | ${status} | ${url} | ${note} |" >> "$REPORT"
+
+            if [[ "$conclusion" == "failure" || "$conclusion" == "timed_out" || "$conclusion" == "cancelled" ]]; then
+              # Record for Failure Summary; fail closed on deploy/maintenance failures.
+              if [[ "$name" == "Deploy" || "$name" == "Maintenance" || "$name" == "Operations" ]]; then
+                FAIL_FLAG=1
+              fi
+            fi
+          }
+
+          collect_one "Test" "test.yml"
+          collect_one "Release" "release.yml"
+          collect_one "Deploy" "deploy.yml"
+          collect_one "Maintenance" "maintenance.yml"
+          collect_one "Operations" "operations.yml"
+
+          {
+            echo
+            echo "## Failure Summary (recent completed runs)"
+            echo
+          } >> "$REPORT"
+
+          for file in test.yml release.yml deploy.yml maintenance.yml operations.yml; do
+            [[ -f ".github/workflows/${file}" ]] || continue
+            fails="$(gh run list \
+              --repo "${{ github.repository }}" \
+              --workflow "$file" \
+              --status completed \
+              --limit "${LOOKBACK_LIMIT}" \
+              --json conclusion,url,createdAt,displayTitle 2>/dev/null \
+              | jq -r --arg f "$file" '
+                  [.[] | select(.conclusion=="failure" or .conclusion=="timed_out")]
+                  | if length==0 then "- `\($f)`: none"
+                    else (["- `\($f)`:"] + [.[] | "  - \(.createdAt) \(.conclusion) \(.url)"]) | .[]
+                    end
+                ' 2>/dev/null || echo "- \`$file\`: collection error")"
+            echo "$fails" >> "$REPORT"
+            if echo "$fails" | grep -q "collection error"; then
+              COLLECT_ERROR=1
+            fi
+          done
+
+          {
+            echo
+            echo "## Deployment Summary (latest Deploy runs)"
+            echo
+          } >> "$REPORT"
+
+          if [[ -f .github/workflows/deploy.yml ]]; then
+            gh run list \
+              --repo "${{ github.repository }}" \
+              --workflow deploy.yml \
+              --limit 5 \
+              --json conclusion,status,url,createdAt,displayTitle,event \
+              | jq -r '
+                  if length==0 then "- none"
+                  else .[] | "- \(.createdAt) event=\(.event) conclusion=\(.conclusion // "null") status=\(.status) \(.url)"
+                  end
+                ' >> "$REPORT" || {
+                  echo "- Deploy history collection error" >> "$REPORT"
+                  COLLECT_ERROR=1
+                }
+          else
+            echo "- deploy.yml missing" >> "$REPORT"
+          fi
+
+          {
+            echo
+            echo "## Incident information"
+            echo
+            echo "- Automated collection lists Workflow Failure events above."
+            echo "- Human Incident records: see \`docs/incident_template.md\` / Issue tracker (not rewritten by Automation)."
+            echo
+            echo "## Notes"
+            echo
+            echo "- Source Workflow data is read-only; this report does not mutate CI/Release/Deploy."
+            echo "- Secrets are never included."
+            echo "- Human judgment for Severity / Rollback remains Phase6-3-A / Phase6-1."
+          } >> "$REPORT"
+
+          {
+            echo "collect_error=${COLLECT_ERROR}"
+            echo "fail_flag=${FAIL_FLAG}"
+          } > ops-report/result.env
+
+          echo "Report written to $REPORT"
+          cat "$REPORT"
+
+          if [[ "$COLLECT_ERROR" -ne 0 ]]; then
+            echo "Status collection encountered errors (recorded; failing job)."
+            exit 1
+          fi
+          if [[ "$FAIL_FLAG" -ne 0 ]]; then
+            echo "Recent critical Workflow Failure detected (Deploy/Maintenance/Operations). Failing for notification."
+            exit 1
+          fi
+
+      - name: Upload operation report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-operation-report-${{ github.run_id }}
+          path: ops-report/
+          if-no-files-found: warn

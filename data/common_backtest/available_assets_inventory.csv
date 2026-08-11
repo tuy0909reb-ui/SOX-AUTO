@@ -1,0 +1,59 @@
+﻿dataset名,ticker_or_fund名,asset_type,currency,start_date,end_date,price_type,source,backtest利用可否,remark
+index_daily/sox_daily.csv,^SOX,index,USD,2006-01-03,2026-07-15,Close / Adj Close,data/backtest/raw/sox_daily.csv,Yes,
+index_daily/nasdaq_daily.csv,^IXIC,index,USD,2006-01-03,2026-07-15,Close / Adj Close,data/backtest/raw/nasdaq_daily.csv,Yes,
+index_daily/nq_f_daily.csv,NQ=F,index,USD,2006-01-03,2026-07-15,Close / Adj Close,data/backtest/raw/nq_f_daily.csv,Yes,futures
+index_daily/vix_daily.csv,^VIX,index,USD,2006-01-03,2026-07-15,Close / Adj Close,data/backtest/raw/vix_daily.csv,Yes,
+index_daily/jpy_daily.csv,JPY=X,index,JPY,2006-01-02,2026-07-15,Close / Adj Close,data/backtest/raw/jpy_daily.csv,Yes,FX
+etf_adj_close_daily/market_daily.csv,MEGA10_PROXY,index,USD,2022-01-03,2026-07-30,Adj Close,logs/portfolio/portfolio.db (readonly export),Yes,Mega10 Proxy (equal-weight quarterly)
+etf_adj_close_daily/market_daily.csv,MEGA10_OFFICIAL,index,USD,,,Adj Close,logs/portfolio/portfolio.db (readonly export),No,registered in asset table but no market_daily rows
+etf_adj_close_daily/market_daily.csv,MEGA10_FUND,fund_nav,JPY,,,NAV,logs/portfolio/portfolio.db (readonly export),No,registered in asset table but no market_daily rows
+etf_adj_close_daily/market_daily.csv,SOXX,ETF,USD,2022-01-03,2026-07-30,Adj Close,logs/portfolio/portfolio.db (readonly export),Yes,iShares Semiconductor ETF
+etf_adj_close_daily/market_daily.csv,FNGS,ETF,USD,2022-01-03,2026-07-30,Adj Close,logs/portfolio/portfolio.db (readonly export),Yes,FANG+ (FNGS)
+etf_adj_close_daily/market_daily.csv,QQQ,ETF,USD,2022-01-03,2026-07-30,Adj Close,logs/portfolio/portfolio.db (readonly export),Yes,Invesco QQQ Trust
+etf_adj_close_daily/fx_daily.csv,USDJPY,index,JPY,2022-01-03,2026-07-30,Close,logs/portfolio/portfolio.db (readonly export),Yes,FX (enum-limited as index)
+fund_nav_daily/nisa_long_term_nav_panel_with_soxx.csv,FANG+,fund_nav,JPY,2018-01-31,2026-07-31,NAV,NISA_BACKTEST official / prepare_nisa_long_term_nav.py,Yes,normalized long panel; SOXX here is official NAV
+fund_nav_daily/nisa_long_term_nav_panel_with_soxx.csv,Global Robotics,fund_nav,JPY,2015-08-31,2026-07-31,NAV,NISA_BACKTEST official / prepare_nisa_long_term_nav.py,Yes,normalized long panel; SOXX here is official NAV
+fund_nav_daily/nisa_long_term_nav_panel_with_soxx.csv,Information Electronics,fund_nav,JPY,1997-04-01,2026-07-31,NAV,NISA_BACKTEST official / prepare_nisa_long_term_nav.py,Yes,normalized long panel; SOXX here is official NAV
+fund_nav_daily/nisa_long_term_nav_panel_with_soxx.csv,Nissay SOX,fund_nav,JPY,2023-03-31,2026-07-31,NAV,NISA_BACKTEST official / evaluate_nisa_soxx_single_fund.py,Yes,normalized long panel; SOXX here is official NAV
+fund_nav_daily/nisa_long_term_nav_panel_with_soxx.csv,SOXX ETF,ETF,USD,2001-07-10,2026-07-31,NAV,NISA_BACKTEST official SOXX NAV / evaluate_nisa_soxx_single_fund.py,Yes,normalized long panel; SOXX here is official NAV
+fund_nav_daily/nisa_long_term_nav_panel_with_soxx.csv,World Semiconductor,fund_nav,JPY,2009-08-27,2026-07-31,NAV,NISA_BACKTEST official / prepare_nisa_long_term_nav.py,Yes,normalized long panel; SOXX here is official NAV
+fund_nav_daily/mega10_nav.csv,Mega10,fund_nav,JPY,2025-11-04,2026-07-31,NAV,NISA_BACKTEST mega10_nav.csv,Limited,very short history (from 2025-11)
+fund_nav_daily/soxx_etf_nav.csv,SOXX ETF,ETF,USD,2001-07-10,2026-07-31,NAV,NISA_BACKTEST soxx_etf_nav.csv,Yes,same series as panel SOXX ETF; official NAV
+research_panels/bitcoin_panel.csv,BTC,index,USD,2014-09-17,2026-07-17,Adj Close,research/bitcoin_analysis.py,Yes,crypto (enum-limited as index)
+research_panels/bitcoin_panel.csv,ETH,index,USD,2017-11-09,2026-07-17,Adj Close,research/bitcoin_analysis.py,Yes,crypto (enum-limited as index)
+research_panels/bitcoin_panel.csv,QQQ,ETF,USD,2014-09-17,2026-07-17,Adj Close,research/bitcoin_analysis.py,Yes,
+research_panels/bitcoin_panel.csv,SOXX,ETF,USD,2014-09-17,2026-07-17,Adj Close,research/bitcoin_analysis.py,Yes,Yahoo adj in research panel; differs from official NAV
+research_panels/bitcoin_panel.csv,SPY,ETF,USD,2014-09-17,2026-07-17,Adj Close,research/bitcoin_analysis.py,Yes,
+research_panels/bitcoin_panel.csv,GLD,ETF,USD,2014-09-17,2026-07-17,Adj Close,research/bitcoin_analysis.py,Yes,
+research_panels/nikkei_semiconductor_panel.csv,SOXX,ETF,USD,2022-01-05,2026-07-17,Adj Close,research/nikkei_semiconductor_analysis.py,Yes,overlaps bitcoin_panel SOXX
+research_panels/nikkei_semiconductor_panel.csv,QQQ,ETF,USD,2022-01-05,2026-07-17,Adj Close,research/nikkei_semiconductor_analysis.py,Yes,overlaps bitcoin_panel QQQ
+research_panels/nikkei_semiconductor_panel.csv,ETF_200A,ETF,JPY,2024-06-03,2026-07-17,Adj Close,research/nikkei_semiconductor_analysis.py,Yes,200A.T Global X Japan Semi related
+research_panels/nikkei_semiconductor_panel.csv,JP_SEMI_PROXY,index,JPY,2022-01-05,2026-07-17,Adj Close,research/nikkei_semiconductor_analysis.py,Yes,constructed proxy
+research_panels/nikkei_semiconductor_panel.csv,NIKKEI_SEMI,index,JPY,2022-01-05,2026-07-17,Adj Close,research/nikkei_semiconductor_analysis.py,Yes,constructed / research series
+holdings_snapshots/semiconductor_holdings_all.csv,000660.KS,stock,USD/local,2024-06-28,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,5274.TW,stock,USD/local,2025-11-28,2026-05-29,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,ADI,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,ALAB,stock,USD/local,2025-09-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,AMAT,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,AMD,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,ASML,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,AVGO,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,ENTG,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,INTC,stock,USD/local,2021-06-30,2026-06-28,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,KLAC,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,LRCX,stock,USD/local,2021-06-30,2026-06-28,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,MCHP,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,MPWR,stock,USD/local,2021-06-30,2026-04-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,MRVL,stock,USD/local,2021-06-30,2026-06-28,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,MU,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,NVDA,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,NXPI,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,ON,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,QCOM,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,QRVO,stock,USD/local,2021-06-30,2025-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,STM,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,SWKS,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,TER,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,TSM,stock,USD/local,2021-06-30,2026-06-30,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+holdings_snapshots/semiconductor_holdings_all.csv,TXN,stock,USD/local,2021-06-30,2026-03-31,weight_only,NISA_BACKTEST holdings_clean (weights),No,holdings weight snapshots only; no price series in common_backtest
+protocol_derived/backtest_panel.csv,^SOX protocol features,index,USD,2006-02-07,2026-07-15,Close,data/backtest/backtest_panel.csv,Limited,derived feature panel for SOX protocol; regenerable from index_daily

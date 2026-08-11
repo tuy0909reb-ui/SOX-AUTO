@@ -1,0 +1,113 @@
+---
+description: Sole design authority for portfolio judgment verification — layers, implementation gates, design-change rules, SoT, long-horizon maintainability
+alwaysApply: true
+---
+
+# Portfolio judgment verification (sole design authority)
+
+This file is the **only design source of truth** for AI and humans deciding how to change the system.
+
+`portfolio/README.md` is an operational guide only — do not treat it as a second design spec.
+
+---
+
+## Purpose
+
+This is **not** a price-storage system.
+
+Keep **Fact / Hypothesis / Decision / Position / Review** separated so past investment judgments stay verifiable for years.
+
+> Does this make past investment judgments more verifiable in the future?  
+> YES → adopt. NO → redesign.
+
+**Design consistency outranks shipping new features.**  
+**Design changes are treated more carefully than feature additions.**
+
+---
+
+## Layers (do not mix)
+
+```text
+Fact (SoT)
+    |
+Hypothesis  -->  (future) Decision  -->  Position
+                      \_______________/
+                              |
+                           Review (generated)
+```
+
+| Layer | Stores | Must not store |
+|---|---|---|
+| **Fact** | Market truth (prices, FX, listings, rebalances) | Judgment, comments, trade reasons |
+| **Hypothesis** | What you believed then | Trades / fills / holdings |
+| **Decision** (future) | Actionable choice from hypothesis → intent | Implement later as **new table + optional FKs** — not columns on existing tables |
+| **Position** | Actual holdings / cost / value / units | Market analysis |
+| **Review** | Regenerable verification | New primary facts |
+
+Links: `position → hypothesis (optional)` today; keep room for `position → decision (optional)` later.
+
+Peers (`MEGA10_*`, `SOXX`, `FNGS`, `QQQ`, …) are **equal** — no primary / benchmark / auxiliary in schema. New assets: `INSERT` into `asset` + long `market_daily`.
+
+Reviews support `intersection` and `calendar`; always print `Comparison mode`, `Compare period`, `Compare reason`.
+
+---
+
+## Before any implementation
+
+Do **not** start coding until these gates pass.
+
+### 1. Choose the layer
+
+Assign work to exactly one layer above. If ambiguous → **stop and redesign**.
+
+### 2. Check responsibility
+
+The feature must only do that layer’s job. If it starts carrying another layer’s duty → redesign.
+
+### 3. Prefer existing design (no design change yet)
+
+Satisfy the need with current tables / models / CLIs / reviews / SQL if possible  
+(new CLI, new Review, new aggregation/query, new SQL — **without** changing schema meaning).
+
+Add a new table, model, rule, or layer **only** when existing design cannot express it naturally, and state:
+
+```text
+Why existing design is insufficient
+```
+
+### 4. Do not grow Source of Truth
+
+Keep primary SoT minimal. Do not persist what can be regenerated — recompute (especially Review metrics).
+
+Never: judgment → Fact; trades → Hypothesis; analysis → Position; primary data → Review.
+
+Protect SoT backward compatibility (`market_daily`, `holdings_snapshot`, …). If SoT must evolve, prefer a **new table** over mutating existing SoT semantics.
+
+### 5. Prefer long-horizon operability
+
+Prefer readable / extensible / verifiable designs over short-term smaller diffs or mixed responsibilities.
+
+Ask:
+
+> Will this be easier to understand in five years?
+
+If no → redesign.
+
+---
+
+## Design changes (additive only)
+
+When a design change is truly required (gate 3 failed):
+
+1. Prefer additive extension: new tables, optional FKs, new CLIs  
+2. Avoid changing the meaning of existing tables or rewriting meaning of stored data  
+3. Update this Rules file and `portfolio/README.md` **in the same change** — never leave docs stale vs code  
+
+---
+
+## Prohibitions
+
+- Writing judgment into Fact; trades into Hypothesis; analysis into Position; primary data into Review  
+- Implementing Decision by widening existing tables instead of new table + optional FKs  
+- Encoding peer hierarchy in schema  
+- Treating README as a competing design authority

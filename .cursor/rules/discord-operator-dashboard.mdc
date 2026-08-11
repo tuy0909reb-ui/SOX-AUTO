@@ -1,0 +1,39 @@
+---
+description: Discord is an operator dashboard — design from Human judgment needs, 5-second comprehension
+alwaysApply: true
+---
+
+# Discord Operator Dashboard Principles
+
+Parent Authority: `docs/principles/FORTRESS-HUMAN-INTERFACE-PRINCIPLES-1.0.md`  
+Taxable Discord: `docs/baselines/ASA-TAXABLE-ACCOUNT-PROTOCOL-DISCORD-OPERATOR-DASHBOARD-PRINCIPLES-1.0.md`
+
+## Fixed principles (Fortress Human Interface)
+
+1. Discord / Operator UI is **not** a log viewer — it is a Human Operator **operations dashboard**.
+2. Design starts from **what Human must decide now**, not from what can be displayed.
+3. Show only the **minimum** needed for that decision.
+4. Do **not** show information unnecessary for the decision.
+5. Completion = Human can decide next action without hesitation (≤5 seconds for normal ops).
+6. Separate Internal State from Human Display; map to operational / Fortress concepts.
+7. Display order follows Human judgment order: **命令 → 司令判断 → 作戦理由 → 戦力状況**.
+8. Peacetime short; anomaly expands detail. Never show full detail by default.
+
+## Evaluation
+
+If Human says they cannot understand the screen → **FAIL**, even if internal state is correctly mapped.
+
+Adding fields / translating jargon / explaining internals is **not** improvement by itself.
+
+## Forbidden design posture
+
+- Arranging “all displayable information”
+- Debug / log-viewer layouts for normal ops
+- Treating Draft field catalogs as permission to overload the primary screen
+
+## When proposing any Discord field
+
+Always answer:
+
+1. What Human judgment does this field support?
+2. What becomes undecidable if this field is absent?
