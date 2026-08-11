@@ -1,0 +1,7 @@
+# Semiconductor holdings structure analysis
+pypdf>=4.0
+pymupdf>=1.24
+python-dateutil>=2.8
+pandas>=2.0
+numpy>=1.24
+yfinance>=0.2
