@@ -24,7 +24,9 @@ data/ops/
 auto-scribe-ai/data/
 
 # Local debug leftovers / scrape residue
+# Note: _*.py must not swallow package markers (__init__.py)
 _*.py
+!**/__init__.py
 _*.txt
 _tmp_*/
 tmp_*/
