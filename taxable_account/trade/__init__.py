@@ -3,6 +3,7 @@
 from taxable_account.trade.discord_input import DiscordTradeInputAdapter, SOURCE_DISCORD
 from taxable_account.trade.port import TradeReportPort, TradeReportResult
 from taxable_account.trade.facts import TradeFact, TradeSide
+from taxable_account.trade.routing import GrowthRegimeRouting, SwingPositionRouting
 
 __all__ = [
     "TradeReportPort",
@@ -11,4 +12,6 @@ __all__ = [
     "TradeSide",
     "DiscordTradeInputAdapter",
     "SOURCE_DISCORD",
+    "SwingPositionRouting",
+    "GrowthRegimeRouting",
 ]

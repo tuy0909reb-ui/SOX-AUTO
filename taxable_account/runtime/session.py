@@ -27,10 +27,22 @@ from taxable_account.view.view_model import project_view_model
 
 @dataclass
 class RuntimeConfig:
-    auto_transfer: bool = True  # paper: EXIT_PENDING → TRANSFER_COMPLETE same step
-    auto_fill: bool = True  # paper: ENTRY_READY → ENTRY_FILLED same step
-    auto_exit_fill: bool = True  # paper: EXIT → EXIT_FILLED same step
+    # Paper / Replay / Simulation defaults (Decision-path shortcuts — not Live Position fact).
+    # Live ops MUST use live_ops_runtime_config() (auto_transfer/auto_exit_fill/auto_fill=False).
+    auto_transfer: bool = True  # sim: EXIT_PENDING → TRANSFER_COMPLETE same step
+    auto_fill: bool = True  # sim: ENTRY_READY → ENTRY_FILLED same step
+    auto_exit_fill: bool = True  # sim: EXIT → EXIT_FILLED same step
     discord_dry_run: bool = True
+
+
+def live_ops_runtime_config(*, discord_dry_run: bool = True, auto_fill: bool = False) -> RuntimeConfig:
+    """Live daily ops: Position completion only via HTR + Trade Fact (Ownership Decision D1/D2)."""
+    return RuntimeConfig(
+        auto_transfer=False,
+        auto_exit_fill=False,
+        auto_fill=auto_fill,
+        discord_dry_run=discord_dry_run,
+    )
 
 
 @dataclass

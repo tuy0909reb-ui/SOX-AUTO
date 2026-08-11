@@ -5,6 +5,10 @@ from __future__ import annotations
 from datetime import date
 from typing import Optional
 
+from taxable_account.domain.asset_registry import (
+    DEFAULT_ASSET_REGISTRY,
+    RoutingPolicy,
+)
 from taxable_account.domain.events import DomainEvent
 from taxable_account.domain.models import TaxableAccountState, TransitionError
 from taxable_account.domain.states import (
@@ -126,7 +130,12 @@ def apply_position_event(
                 f"DELAYED_FILL_RECOVERY only from WATCH/REENTRY_WAIT, got {ps.value}"
             )
         asset = fill_asset
-        if asset is None or asset not in (Asset.NIKKEI_LEV_1570, Asset.SEMI_282A):
+        policy = (
+            None
+            if asset is None
+            else DEFAULT_ASSET_REGISTRY.routing_policy_for(asset)
+        )
+        if asset is None or policy != RoutingPolicy.SWING_POSITION:
             raise TransitionError("DELAYED_FILL_RECOVERY requires swing fill_asset")
         if fill_price is None or fill_price <= 0:
             raise TransitionError("DELAYED_FILL_RECOVERY requires positive fill_price")

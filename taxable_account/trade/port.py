@@ -1,11 +1,14 @@
 """
-Trade Fact Input Port — validate + route to Domain Events (BUY/SELL).
+Trade Fact Input Port — validate + route via Asset Registry / Routing Policy.
 
 Does not re-run Selection / Detection / Sensors.
 Internal events (DELAYED_FILL_RECOVERY, ABNORMAL_EXIT) are never Human fields.
 
 quantity is validated/stored as Trade Fact only — never passed into
 Position / Risk / Time Exit / Selection paths.
+
+Dispatch:
+  asset → Registry lookup → routing_policy → policy handler
 """
 
 from __future__ import annotations
@@ -15,17 +18,17 @@ from datetime import date
 from pathlib import Path
 from typing import Any, Optional, Union
 
-from taxable_account.domain.events import DomainEvent
+from taxable_account.domain.asset_registry import (
+    DEFAULT_ASSET_REGISTRY,
+    AssetRegistry,
+)
 from taxable_account.domain.models import TransitionError
-from taxable_account.domain.states import Asset, PositionState, RegimeState
 from taxable_account.engine import TaxableAccountEngine
 from taxable_account.trade.facts import TradeFact, TradeReportRequest, TradeSide
 from taxable_account.trade.journal import TradeFactJournal
+from taxable_account.trade.routing import handler_for, resolve_policy
 
 PathLike = Union[str, Path]
-
-_SWING_ASSETS = (Asset.NIKKEI_LEV_1570, Asset.SEMI_282A)
-_WATCH_LIKE = (PositionState.WATCH, PositionState.REENTRY_WAIT)
 
 
 @dataclass(frozen=True)
@@ -51,9 +54,11 @@ class TradeReportPort:
         self,
         engine: TaxableAccountEngine,
         journal: TradeFactJournal,
+        registry: Optional[AssetRegistry] = None,
     ) -> None:
         self.engine = engine
         self.journal = journal
+        self.registry = registry or DEFAULT_ASSET_REGISTRY
 
     def submit(self, request: TradeReportRequest) -> TradeReportResult:
         request.ensure_id()
@@ -88,10 +93,10 @@ class TradeReportPort:
             return TradeReportResult(accepted=False, fact=fact, error=reject)
 
         try:
-            if request.side == TradeSide.BUY:
-                routed, events = self._route_buy(request, account)
-            else:
-                routed, events = self._route_sell(request, account)
+            _, policy = resolve_policy(self.registry, request.asset)
+            assert policy is not None  # validated above
+            handler = handler_for(policy)
+            routed, events = handler.route(request, account, self.engine)
         except TransitionError as exc:
             fact = TradeFact(
                 **base_kwargs,
@@ -135,104 +140,12 @@ class TradeReportPort:
         if request.report_id and self.journal.has_report_id(request.report_id):
             return "duplicate_report_id"
 
-        if request.side == TradeSide.BUY:
-            return self._validate_buy(request, account)
-        return self._validate_sell(request, account)
+        reject, policy = resolve_policy(self.registry, request.asset)
+        if reject is not None:
+            return reject
 
-    def _validate_buy(self, request: TradeReportRequest, account) -> Optional[str]:
-        if account.position_state == PositionState.POSITION_ACTIVE:
-            return "already_position_active"
-        if account.position_state == PositionState.EXIT:
-            return "exit_in_progress"
-        if account.regime_state == RegimeState.GROWTH_ACTIVE:
-            return "growth_regime_buy_forbidden"
-        if account.regime_state == RegimeState.EXIT_PENDING:
-            return "exit_pending_buy_forbidden"
-        if request.asset not in _SWING_ASSETS:
-            return "asset_not_swing_sleeve"
-        return None
-
-    def _validate_sell(self, request: TradeReportRequest, account) -> Optional[str]:
-        if account.position_state not in (PositionState.POSITION_ACTIVE, PositionState.EXIT):
-            return "sell_state_mismatch"
-        if account.held_asset != request.asset:
-            return "sell_asset_mismatch"
-        return None
-
-    def _route_buy(
-        self,
-        request: TradeReportRequest,
-        account,
-    ) -> tuple[str, list[str]]:
-        events: list[str] = []
-
-        if (
-            account.position_state == PositionState.ENTRY_READY
-            and account.asset == request.asset
-        ):
-            self.engine.on_event(
-                DomainEvent.ENTRY_FILLED,
-                fill_asset=request.asset,
-                fill_price=float(request.trade_price),
-                fill_date=request.trade_date,
-            )
-            events.append(DomainEvent.ENTRY_FILLED.value)
-            return DomainEvent.ENTRY_FILLED.value, events
-
-        if (
-            account.regime_state == RegimeState.SWING_ACTIVE
-            and account.held_asset == Asset.CASH
-            and account.position_state in _WATCH_LIKE
-            and request.asset in _SWING_ASSETS
-        ):
-            self.engine.on_event(
-                DomainEvent.DELAYED_FILL_RECOVERY,
-                fill_asset=request.asset,
-                fill_price=float(request.trade_price),
-                fill_date=request.trade_date,
-                signal_date=account.signal_date or request.trade_date,
-            )
-            events.append(DomainEvent.DELAYED_FILL_RECOVERY.value)
-            events.append(DomainEvent.ENTRY_FILLED.value)
-            return DomainEvent.DELAYED_FILL_RECOVERY.value, events
-
-        if account.position_state == PositionState.ENTRY_READY:
-            raise TransitionError("entry_ready_asset_mismatch")
-        raise TransitionError("no_valid_buy_route")
-
-    def _route_sell(
-        self,
-        request: TradeReportRequest,
-        account,
-    ) -> tuple[str, list[str]]:
-        """Route SELL Fact through existing Exit path only (no new PositionState)."""
-        events: list[str] = []
-
-        # Case A — Protocol already entered EXIT (TIME/STOP/ABNORMAL/…); Fact fills it.
-        if account.position_state == PositionState.EXIT:
-            self.engine.on_event(
-                DomainEvent.EXIT_FILLED,
-                fill_price=float(request.trade_price),
-                fill_date=request.trade_date,
-            )
-            events.append(DomainEvent.EXIT_FILLED.value)
-            return DomainEvent.EXIT_FILLED.value, events
-
-        # Case B — broker sell confirmed while Runtime still ACTIVE.
-        # Uses existing ABNORMAL_EXIT → EXIT_FILLED path (same as ops --record-exit).
-        # Human does not name the internal event.
-        if account.position_state == PositionState.POSITION_ACTIVE:
-            self.engine.on_event(DomainEvent.ABNORMAL_EXIT)
-            events.append(DomainEvent.ABNORMAL_EXIT.value)
-            self.engine.on_event(
-                DomainEvent.EXIT_FILLED,
-                fill_price=float(request.trade_price),
-                fill_date=request.trade_date,
-            )
-            events.append(DomainEvent.EXIT_FILLED.value)
-            return DomainEvent.EXIT_FILLED.value, events
-
-        raise TransitionError("no_valid_sell_route")
+        handler = handler_for(policy)  # type: ignore[arg-type]
+        return handler.validate(request, account)
 
 
 def default_journal_path(state_file: Optional[PathLike] = None) -> Path:

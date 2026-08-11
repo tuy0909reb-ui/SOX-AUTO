@@ -8,7 +8,9 @@ Examples:
   python -m taxable_account.ops --state-file ... --record-entry NIKKEI_LEV_1570 1000 --entry-date 2024-03-05
   python -m taxable_account.ops --state-file ... --record-exit 840 --exit-date 2024-03-07
 
-Live premise (HTR Port): auto_fill=False by default.
+Live premise (Ownership Alignment CR-1.0):
+  auto_fill=False, auto_transfer=False, auto_exit_fill=False.
+  Position completion only after Human Trade Report + Trade Fact.
 Trade Report is the Human/Broker Fact boundary (BUY/SELL); --record-entry remains ENTRY_READY-only.
 Does not place broker orders. Discord send only with --discord-live + webhook.
 """
@@ -32,7 +34,10 @@ from taxable_account.domain.models import TransitionError
 from taxable_account.domain.states import Asset
 from taxable_account.engine import TaxableAccountEngine
 from taxable_account.ops import render_ops_text
-from taxable_account.runtime.session import RuntimeConfig, TaxableAccountRuntime
+from taxable_account.runtime.session import (
+    TaxableAccountRuntime,
+    live_ops_runtime_config,
+)
 from taxable_account.state.file_store import FileStateStore
 from taxable_account.state.state_store import InMemoryStateStore
 from taxable_account.view.discord_adapter import project_discord_payload
@@ -310,11 +315,10 @@ def main(argv: list[str] | None = None) -> int:
 
             rt = TaxableAccountRuntime(
                 adapter,
-                config=RuntimeConfig(
-                    auto_transfer=True,
-                    # Live default False (HTR Port Freeze); paper may pass --auto-fill
-                    auto_fill=bool(args.auto_fill) and not bool(args.no_auto_fill),
+                config=live_ops_runtime_config(
                     discord_dry_run=not args.discord_live,
+                    # Live default False; --auto-fill is paper/simulation opt-in only
+                    auto_fill=bool(args.auto_fill) and not bool(args.no_auto_fill),
                 ),
                 engine=eng,
             )

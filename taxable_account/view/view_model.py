@@ -21,6 +21,8 @@ from taxable_account.domain.states import (
     RiskStatus,
     SelectionReason,
 )
+from taxable_account.view.human_display import next_operation
+
 from taxable_account.position.hold_days import business_hold_days
 
 SCHEMA_VERSION = "2.1"
@@ -85,34 +87,34 @@ def _decision_reasons(state: TaxableAccountState) -> list[str]:
     sig = state.signals
 
     if regime == RegimeState.GROWTH_ACTIVE and not state.alert_on:
-        reasons.append("Growth条件維持")
+        reasons.append("Growth Phase継続")
     if state.alert_on or sig.dd15_ma200:
         if regime in (RegimeState.EXIT_PENDING, RegimeState.SWING_ACTIVE):
-            reasons.append("dd15_ma200 Alert発生")
+            reasons.append("Growth警戒によりSwingへ移行")
         elif regime == RegimeState.GROWTH_ACTIVE and state.alert_on:
-            reasons.append("dd15_ma200 Alert発生")
+            reasons.append("Growth警戒によりSwingへ移行")
     if regime == RegimeState.EXIT_PENDING:
         reasons.append("Growth撤退・Swing移管処理中")
     if regime == RegimeState.SWING_ACTIVE:
         if sig.crash_15 or state.selection_reason == SelectionReason.CRASH_15:
-            reasons.append("crash_15成立")
+            reasons.append("暴落反発フェイズ")
         elif sig.semi_signal or state.selection_reason == SelectionReason.SEMI_SIGNAL:
-            reasons.append("semi_signal成立")
+            reasons.append("半導体Swingフェイズ")
         elif state.selection_reason == SelectionReason.FLAT:
             reasons.append("Swing条件未成立（CASH）")
     if regime == RegimeState.REENTRY_PENDING:
         if sig.recovery_model_b_met:
-            reasons.append("Recovery Model B充足")
+            reasons.append("Growth復帰条件を充足")
         else:
             days = int(sig.recovery_b_days or 0)
-            reasons.append(f"Recovery Model B進行中（{days}/20）")
+            reasons.append(f"Growth復帰条件の確認中（{days}/20）")
     if (
         state.held_asset == Asset.NIKKEI_LEV_1570
         and state.risk_control.status == RiskStatus.ACTIVE
     ):
-        reasons.append("1570 Risk Stop ACTIVE")
+        reasons.append("保有中Risk Stop監視")
     if state.risk_control.status == RiskStatus.TRIGGERED:
-        reasons.append("1570 Risk Stop TRIGGERED")
+        reasons.append("1570 Risk Stop発動")
     if pos == PositionState.REENTRY_WAIT:
         reasons.append("Exit後・再評価待ち")
     if pos == PositionState.ENTRY_READY:
@@ -165,21 +167,21 @@ def _infer_previous_asset(
 
 def _capital_flow_reason(state: TaxableAccountState) -> str:
     if state.regime_state == RegimeState.GROWTH_ACTIVE and not state.alert_on:
-        return "Growth条件維持"
+        return "Growth Phase継続"
     if state.regime_state == RegimeState.EXIT_PENDING:
-        return "dd15_ma200 Alert ACTIVE"
+        return "Growth警戒によりSwingへ移行"
     if state.regime_state == RegimeState.REENTRY_PENDING:
         if state.signals.recovery_model_b_met:
-            return "Recovery Model B COMPLETE"
-        return "Recovery Model B waiting"
+            return "Growth復帰条件を充足"
+        return "Growth復帰条件の確認中"
     if state.position_state == PositionState.REENTRY_WAIT:
         if state.regime_state == RegimeState.SWING_ACTIVE:
             return "Freeze Re-evaluation"
-        return "Recovery Model B waiting"
+        return "Growth復帰条件の確認中"
     if state.signals.crash_15 or state.selection_reason == SelectionReason.CRASH_15:
-        return "crash_15 ACTIVE"
+        return "暴落反発フェイズ"
     if state.signals.semi_signal or state.selection_reason == SelectionReason.SEMI_SIGNAL:
-        return "semi_signal ACTIVE"
+        return "半導体Swingフェイズ"
     if state.regime_state == RegimeState.SWING_ACTIVE:
         return "Swing Flat / 条件待ち"
     return "状態監視"
@@ -242,17 +244,17 @@ def _capital_flow(
 
     steps: list[dict[str, str]] = [{"label": current_label, "status": "current"}]
     if regime == RegimeState.GROWTH_ACTIVE:
-        steps.append({"label": "dd15_ma200発生でSwing移行", "status": "candidate"})
+        steps.append({"label": "警戒発生でSwing移行", "status": "candidate"})
     elif regime == RegimeState.EXIT_PENDING:
         steps.append({"label": "Swing移行", "status": "active"})
     elif regime == RegimeState.SWING_ACTIVE:
         steps.append({"label": "Swing運用中", "status": "active"})
     else:
-        steps.append({"label": "野村再投入（Recovery Model B）", "status": "active"})
+        steps.append({"label": "野村再投入（Growth復帰）", "status": "active"})
 
     swing_candidates = [
         {
-            "when": "crash_15成立",
+            "when": "暴落反発フェイズ",
             "asset_code": Asset.NIKKEI_LEV_1570.value,
             "asset_display": ASSET_DISPLAY[Asset.NIKKEI_LEV_1570],
             "active": regime == RegimeState.SWING_ACTIVE
@@ -262,7 +264,7 @@ def _capital_flow(
             ),
         },
         {
-            "when": "semi_signal成立",
+            "when": "半導体Swingフェイズ",
             "asset_code": Asset.SEMI_282A.value,
             "asset_display": ASSET_DISPLAY[Asset.SEMI_282A],
             "active": regime == RegimeState.SWING_ACTIVE
@@ -320,7 +322,7 @@ def _entry_timing(state: TaxableAccountState) -> dict[str, Any]:
             "asset_code": Asset.NOMURA_WORLD_SEMI.value,
             "asset_display": ASSET_DISPLAY[Asset.NOMURA_WORLD_SEMI],
             "status": "WAIT",
-            "reason": "Recovery Model B incomplete",
+            "reason": "Growth復帰条件の確認中",
         }
     if state.position_state == PositionState.POSITION_ACTIVE:
         return {
@@ -330,7 +332,7 @@ def _entry_timing(state: TaxableAccountState) -> dict[str, Any]:
             "reason": "保有中（追加Entryなし）",
         }
     if state.position_state == PositionState.ENTRY_READY and state.asset != Asset.CASH:
-        reason = "crash_15 PASS" if state.asset == Asset.NIKKEI_LEV_1570 else "semi_signal PASS"
+        reason = "暴落反発フェイズ" if state.asset == Asset.NIKKEI_LEV_1570 else "半導体Swingフェイズ"
         return {
             "asset_code": state.asset.value,
             "asset_display": ASSET_DISPLAY[state.asset],
@@ -338,10 +340,10 @@ def _entry_timing(state: TaxableAccountState) -> dict[str, Any]:
             "reason": reason,
         }
     if state.signals.crash_15:
-        reason = "crash_15 PASS（Entry処理待ち）"
+        reason = "暴落反発フェイズ（投入待ち）"
         code = Asset.NIKKEI_LEV_1570
     elif state.signals.semi_signal:
-        reason = "semi_signal PASS（Entry処理待ち）"
+        reason = "半導体Swingフェイズ（投入待ち）"
         code = Asset.SEMI_282A
     else:
         reason = "条件未成立"
@@ -402,31 +404,8 @@ def _entry_status(
 
 
 def _next_action(state: TaxableAccountState) -> str:
-    if (
-        state.position_state == PositionState.POSITION_ACTIVE
-        and state.held_asset == Asset.NIKKEI_LEV_1570
-        and state.risk_control.status == RiskStatus.ACTIVE
-    ):
-        return "Risk Stop monitoring"
-    if state.position_state == PositionState.POSITION_ACTIVE and state.held_asset == Asset.SEMI_282A:
-        return "Existing Exit monitoring"
-    if state.regime_state == RegimeState.REENTRY_PENDING:
-        if state.signals.recovery_model_b_met:
-            return "Nomura re-entry (Recovery Model B COMPLETE)"
-        return "Recovery Model B waiting"
-    if state.position_state == PositionState.REENTRY_WAIT:
-        return "Freeze Re-evaluation"
-    if state.position_state == PositionState.ENTRY_READY:
-        return f"Entry READY — {ASSET_DISPLAY[state.asset]}"
-    if state.regime_state == RegimeState.EXIT_PENDING:
-        return "Swing transfer in progress"
-    if state.regime_state == RegimeState.GROWTH_ACTIVE:
-        return "dd15_ma200 Alert monitoring"
-    if state.signals.crash_15:
-        return "crash_15 Entry monitoring"
-    if state.signals.semi_signal:
-        return "semi_signal Entry monitoring"
-    return "状態監視"
+    return next_operation(state)
+
 
 
 def _reference_block(
@@ -593,35 +572,35 @@ def render_ops_text(view_model: dict[str, Any]) -> str:
     state_disp = "MAINTAIN" if cs["decision"] == "MAINTAIN" else cs["position_state"]
 
     lines = [
-        "特定口座 Protocol",
+        "特定口座 運用判断",
         "",
-        "State:",
+        "運用フェイズ:",
         state_disp,
         "",
-        "Asset:",
+        "現在ポジション:",
         cs["asset"]["display_name"],
         "",
-        "Decision:",
+        "現在判断:",
         decision_disp,
     ]
     if signal:
         lines += ["", "Signal:", signal]
     lines += [
         "",
-        "Capital Flow:",
+        "資金移動フロー:",
         f"Previous: {cf['previous_asset']}",
         f"Current: {cf['current_asset']}",
         f"Next: {cf['next_candidate']}",
         f"Reason: {cf['reason']}",
         "",
-        "Entry Status:",
+        "Entry状態:",
         es.get("status_label", es["status"]),
         f"条件成立: {es.get('signal_date') or '—'}",
         f"Entry: {es.get('entry_date') or '—'}",
         f"Candidate: {es['candidate']}",
         f"Reason: {es['blocking_reason'] or es['status']}",
         "",
-        "Next Action:",
+        "次の操作:",
         view_model.get("next_action", ""),
         "",
         "Reference:",
@@ -639,7 +618,7 @@ def render_ops_text(view_model: dict[str, Any]) -> str:
     if risk.get("applicable"):
         lines += [
             "",
-            "Risk Control:",
+            "Risk:",
             f"Risk Stop: {risk.get('stop_price')} (-15%)",
             f"Distance: {_pct(risk.get('distance_pct'))}",
             f"Status: {risk.get('status')}",

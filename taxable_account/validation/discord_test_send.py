@@ -27,15 +27,10 @@ EVIDENCE_DIR = (
 )
 
 EXPECTED_FIELD_ORDER = [
-    "Current State",
-    "Current Decision",
-    "Entry状態",
-    "Current Asset",
-    "保有期間 / Exit監視",
-    "Capital Flow",
-    "Next Action",
-    "Reference Numbers",
-    "Risk Control",
+    "命令",
+    "司令判断",
+    "作戦理由",
+    "戦力状況",
 ]
 
 
@@ -133,7 +128,7 @@ def execute_discord_test_send(*, dry_run: bool = False) -> DiscordTestSendReport
     vm = build_sample_growth_view_model()
     base = project_discord_payload(vm, dry_run=True)
 
-    content = f"【TEST SEND / 特定口座】{base.content.replace('【特定口座】', '', 1).strip()}"
+    content = f"【TEST SEND】\n{base.content}"
     embed = dict(base.embed)
     embed["description"] = (
         "Phase 8.1 controlled UI test — deterministic sample (NOT a trading signal)"
@@ -148,9 +143,7 @@ def execute_discord_test_send(*, dry_run: bool = False) -> DiscordTestSendReport
 
     names = [f["name"] for f in disc.embed.get("fields", [])]
     field_lens = {f["name"]: len(f.get("value") or "") for f in disc.embed.get("fields", [])}
-    ref = next((f for f in disc.embed.get("fields", []) if f["name"] == "Reference Numbers"), None)
-    risk = next((f for f in disc.embed.get("fields", []) if f["name"] == "Risk Control"), None)
-    ref_val = (ref or {}).get("value") or ""
+    fm = {f["name"]: (f.get("value") or "") for f in disc.embed.get("fields", [])}
 
     checks = [
         _check(
@@ -173,13 +166,15 @@ def execute_discord_test_send(*, dry_run: bool = False) -> DiscordTestSendReport
         ),
         _check(
             "reference_numbers_visible",
-            "108.5" in ref_val and ("+8.50%" in ref_val or "8.5" in ref_val),
-            ref_val[:240],
+            fm.get("命令") == "待機（介入不要）"
+            and fm.get("司令判断") == "防衛維持"
+            and fm.get("戦力状況") == "世界半導体株投資",
+            str(fm)[:240],
         ),
         _check(
             "risk_na",
-            risk is not None and (risk.get("value") or "").strip() == "N/A",
-            (risk or {}).get("value"),
+            fm.get("作戦理由") == "成長方針を継続",
+            fm.get("作戦理由", "")[:240],
         ),
         _check(
             "no_field_truncation",
@@ -194,7 +189,7 @@ def execute_discord_test_send(*, dry_run: bool = False) -> DiscordTestSendReport
         _check(
             "no_protocol_changes",
             True,
-            "UI delivery — Entry Timing fields only; Entry/Exit rules unchanged",
+            "UI delivery — Fortress 4-field HI mapping only; Entry/Exit rules unchanged",
         ),
     ]
 

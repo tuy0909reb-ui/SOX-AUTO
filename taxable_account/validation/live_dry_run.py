@@ -24,7 +24,7 @@ from taxable_account.engine import TaxableAccountEngine
 from taxable_account.runtime.session import RuntimeConfig, TaxableAccountRuntime
 from taxable_account.state.file_store import FileStateStore
 from taxable_account.view.discord_adapter import project_discord_payload
-from taxable_account.view.view_model import project_view_model, render_ops_text
+from taxable_account.view.view_model import project_view_model
 from taxable_account.view.webhook_config import resolve_webhook_url, webhook_source_label
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -33,15 +33,10 @@ EVIDENCE_DIR = (
 )
 
 ONE_SCREEN_FIELDS = {
-    "Current State",
-    "Current Decision",
-    "Entry状態",
-    "Current Asset",
-    "保有期間 / Exit監視",
-    "Capital Flow",
-    "Next Action",
-    "Reference Numbers",
-    "Risk Control",
+    "命令",
+    "司令判断",
+    "作戦理由",
+    "戦力状況",
 }
 
 
@@ -191,20 +186,19 @@ def run_live_dry_run(
     disc = project_discord_payload(vm, dry_run=True)
     report.discord_content = disc.content
     fields = {f["name"] for f in disc.embed.get("fields", [])}
-    text = render_ops_text(vm)
     report.checks.append(
         _ok(
             "onescreen_display",
             ONE_SCREEN_FIELDS.issubset(fields)
-            and "特定口座 Protocol" in text
-            and disc.embed.get("title") == "特定口座 Protocol",
+            and disc.embed.get("title") == "【大要塞｜特定口座】"
+            and "命令" in fields,
             f"fields={sorted(fields)}",
         )
     )
     report.checks.append(
         _ok(
             "viewmodel_to_adapter",
-            disc.content.startswith("【特定口座】") and vm["schema_version"] == "2.1",
+            disc.content.startswith("【大要塞｜特定口座】") and vm["schema_version"] == "2.1",
             disc.content[:80],
         )
     )

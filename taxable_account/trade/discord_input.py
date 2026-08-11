@@ -1,6 +1,7 @@
 """Discord Trade Report Input Adapter — transport only.
 
 Maps Discord slash/confirm fields → TradeReportRequest → TradeReportPort.
+Aliases resolve via Asset Registry (not local hardcode).
 No Entry/Exit judgment. No Internal Event names. No State writes.
 """
 
@@ -11,21 +12,26 @@ from datetime import date
 from typing import Iterable, Optional
 from uuid import uuid4
 
+from taxable_account.domain.asset_registry import (
+    DEFAULT_ASSET_REGISTRY,
+    AssetRegistry,
+)
+from taxable_account.domain.models import TaxableAccountState
 from taxable_account.domain.states import Asset
 from taxable_account.trade.facts import TradeReportRequest, TradeSide
 from taxable_account.trade.port import TradeReportPort, TradeReportResult
 
 SOURCE_DISCORD = "DISCORD"
 
-_ASSET_ALIASES = {
-    "1570": Asset.NIKKEI_LEV_1570,
-    "NIKKEI_LEV_1570": Asset.NIKKEI_LEV_1570,
-    "282A": Asset.SEMI_282A,
-    "SEMI_282A": Asset.SEMI_282A,
-    "NOMURA": Asset.NOMURA_WORLD_SEMI,
-    "NOMURA_WORLD_SEMI": Asset.NOMURA_WORLD_SEMI,
-    "CASH": Asset.CASH,
-}
+
+def parse_trade_date(raw: str) -> date:
+    """HI input dates → date. Accepts YYYYMMDD or YYYY-MM-DD. Fact schema unchanged."""
+    text = (raw or "").strip()
+    if not text:
+        raise ValueError("trade_date_required")
+    if len(text) == 8 and text.isdigit():
+        return date(int(text[0:4]), int(text[4:6]), int(text[6:8]))
+    return date.fromisoformat(text[:10])
 
 
 @dataclass(frozen=True)
@@ -40,15 +46,18 @@ class DiscordTradeDraft:
     quantity: float
     operator_id: str
 
-    def preview_text(self) -> str:
-        return (
-            f"Trade Report draft\n"
-            f"report_id={self.report_id}\n"
-            f"side={self.side.value} asset={self.asset.value}\n"
-            f"trade_date={self.trade_date.isoformat()} "
-            f"trade_price={self.trade_price} quantity={self.quantity}\n"
-            f"source={SOURCE_DISCORD}\n"
-            f"Confirm to submit Fact (not a Protocol command)."
+    def preview_text(self, state: Optional[TaxableAccountState] = None) -> str:
+        from taxable_account.view.human_display import format_trade_draft_preview
+
+        held = state.held_asset if state is not None else None
+        return format_trade_draft_preview(
+            side=self.side,
+            asset=self.asset,
+            trade_date=self.trade_date.isoformat(),
+            trade_price=self.trade_price,
+            quantity=self.quantity,
+            report_id=self.report_id,
+            held_asset=held,
         )
 
 
@@ -60,8 +69,10 @@ class DiscordTradeInputAdapter:
         port: TradeReportPort,
         *,
         allowed_operator_ids: Optional[Iterable[str]] = None,
+        registry: Optional[AssetRegistry] = None,
     ) -> None:
         self.port = port
+        self.registry = registry or getattr(port, "registry", None) or DEFAULT_ASSET_REGISTRY
         self._allowed = {str(x).strip() for x in (allowed_operator_ids or []) if str(x).strip()}
         self._pending: dict[str, DiscordTradeDraft] = {}
 
@@ -71,10 +82,7 @@ class DiscordTradeInputAdapter:
         return str(operator_id) in self._allowed
 
     def parse_asset(self, raw: str) -> Asset:
-        key = raw.strip().upper().replace(" ", "_")
-        if key in _ASSET_ALIASES:
-            return _ASSET_ALIASES[key]
-        return Asset(key)
+        return self.registry.resolve(raw)
 
     def parse_side(self, raw: str) -> TradeSide:
         return TradeSide(raw.strip().upper())
@@ -99,7 +107,7 @@ class DiscordTradeInputAdapter:
             report_id=rid,
             asset=self.parse_asset(asset),
             side=self.parse_side(side),
-            trade_date=date.fromisoformat(trade_date),
+            trade_date=parse_trade_date(trade_date),
             trade_price=float(trade_price),
             quantity=float(quantity),
             operator_id=str(operator_id),

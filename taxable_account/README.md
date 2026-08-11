@@ -37,7 +37,8 @@ Market Data → Detection → Decision/Selection → State
 ## Ops CLI (paper / daily)
 
 ```text
-# Live: auto_fill off by default (HTR Port / Fact Journal v1.0)
+# Live: auto_fill / auto_transfer / auto_exit_fill off
+# (Position completion only via HTR + Trade Fact — Ownership Alignment CR-1.0)
 python -m taxable_account.ops --as-of 2024-01-05 --state-file data/ops/taxable_state.json
 python -m taxable_account.ops --state-file data/ops/taxable_state.json --view-state-only
 
