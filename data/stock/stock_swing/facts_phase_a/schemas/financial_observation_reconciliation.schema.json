@@ -1,0 +1,35 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "difference_note": {},
+    "event_id": {},
+    "gemini_raw_row_id": {},
+    "gemini_value_text": {},
+    "match_status": {
+      "enum": [
+        "exact",
+        "candidate",
+        "conflict",
+        "official_only",
+        "gemini_only",
+        "unresolved"
+      ]
+    },
+    "observation_id": {},
+    "official_unit_code": {},
+    "official_value_numeric": {},
+    "reconciliation_id": {}
+  },
+  "required": [
+    "reconciliation_id",
+    "observation_id",
+    "event_id",
+    "gemini_raw_row_id",
+    "gemini_value_text",
+    "official_value_numeric",
+    "official_unit_code",
+    "match_status",
+    "difference_note"
+  ],
+  "type": "object"
+}

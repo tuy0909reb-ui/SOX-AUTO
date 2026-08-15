@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "resolution_id",
+    "event_id",
+    "old_announcement_date",
+    "new_announcement_date",
+    "event_id_preserved",
+    "date_resolution_method",
+    "timestamp_preserved_as",
+    "reason"
+  ],
+  "type": "object"
+}

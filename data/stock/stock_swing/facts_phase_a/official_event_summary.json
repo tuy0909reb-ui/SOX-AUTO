@@ -1,0 +1,286 @@
+{
+  "as_of": "2026-08-15",
+  "collection_status_by_security": {
+    "285A": {
+      "errors": [],
+      "event_count": 7,
+      "status": "ok"
+    },
+    "3436": {
+      "errors": [],
+      "event_count": 27,
+      "status": "ok"
+    },
+    "4062": {
+      "errors": [],
+      "event_count": 28,
+      "status": "ok"
+    },
+    "5801": {
+      "errors": [],
+      "event_count": 27,
+      "status": "ok"
+    },
+    "5803": {
+      "errors": [],
+      "event_count": 26,
+      "status": "ok"
+    },
+    "6146": {
+      "errors": [],
+      "event_count": 26,
+      "status": "ok"
+    },
+    "6525": {
+      "errors": [],
+      "event_count": 11,
+      "status": "ok"
+    },
+    "6857": {
+      "errors": [],
+      "event_count": 26,
+      "status": "ok"
+    },
+    "6920": {
+      "errors": [],
+      "event_count": 25,
+      "status": "ok"
+    },
+    "7011": {
+      "errors": [],
+      "event_count": 26,
+      "status": "ok"
+    },
+    "7012": {
+      "errors": [],
+      "event_count": 26,
+      "status": "ok"
+    },
+    "7735": {
+      "errors": [],
+      "event_count": 32,
+      "status": "ok"
+    },
+    "8035": {
+      "errors": [],
+      "event_count": 27,
+      "status": "ok"
+    },
+    "8306": {
+      "errors": [],
+      "event_count": 31,
+      "status": "ok"
+    }
+  },
+  "completion_verdict": "modify",
+  "gemini_raw_sha256": "0653e78f753dcfd47c09c21f878bcfcacefc9a2abd2a178b9cb9da7185185507",
+  "generated_at": "2026-08-15T13:49:04.293012Z",
+  "missing_reason_counts": {},
+  "official_event_count": 345,
+  "official_events_by_security": {
+    "285A": 7,
+    "3436": 27,
+    "4062": 28,
+    "5801": 27,
+    "5803": 26,
+    "6146": 26,
+    "6525": 11,
+    "6857": 26,
+    "6920": 25,
+    "7011": 26,
+    "7012": 26,
+    "7735": 32,
+    "8035": 27,
+    "8306": 31
+  },
+  "phase": "A-next-official-events",
+  "phase_a_compatibility": {
+    "earnings_event_candidates_preserved": true,
+    "legacy_reconciliation_untouched": true,
+    "market_observation_preserved": true,
+    "raw_external_preserved": true
+  },
+  "reconciliation": {
+    "candidate": 5,
+    "exact": 3,
+    "unmatched": 431
+  },
+  "securities_without_official_events": [],
+  "source_ids_sample": [
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-76e0b33aa27457b783896e5f7f4ac250",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120260806513575.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-2b23ab0f482350c79fc004aa1cdc58cc",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120250806532719.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-5467c1d629be5c189f23fb3a195121dc",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120251106589866.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-89063a6de9595fa5a9255c182dabdd4d",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120260206550168.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-93629d6c569e5a44af0b8ac62abcb9c0",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120260514532598.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-2200eff20e1752d793348a8b1d42c330",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120240807565346.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-d8c70528c4e8535e8c60fc7dfbaccf6a",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120241106512855.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-43cda4b8bede5b1da111d77130b36b2d",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120250207566881.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-71733b5ffbcc5ddfb0360663192fb376",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120250512541636.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-89cd283a016b59e3b66f645b2f512107",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120230809538873.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-31e884d761ae5f109494fc7b40522f79",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120231107581045.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-3045818b9347564580d8fc203917f84c",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120240207528601.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-480897d17a59535f872f48fa6b7fb516",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120240510590127.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-38f806ddfbed5e49bbd234da5b6ac6c7",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120220630593013.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-19018e4b79345dd6b565835d3a3b9eb6",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120220926535901.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-83e3d2c47fef548fae62e4215fc42a64",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120230208503478.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-5bcc080966315d059ca91338c3030498",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120230511567157.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-20971e29c39054539030fe76b18b05d3",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120210630459430.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-7492b5f66b4457eb93290be64def66d4",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120210928403433.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-8f33642b0ca551158c20226b4c5a6edb",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120211223559873.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-b2096f51f55a5ca3a55b01e7f68ef1f8",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120220318508240.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-5af5b8feeed152efb401685a95b0f8d9",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120200629454639.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-dab0b2eb3e115f49935eac2226f3edfb",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120200910491177.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-df1f658401865e1e8433614d52b541e1",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120201222437494.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-e31ea012a03e5c73b5b1f4d4679c6208",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120210316479525.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-9f5fc08dde9550b6afd872c57cc1b99a",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120200401488523.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-68e6608988e554e7b50a1fc973c1dec0",
+      "url": "https://www2.jpx.co.jp/disc/285A0/140120260731505265.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-2f50e0b1c3dd56bf9300e675759253f6",
+      "url": "https://www2.jpx.co.jp/disc/285A0/140120250808536248.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-405418a53c325b5f909ca765cfb22245",
+      "url": "https://www2.jpx.co.jp/disc/285A0/140120251113599856.pdf"
+    },
+    {
+      "provider": "IRBANK→tdnet",
+      "source_id": "source-ab7cb78e885f560ea1a6ecaaeb001b45",
+      "url": "https://www2.jpx.co.jp/disc/285A0/140120260212556330.pdf"
+    }
+  ],
+  "timestamp_quality": {
+    "date_only": 345
+  },
+  "universe": [
+    "5803",
+    "285A",
+    "6857",
+    "6146",
+    "6920",
+    "4062",
+    "6525",
+    "5801",
+    "8035",
+    "7735",
+    "3436",
+    "7011",
+    "7012",
+    "8306"
+  ],
+  "unresolved": [
+    "EDINET API key path not used; inventory currently IRBANK-mediated.",
+    "Announcement times from secondary text are retained only in announcement_datetime_raw.",
+    "datetime_confirmed requires issuer/TDnet primary timestamp elevation.",
+    "Fiscal-year-end remains title-derived / hint where not singularly evidenced."
+  ]
+}

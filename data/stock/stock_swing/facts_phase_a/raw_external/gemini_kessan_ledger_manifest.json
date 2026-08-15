@@ -1,0 +1,22 @@
+{
+  "columns": [
+    "銘柄コード",
+    "銘柄名",
+    "決算発表日",
+    "対象会計期間",
+    "四半期区分",
+    "発表時点の会社予想",
+    "発表時点の実績",
+    "業績予想修正",
+    "決算資料URL",
+    "決算説明資料URL",
+    "主要材料",
+    "市場予想コンセンサス",
+    "データ取得元"
+  ],
+  "content_sha256": "0653e78f753dcfd47c09c21f878bcfcacefc9a2abd2a178b9cb9da7185185507",
+  "immutability_rule": "The source CSV is never modified by this collector.",
+  "imported_at": "2026-08-15T13:16:40.819204Z",
+  "raw_file_path": "data/stock/stock_swing/research/kessan_ledger.csv",
+  "row_count": 103
+}

@@ -1,0 +1,11 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "reconciliation_id",
+    "raw_row_id",
+    "event_id",
+    "match_status",
+    "notes"
+  ],
+  "type": "object"
+}

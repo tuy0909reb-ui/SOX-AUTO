@@ -1,0 +1,14 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "document_id",
+    "event_id",
+    "source_id",
+    "provider",
+    "source_priority",
+    "url",
+    "document_type",
+    "retrieved_at"
+  ],
+  "type": "object"
+}

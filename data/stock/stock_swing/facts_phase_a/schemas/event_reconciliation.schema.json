@@ -1,0 +1,23 @@
+{
+  "additionalProperties": false,
+  "match_status_enum": [
+    "exact",
+    "candidate",
+    "conflict",
+    "official_only",
+    "gemini_only",
+    "unresolved"
+  ],
+  "required": [
+    "reconciliation_id",
+    "raw_row_id",
+    "official_event_id",
+    "match_status",
+    "match_keys_used",
+    "resolution_reason",
+    "gemini_value",
+    "cursor_value",
+    "difference_note"
+  ],
+  "type": "object"
+}

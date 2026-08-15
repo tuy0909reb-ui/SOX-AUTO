@@ -1,0 +1,11 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "source_id",
+    "provider",
+    "url",
+    "retrieved_at",
+    "quality_status"
+  ],
+  "type": "object"
+}

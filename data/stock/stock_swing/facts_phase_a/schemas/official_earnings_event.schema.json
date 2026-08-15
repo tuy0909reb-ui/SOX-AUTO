@@ -1,0 +1,21 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "accounting_standard",
+    "announcement_date",
+    "announcement_date_provenance_status",
+    "announcement_date_source_priority",
+    "announcement_time",
+    "consolidation",
+    "event_id",
+    "fiscal_period_end",
+    "inventory_status",
+    "period_basis",
+    "security_id",
+    "source_id",
+    "source_priority_used",
+    "timestamp_quality",
+    "timezone"
+  ],
+  "type": "object"
+}

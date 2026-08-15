@@ -1,0 +1,12 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "security_id",
+    "ex_date",
+    "action_type",
+    "factor",
+    "source_id",
+    "quality_status"
+  ],
+  "type": "object"
+}

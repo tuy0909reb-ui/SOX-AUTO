@@ -1,0 +1,22 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "migration_id": {},
+    "observation_id": {},
+    "prior_measure_kind": {},
+    "proposed_measure_kind": {},
+    "quality_status": {},
+    "reason": {},
+    "source_id": {}
+  },
+  "required": [
+    "migration_id",
+    "observation_id",
+    "prior_measure_kind",
+    "proposed_measure_kind",
+    "reason",
+    "source_id",
+    "quality_status"
+  ],
+  "type": "object"
+}

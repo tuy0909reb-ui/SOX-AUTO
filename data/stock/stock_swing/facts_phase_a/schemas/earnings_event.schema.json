@@ -1,0 +1,18 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "event_id",
+    "security_id",
+    "announcement_date",
+    "announcement_time",
+    "timezone",
+    "timestamp_quality",
+    "fiscal_period_raw",
+    "period_end",
+    "period_basis",
+    "source_id",
+    "official_document_url",
+    "inventory_status"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,26 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {},
+    "field_name": {},
+    "prior_value": {},
+    "quality_status": {},
+    "repair_id": {},
+    "repair_method": {},
+    "repair_source_id": {},
+    "repaired_at": {},
+    "repaired_value": {}
+  },
+  "required": [
+    "repair_id",
+    "event_id",
+    "field_name",
+    "prior_value",
+    "repaired_value",
+    "repair_method",
+    "repair_source_id",
+    "repaired_at",
+    "quality_status"
+  ],
+  "type": "object"
+}

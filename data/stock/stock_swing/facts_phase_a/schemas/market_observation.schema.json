@@ -1,0 +1,17 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "security_id",
+    "session_date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "volume",
+    "adj_close",
+    "source_id",
+    "retrieved_at",
+    "quality_status"
+  ],
+  "type": "object"
+}

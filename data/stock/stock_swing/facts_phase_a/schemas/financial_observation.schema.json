@@ -1,0 +1,134 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "accounting_standard": {},
+    "accounting_standard_evidence_text": {},
+    "as_of_date": {},
+    "as_of_timestamp": {},
+    "consolidation": {},
+    "consolidation_evidence_text": {},
+    "currency": {},
+    "document_publication_date": {},
+    "document_publication_time": {},
+    "document_timestamp_quality": {
+      "enum": [
+        "datetime_confirmed",
+        "date_only",
+        "unknown_time"
+      ]
+    },
+    "event_fiscal_period_end": {},
+    "event_id": {},
+    "extraction_method": {},
+    "fiscal_period_end": {},
+    "fiscal_year_label": {},
+    "forecast_scope": {
+      "enum": [
+        "next_quarter",
+        "interim",
+        "full_year",
+        "multi_year",
+        "other",
+        "unknown"
+      ]
+    },
+    "guidance_status": {
+      "enum": [
+        "active",
+        "revised",
+        "postponed",
+        "withdrawn",
+        "not_applicable",
+        "unknown"
+      ]
+    },
+    "measure_kind": {
+      "enum": [
+        "actual",
+        "company_forecast",
+        "prior_forecast",
+        "revised_forecast",
+        "consensus",
+        "management_target",
+        "review_value",
+        "other"
+      ]
+    },
+    "metric_name": {},
+    "metric_name_raw": {},
+    "observation_effective_date": {},
+    "observation_id": {},
+    "period_basis": {
+      "enum": [
+        "Q1_standalone",
+        "Q2_standalone",
+        "Q3_standalone",
+        "Q1_cumulative",
+        "Q2_cumulative",
+        "Q3_cumulative",
+        "full_year",
+        "forecast_only",
+        "revision_only",
+        "other",
+        "unknown"
+      ]
+    },
+    "quality_status": {},
+    "raw_value_text": {},
+    "revision_relation": {
+      "enum": [
+        "none",
+        "in_document",
+        "companion_document",
+        "predecessor_chain",
+        "unknown"
+      ]
+    },
+    "security_id": {},
+    "source_column": {},
+    "source_document_id": {},
+    "source_id": {},
+    "source_page": {},
+    "source_row": {},
+    "source_table": {},
+    "source_unit_raw": {},
+    "unit_code": {},
+    "value_conversion_rule_id": {},
+    "value_numeric": {}
+  },
+  "required": [
+    "observation_id",
+    "event_id",
+    "security_id",
+    "metric_name",
+    "metric_name_raw",
+    "value_numeric",
+    "raw_value_text",
+    "currency",
+    "unit_code",
+    "source_unit_raw",
+    "value_conversion_rule_id",
+    "measure_kind",
+    "period_basis",
+    "consolidation",
+    "accounting_standard",
+    "fiscal_year_label",
+    "fiscal_period_end",
+    "event_fiscal_period_end",
+    "as_of_date",
+    "as_of_timestamp",
+    "document_publication_date",
+    "document_publication_time",
+    "document_timestamp_quality",
+    "observation_effective_date",
+    "source_id",
+    "source_document_id",
+    "source_page",
+    "source_table",
+    "consolidation_evidence_text",
+    "accounting_standard_evidence_text",
+    "extraction_method",
+    "quality_status"
+  ],
+  "type": "object"
+}

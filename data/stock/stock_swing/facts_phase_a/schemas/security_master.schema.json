@@ -1,0 +1,12 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "security_id",
+    "name",
+    "market",
+    "listing_start",
+    "listing_start_status",
+    "evidence_url"
+  ],
+  "type": "object"
+}

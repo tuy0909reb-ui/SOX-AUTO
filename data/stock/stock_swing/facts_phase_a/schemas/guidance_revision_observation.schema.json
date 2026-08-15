@@ -1,0 +1,38 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "direction_normalized": {
+      "enum": [
+        "up",
+        "down",
+        "unchanged",
+        "mixed",
+        "unknown"
+      ]
+    },
+    "direction_raw": {},
+    "event_id": {},
+    "metric_name": {},
+    "prior_forecast_observation_id": {},
+    "quality_status": {},
+    "revised_forecast_observation_id": {},
+    "revision_id": {},
+    "security_id": {},
+    "source_document_id": {},
+    "source_id": {}
+  },
+  "required": [
+    "revision_id",
+    "event_id",
+    "security_id",
+    "metric_name",
+    "prior_forecast_observation_id",
+    "revised_forecast_observation_id",
+    "direction_normalized",
+    "direction_raw",
+    "source_id",
+    "source_document_id",
+    "quality_status"
+  ],
+  "type": "object"
+}

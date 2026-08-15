@@ -1,0 +1,13 @@
+{
+  "additionalProperties": false,
+  "required": [
+    "regime_id",
+    "security_id",
+    "effective_from",
+    "fiscal_year_end_month",
+    "accounting_standard",
+    "break_kind",
+    "quality_status"
+  ],
+  "type": "object"
+}

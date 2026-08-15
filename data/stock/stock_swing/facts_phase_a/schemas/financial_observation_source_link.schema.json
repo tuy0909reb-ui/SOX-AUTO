@@ -1,0 +1,26 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "document_id": {},
+    "evidence_text": {},
+    "link_role": {},
+    "observation_id": {},
+    "observation_source_link_id": {},
+    "quality_status": {},
+    "source_id": {},
+    "source_page": {},
+    "source_table": {}
+  },
+  "required": [
+    "observation_source_link_id",
+    "observation_id",
+    "document_id",
+    "source_id",
+    "link_role",
+    "source_page",
+    "source_table",
+    "evidence_text",
+    "quality_status"
+  ],
+  "type": "object"
+}

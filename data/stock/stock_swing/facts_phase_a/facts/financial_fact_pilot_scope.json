@@ -1,0 +1,22 @@
+{
+  "document_urls": [
+    "https://www2.jpx.co.jp/disc/70110/140120250425523602.pdf",
+    "https://www2.jpx.co.jp/disc/68570/140120260728500866.pdf",
+    "https://www.advantest.com/ja/news/2026/qnpuno0000000cmx-att/J_Info_20260729.pdf",
+    "https://www2.jpx.co.jp/disc/80350/140120260413502285.pdf",
+    "https://www2.jpx.co.jp/disc/34360/140120260805509445.pdf",
+    "https://www2.jpx.co.jp/disc/83060/140120260731505851.pdf",
+    "https://www2.jpx.co.jp/disc/83060/140120260805510381.pdf"
+  ],
+  "event_ids": [
+    "official-event-a070ef6d36cb5a3eb162648400b027c7",
+    "official-event-ed132c223977592c8cbfdd61e2f599f0",
+    "official-event-f068a6004c335384940a3195270928db",
+    "official-event-c6fe3f3887a45049babb620b7dc52241",
+    "official-event-98506537e1cf5cc4bb7ed01f7ed93c15",
+    "official-event-7d68553c9dc55def9581a5b845e6555f"
+  ],
+  "fan_out_forbidden": true,
+  "full_collection_forbidden": true,
+  "scope_id": "financial-fact-pilot-boundary-001"
+}

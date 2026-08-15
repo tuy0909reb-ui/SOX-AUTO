@@ -1,0 +1,208 @@
+{
+  "event_candidate_count": 102,
+  "event_candidates_by_security": {
+    "285A": 21,
+    "3436": 5,
+    "4062": 5,
+    "6857": 28,
+    "7011": 13,
+    "7735": 17,
+    "8306": 13
+  },
+  "gemini_in_scope_event_security_count": 7,
+  "gemini_in_scope_event_security_ids": [
+    "285A",
+    "3436",
+    "4062",
+    "6857",
+    "7011",
+    "7735",
+    "8306"
+  ],
+  "gemini_raw_security_count": 8,
+  "gemini_raw_security_ids": [
+    "285A",
+    "3436",
+    "4062",
+    "6857",
+    "7011",
+    "7735",
+    "8035",
+    "8306"
+  ],
+  "gemini_raw_sha256": "0653e78f753dcfd47c09c21f878bcfcacefc9a2abd2a178b9cb9da7185185507",
+  "generated_at": "2026-08-15T13:16:50.615513Z",
+  "inventory": [
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "not_investigated",
+      "last_raw_announcement_date": null,
+      "missing_reason": "No in-scope 2020+ Gemini raw event candidate exists for this universe security.",
+      "raw_ledger_event_candidates": 0,
+      "security_id": "5803"
+    },
+    {
+      "first_raw_announcement_date": "2025-02-07",
+      "inventory_status": "raw_seeded",
+      "last_raw_announcement_date": "2026-07-31",
+      "missing_reason": null,
+      "raw_ledger_event_candidates": 21,
+      "security_id": "285A"
+    },
+    {
+      "first_raw_announcement_date": "2020-01-29",
+      "inventory_status": "raw_seeded",
+      "last_raw_announcement_date": "2026-07-29",
+      "missing_reason": null,
+      "raw_ledger_event_candidates": 28,
+      "security_id": "6857"
+    },
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "not_investigated",
+      "last_raw_announcement_date": null,
+      "missing_reason": "No in-scope 2020+ Gemini raw event candidate exists for this universe security.",
+      "raw_ledger_event_candidates": 0,
+      "security_id": "6146"
+    },
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "not_investigated",
+      "last_raw_announcement_date": null,
+      "missing_reason": "No in-scope 2020+ Gemini raw event candidate exists for this universe security.",
+      "raw_ledger_event_candidates": 0,
+      "security_id": "6920"
+    },
+    {
+      "first_raw_announcement_date": "2025-08-01",
+      "inventory_status": "raw_seeded",
+      "last_raw_announcement_date": "2026-08-04",
+      "missing_reason": null,
+      "raw_ledger_event_candidates": 5,
+      "security_id": "4062"
+    },
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "not_investigated",
+      "last_raw_announcement_date": null,
+      "missing_reason": "No in-scope 2020+ Gemini raw event candidate exists for this universe security.",
+      "raw_ledger_event_candidates": 0,
+      "security_id": "6525"
+    },
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "not_investigated",
+      "last_raw_announcement_date": null,
+      "missing_reason": "No in-scope 2020+ Gemini raw event candidate exists for this universe security.",
+      "raw_ledger_event_candidates": 0,
+      "security_id": "5801"
+    },
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "not_investigated",
+      "last_raw_announcement_date": null,
+      "missing_reason": "No in-scope 2020+ Gemini raw event candidate exists for this universe security.",
+      "raw_ledger_event_candidates": 0,
+      "security_id": "8035"
+    },
+    {
+      "first_raw_announcement_date": "2023-05-10",
+      "inventory_status": "raw_seeded",
+      "last_raw_announcement_date": "2026-07-28",
+      "missing_reason": null,
+      "raw_ledger_event_candidates": 17,
+      "security_id": "7735"
+    },
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "raw_seeded",
+      "last_raw_announcement_date": null,
+      "missing_reason": null,
+      "raw_ledger_event_candidates": 5,
+      "security_id": "3436"
+    },
+    {
+      "first_raw_announcement_date": "2024-05-08",
+      "inventory_status": "raw_seeded",
+      "last_raw_announcement_date": "2026-08-04",
+      "missing_reason": null,
+      "raw_ledger_event_candidates": 13,
+      "security_id": "7011"
+    },
+    {
+      "first_raw_announcement_date": null,
+      "inventory_status": "not_investigated",
+      "last_raw_announcement_date": null,
+      "missing_reason": "No in-scope 2020+ Gemini raw event candidate exists for this universe security.",
+      "raw_ledger_event_candidates": 0,
+      "security_id": "7012"
+    },
+    {
+      "first_raw_announcement_date": "2024-05-15",
+      "inventory_status": "raw_seeded",
+      "last_raw_announcement_date": "2026-08-03",
+      "missing_reason": null,
+      "raw_ledger_event_candidates": 13,
+      "security_id": "8306"
+    }
+  ],
+  "market_fetch_failures": [],
+  "market_observation_count": 20466,
+  "market_observations_by_security": {
+    "285A": 402,
+    "3436": 1615,
+    "4062": 1615,
+    "5801": 1615,
+    "5803": 1615,
+    "6146": 1615,
+    "6525": 684,
+    "6857": 1615,
+    "6920": 1615,
+    "7011": 1615,
+    "7012": 1615,
+    "7735": 1615,
+    "8035": 1615,
+    "8306": 1615
+  },
+  "phase": "A",
+  "phase_a_completion": "modify",
+  "raw_ledger_rows": 103,
+  "reconciliation": {
+    "candidate": 0,
+    "conflict": 0,
+    "exact": 0,
+    "note": "Deferred until Cursor-side official event sources are collected.",
+    "unmatched": 0
+  },
+  "timestamp_quality": {
+    "date_only": 82,
+    "planned_date": 1,
+    "unresolved": 4,
+    "yuho_filing_only": 15
+  },
+  "universe_count": 14,
+  "universe_ids": [
+    "5803",
+    "285A",
+    "6857",
+    "6146",
+    "6920",
+    "4062",
+    "6525",
+    "5801",
+    "8035",
+    "7735",
+    "3436",
+    "7011",
+    "7012",
+    "8306"
+  ],
+  "unresolved": [
+    "Official earnings timestamp collection is not yet implemented.",
+    "Six universe securities have no Gemini raw rows: 5803, 6146, 6920, 6525, 5801, 7012.",
+    "8035 has a Gemini raw row, but its only record is before the 2020 event scope.",
+    "Fiscal-year end values remain not_investigated until primary-source verification.",
+    "Corporate actions are not audited.",
+    "Historical as-of consensus is optional and not collected."
+  ]
+}

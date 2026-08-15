@@ -1,0 +1,72 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "content_hash": {},
+    "document_id": {},
+    "document_identity_key": {},
+    "document_role": {
+      "enum": [
+        "primary_result",
+        "forecast_detail",
+        "revision_detail",
+        "presentation_context",
+        "restatement_or_review",
+        "other"
+      ]
+    },
+    "document_type": {
+      "enum": [
+        "earnings_release",
+        "forecast_revision",
+        "earnings_presentation",
+        "supplementary",
+        "other"
+      ]
+    },
+    "duplicate_group_id": {},
+    "event_id": {},
+    "inventory_document_id": {},
+    "inventory_scope": {},
+    "link_reason": {},
+    "link_status": {},
+    "local_snapshot_path": {},
+    "provider": {},
+    "publication_date": {},
+    "publication_time": {},
+    "quality_status": {},
+    "related_document_id": {},
+    "retrieved_at": {},
+    "security_id": {},
+    "source_id": {},
+    "source_priority": {},
+    "timestamp_quality": {
+      "enum": [
+        "datetime_confirmed",
+        "date_only",
+        "unknown_time"
+      ]
+    },
+    "title_raw": {},
+    "url": {}
+  },
+  "required": [
+    "inventory_document_id",
+    "document_id",
+    "event_id",
+    "security_id",
+    "document_type",
+    "publication_date",
+    "publication_time",
+    "timestamp_quality",
+    "url",
+    "content_hash",
+    "local_snapshot_path",
+    "source_id",
+    "source_priority",
+    "provider",
+    "inventory_scope",
+    "duplicate_group_id",
+    "quality_status"
+  ],
+  "type": "object"
+}
