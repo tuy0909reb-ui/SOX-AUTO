@@ -1,0 +1,144 @@
+{
+  "batch_id": "financial-fact-fanout-batch4-001",
+  "scope_stage": "frozen_fact_scope",
+  "authorization": "SWING-REVIEW-FINANCIAL-FACT-FANOUT-BATCH4-FACT-SCOPE-FREEZE-EXTRACTION-AUTH-001",
+  "proposal": "SWING-DESIGN-FINANCIAL-FACT-FANOUT-BATCH4-FACT-SCOPE-PROPOSAL-001",
+  "frozen_base_commit": "cc7bea177a307417911c1c10857ee278a29ec723",
+  "scope_key_rule": {
+    "candidate_document_id_namespace": "doc-*",
+    "financial_document_id_is_scope_key": false,
+    "auto_equate_document_namespaces": false
+  },
+  "security_id": "5803",
+  "issuer": "fujikura",
+  "fiscal_year_label": "2026-03",
+  "max_documents": 3,
+  "event_ids": [
+    "official-event-51acad93687c5010b1dd6baef0d4faff",
+    "official-event-d07fea2491fa5707a32e077f34c83e0d",
+    "official-event-d01b67f7bdd85249ac0800fac0ed3bb5"
+  ],
+  "documents": [
+    {
+      "event_id": "official-event-51acad93687c5010b1dd6baef0d4faff",
+      "security_id": "5803",
+      "candidate_document_id": "doc-8cc5ba087bc65cad9b57aadbb7802607",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120250806532719.pdf",
+      "document_type": "earnings_release",
+      "document_role": "primary_result",
+      "observation_policy": "eligible_after_separate_extraction_authorization",
+      "document_identity": {
+        "document_title": "2026年3月期第1四半期決算短信〔日本基準〕(連結)",
+        "provider": "tdnet",
+        "source_priority": 1,
+        "existing_local_snapshot_path": "data/stock/stock_swing/facts_phase_a/raw_external/financial_fact_batch4_phase1_inventory_sources/32ac32bbac319249264f33c371f45dd5a3c58dd41076f0455cba875f9c912e6c.pdf",
+        "existing_content_hash": "32ac32bbac319249264f33c371f45dd5a3c58dd41076f0455cba875f9c912e6c",
+        "pdf_reacquisition_forbidden": true
+      },
+      "candidate_fact_boundaries": {
+        "actual_revenue_q1": {
+          "measure_kind": "actual",
+          "metric_name": "revenue",
+          "metric_name_raw": "売上高",
+          "accounting_standard": "JGAAP",
+          "consolidation": "consolidated",
+          "period_basis": "Q1_cumulative",
+          "fiscal_year_label": "2026-03",
+          "fiscal_period_end": "2025-06-30",
+          "unit_code": "JPY_million",
+          "candidate_page": 1,
+          "selector_id": "batch4-5803-actual-revenue-q1",
+          "exact_actual_row": "2026年3月期第1四半期"
+        }
+      }
+    },
+    {
+      "event_id": "official-event-d07fea2491fa5707a32e077f34c83e0d",
+      "security_id": "5803",
+      "candidate_document_id": "doc-c13419293b865b8eb1f83311dd0b2660",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120251106589866.pdf",
+      "document_type": "earnings_release",
+      "document_role": "primary_result",
+      "observation_policy": "eligible_after_separate_extraction_authorization",
+      "document_identity": {
+        "document_title": "2026年3月期第2四半期(中間期)決算短信〔日本基準〕(連結)",
+        "provider": "tdnet",
+        "source_priority": 1,
+        "existing_local_snapshot_path": "data/stock/stock_swing/facts_phase_a/raw_external/financial_fact_batch4_phase1_inventory_sources/b88c7405897f212adf282102818b5cde85762c0c37ff2b83ef3e298a3fa9c1d3.pdf",
+        "existing_content_hash": "b88c7405897f212adf282102818b5cde85762c0c37ff2b83ef3e298a3fa9c1d3",
+        "pdf_reacquisition_forbidden": true
+      },
+      "candidate_fact_boundaries": {
+        "actual_revenue_q2": {
+          "measure_kind": "actual",
+          "metric_name": "revenue",
+          "metric_name_raw": "売上高",
+          "accounting_standard": "JGAAP",
+          "consolidation": "consolidated",
+          "period_basis": "Q2_cumulative",
+          "fiscal_year_label": "2026-03",
+          "fiscal_period_end": "2025-09-30",
+          "unit_code": "JPY_million",
+          "candidate_page": 1,
+          "selector_id": "batch4-5803-actual-revenue-q2",
+          "exact_actual_row": "2026年3月期中間期"
+        }
+      }
+    },
+    {
+      "event_id": "official-event-d01b67f7bdd85249ac0800fac0ed3bb5",
+      "security_id": "5803",
+      "candidate_document_id": "doc-1467205d56d15181a56a163e278528e2",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120260206550168.pdf",
+      "document_type": "earnings_release",
+      "document_role": "primary_result",
+      "observation_policy": "eligible_after_separate_extraction_authorization",
+      "document_identity": {
+        "document_title": "2026年3月期第3四半期決算短信〔日本基準〕(連結)",
+        "provider": "tdnet",
+        "source_priority": 1,
+        "existing_local_snapshot_path": "data/stock/stock_swing/facts_phase_a/raw_external/financial_fact_batch4_phase1_inventory_sources/62596375127db3e3228e846a8d9f94aea52c5c28c787c83246aa235304246bed.pdf",
+        "existing_content_hash": "62596375127db3e3228e846a8d9f94aea52c5c28c787c83246aa235304246bed",
+        "pdf_reacquisition_forbidden": true
+      },
+      "candidate_fact_boundaries": {
+        "actual_revenue_q3": {
+          "measure_kind": "actual",
+          "metric_name": "revenue",
+          "metric_name_raw": "売上高",
+          "accounting_standard": "JGAAP",
+          "consolidation": "consolidated",
+          "period_basis": "Q3_cumulative",
+          "fiscal_year_label": "2026-03",
+          "fiscal_period_end": "2025-12-31",
+          "unit_code": "JPY_million",
+          "candidate_page": 1,
+          "selector_id": "batch4-5803-actual-revenue-q3",
+          "exact_actual_row": "2026年3月期第3四半期"
+        }
+      }
+    }
+  ],
+  "exclusions": [
+    "company_forecast",
+    "revised_forecast",
+    "5803_fy2026_full_year",
+    "other_metrics",
+    "other_events",
+    "batch1_5803_fy2027_q1_document_and_selector",
+    "analysis_ranking_trading_pfos_decision"
+  ],
+  "boundaries": {
+    "batch0_3_read_only": true,
+    "v002_merge": false,
+    "event_sot_mutated": false,
+    "gemini_input": false,
+    "official_only": true,
+    "additive_only": true,
+    "fact_extraction_authorized": false,
+    "observation_generation_authorized": false,
+    "fact_generation_authorized": false,
+    "acceptance_authorized": false,
+    "commit_authorized": false
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "acceptance_authorized": false,
+  "batch_id": "financial-fact-fanout-batch4-001",
+  "commit_authorized": false,
+  "document_hash_status": "PASS",
+  "documents": 3,
+  "event_identity_status": "PASS",
+  "event_sot_mutated": false,
+  "events": 3,
+  "execution_authorized_by_request": true,
+  "failures": 0,
+  "financial_facts_generated": 3,
+  "gemini_used_as_input": false,
+  "numeric_binding_status": "PASS",
+  "observations_generated": 3,
+  "reconciliation_rows": 3,
+  "scope_sha256": "c27f20e039d58604b809d63dea11a272bb36ce121c9c41aa19ff4c5495f6b1a2",
+  "scope_sha_status": "UNCHANGED",
+  "selector_status": "PASS",
+  "v002_mutated": false,
+  "validated_numeric_bindings": 3,
+  "validated_selectors": 3
+}

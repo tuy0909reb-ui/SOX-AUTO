@@ -1,0 +1,171 @@
+{
+  "record_id": "financial_fact_fanout_batch4_selector_validation_001",
+  "selector_count": 3,
+  "results": [
+    {
+      "selector_id": "batch4-5803-actual-revenue-q1",
+      "event_id": "official-event-51acad93687c5010b1dd6baef0d4faff",
+      "document_id": "doc-8cc5ba087bc65cad9b57aadbb7802607",
+      "period_basis": "Q1_cumulative",
+      "snapshot_sha256": "32ac32bbac319249264f33c371f45dd5a3c58dd41076f0455cba875f9c912e6c",
+      "implementation": "PASS",
+      "positive_validation": "PASS",
+      "location": {
+        "page": 1,
+        "section": "連結経営成績",
+        "table": "売上高",
+        "unit": "百万円",
+        "period_marker": "第1四半期",
+        "row": "2026年3月期第1四半期",
+        "structural_row_index": 14,
+        "numeric_value_read": false
+      }
+    },
+    {
+      "selector_id": "batch4-5803-actual-revenue-q2",
+      "event_id": "official-event-d07fea2491fa5707a32e077f34c83e0d",
+      "document_id": "doc-c13419293b865b8eb1f83311dd0b2660",
+      "period_basis": "Q2_cumulative",
+      "snapshot_sha256": "b88c7405897f212adf282102818b5cde85762c0c37ff2b83ef3e298a3fa9c1d3",
+      "implementation": "PASS",
+      "positive_validation": "PASS",
+      "location": {
+        "page": 1,
+        "section": "連結経営成績",
+        "table": "売上高",
+        "unit": "百万円",
+        "period_marker": "中間期",
+        "row": "2026年3月期中間期",
+        "structural_row_index": 14,
+        "numeric_value_read": false
+      }
+    },
+    {
+      "selector_id": "batch4-5803-actual-revenue-q3",
+      "event_id": "official-event-d01b67f7bdd85249ac0800fac0ed3bb5",
+      "document_id": "doc-1467205d56d15181a56a163e278528e2",
+      "period_basis": "Q3_cumulative",
+      "snapshot_sha256": "62596375127db3e3228e846a8d9f94aea52c5c28c787c83246aa235304246bed",
+      "implementation": "PASS",
+      "positive_validation": "PASS",
+      "location": {
+        "page": 1,
+        "section": "連結経営成績",
+        "table": "売上高",
+        "unit": "百万円",
+        "period_marker": "第3四半期",
+        "row": "2026年3月期第3四半期",
+        "structural_row_index": 14,
+        "numeric_value_read": false
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "case": "period_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "row_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "document_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "candidate_multiple",
+      "result": "fail_closed"
+    },
+    {
+      "case": "page1_false_positive",
+      "result": "fail_closed"
+    },
+    {
+      "case": "forecast_exclusion",
+      "result": "fail_closed"
+    },
+    {
+      "case": "actual_row_non_unique",
+      "result": "fail_closed"
+    },
+    {
+      "case": "wrong_page",
+      "result": "fail_closed"
+    },
+    {
+      "case": "period_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "row_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "document_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "candidate_multiple",
+      "result": "fail_closed"
+    },
+    {
+      "case": "page1_false_positive",
+      "result": "fail_closed"
+    },
+    {
+      "case": "forecast_exclusion",
+      "result": "fail_closed"
+    },
+    {
+      "case": "actual_row_non_unique",
+      "result": "fail_closed"
+    },
+    {
+      "case": "wrong_page",
+      "result": "fail_closed"
+    },
+    {
+      "case": "period_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "row_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "document_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "candidate_multiple",
+      "result": "fail_closed"
+    },
+    {
+      "case": "page1_false_positive",
+      "result": "fail_closed"
+    },
+    {
+      "case": "forecast_exclusion",
+      "result": "fail_closed"
+    },
+    {
+      "case": "actual_row_non_unique",
+      "result": "fail_closed"
+    },
+    {
+      "case": "wrong_page",
+      "result": "fail_closed"
+    }
+  ],
+  "overall": "PASS",
+  "observations_generated": 0,
+  "financial_facts_generated": 0,
+  "fact_scope_proposal_authorized": false,
+  "fact_scope_freeze_authorized": false,
+  "fact_extraction_authorized": false,
+  "acceptance_authorized": false,
+  "commit_authorized": false,
+  "event_sot_mutated": false,
+  "gemini_input": false
+}

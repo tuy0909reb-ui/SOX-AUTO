@@ -1,0 +1,176 @@
+{
+  "record_id": "financial_fact_fanout_batch4_numeric_binding_validation_001",
+  "scope_sha256": "c27f20e039d58604b809d63dea11a272bb36ce121c9c41aa19ff4c5495f6b1a2",
+  "binding_count": 3,
+  "results": [
+    {
+      "binding_id": "batch4-5803-actual-revenue-q1-numeric",
+      "event_id": "official-event-51acad93687c5010b1dd6baef0d4faff",
+      "document_id": "doc-8cc5ba087bc65cad9b57aadbb7802607",
+      "selector_id": "batch4-5803-actual-revenue-q1",
+      "period_basis": "Q1_cumulative",
+      "snapshot_sha256": "32ac32bbac319249264f33c371f45dd5a3c58dd41076f0455cba875f9c912e6c",
+      "implementation": "PASS",
+      "positive_validation": "PASS",
+      "numeric_binding": {
+        "page": 1,
+        "section": "連結経営成績",
+        "table": "売上高",
+        "revenue_column_index": 0,
+        "header": "売上高 営業利益 経常利益 親会社株主に帰属する",
+        "row": "2026年3月期第1四半期",
+        "candidate_value": "267,908",
+        "candidate_count": 1,
+        "numeric_binding_only": true
+      }
+    },
+    {
+      "binding_id": "batch4-5803-actual-revenue-q2-numeric",
+      "event_id": "official-event-d07fea2491fa5707a32e077f34c83e0d",
+      "document_id": "doc-c13419293b865b8eb1f83311dd0b2660",
+      "selector_id": "batch4-5803-actual-revenue-q2",
+      "period_basis": "Q2_cumulative",
+      "snapshot_sha256": "b88c7405897f212adf282102818b5cde85762c0c37ff2b83ef3e298a3fa9c1d3",
+      "implementation": "PASS",
+      "positive_validation": "PASS",
+      "numeric_binding": {
+        "page": 1,
+        "section": "連結経営成績",
+        "table": "売上高",
+        "revenue_column_index": 0,
+        "header": "売上高 営業利益 経常利益 親会社株主に帰属する",
+        "row": "2026年3月期中間期",
+        "candidate_value": "558,994",
+        "candidate_count": 1,
+        "numeric_binding_only": true
+      }
+    },
+    {
+      "binding_id": "batch4-5803-actual-revenue-q3-numeric",
+      "event_id": "official-event-d01b67f7bdd85249ac0800fac0ed3bb5",
+      "document_id": "doc-1467205d56d15181a56a163e278528e2",
+      "selector_id": "batch4-5803-actual-revenue-q3",
+      "period_basis": "Q3_cumulative",
+      "snapshot_sha256": "62596375127db3e3228e846a8d9f94aea52c5c28c787c83246aa235304246bed",
+      "implementation": "PASS",
+      "positive_validation": "PASS",
+      "numeric_binding": {
+        "page": 1,
+        "section": "連結経営成績",
+        "table": "売上高",
+        "revenue_column_index": 0,
+        "header": "売上高 営業利益 経常利益 親会社株主に帰属する",
+        "row": "2026年3月期第3四半期",
+        "candidate_value": "854,931",
+        "candidate_count": 1,
+        "numeric_binding_only": true
+      }
+    }
+  ],
+  "negative_cases": [
+    {
+      "case": "wrong_column",
+      "result": "fail_closed"
+    },
+    {
+      "case": "prior_year_row",
+      "result": "fail_closed"
+    },
+    {
+      "case": "forecast_row",
+      "result": "fail_closed"
+    },
+    {
+      "case": "duplicate_numeric_candidate",
+      "result": "fail_closed"
+    },
+    {
+      "case": "period_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "actual_row_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "document_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "malformed_numeric_candidate",
+      "result": "fail_closed"
+    },
+    {
+      "case": "wrong_column",
+      "result": "fail_closed"
+    },
+    {
+      "case": "prior_year_row",
+      "result": "fail_closed"
+    },
+    {
+      "case": "forecast_row",
+      "result": "fail_closed"
+    },
+    {
+      "case": "duplicate_numeric_candidate",
+      "result": "fail_closed"
+    },
+    {
+      "case": "period_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "actual_row_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "document_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "malformed_numeric_candidate",
+      "result": "fail_closed"
+    },
+    {
+      "case": "wrong_column",
+      "result": "fail_closed"
+    },
+    {
+      "case": "prior_year_row",
+      "result": "fail_closed"
+    },
+    {
+      "case": "forecast_row",
+      "result": "fail_closed"
+    },
+    {
+      "case": "duplicate_numeric_candidate",
+      "result": "fail_closed"
+    },
+    {
+      "case": "period_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "actual_row_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "document_mismatch",
+      "result": "fail_closed"
+    },
+    {
+      "case": "malformed_numeric_candidate",
+      "result": "fail_closed"
+    }
+  ],
+  "overall": "PASS",
+  "observations_generated": 0,
+  "financial_facts_generated": 0,
+  "fact_extraction_authorized": false,
+  "acceptance_authorized": false,
+  "commit_authorized": false,
+  "event_sot_mutated": false,
+  "gemini_input": false
+}

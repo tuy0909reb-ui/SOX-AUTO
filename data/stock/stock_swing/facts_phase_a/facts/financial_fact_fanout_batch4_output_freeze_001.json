@@ -1,0 +1,94 @@
+{
+  "record_id": "financial_fact_fanout_batch4_output_freeze_001",
+  "freeze_authorization": "SWING-REVIEW-FINANCIAL-FACT-FANOUT-BATCH4-OUTPUT-FREEZE-001",
+  "acceptance_record": {
+    "path": "docs/reports/SWING-ACCEPT-FINANCIAL-FACT-FANOUT-BATCH4-001.md",
+    "sha256": "0768b410e4de3bcda23a63c6dd287047423605811fd23ab7347709d564b62963"
+  },
+  "execution_record": {
+    "path": "docs/reports/SWING-EXEC-FINANCIAL-FACT-FANOUT-BATCH4-EXTRACTION-001.md",
+    "sha256": "4ef445084345e99784c6810e31ce754a5421c94f749869ef2f4be9d4f913c305"
+  },
+  "frozen_base_commit": "cc7bea177a307417911c1c10857ee278a29ec723",
+  "scope": {
+    "path": "data/stock/stock_swing/facts_phase_a/facts/financial_fact_fanout_batch4_scope.json",
+    "sha256": "c27f20e039d58604b809d63dea11a272bb36ce121c9c41aa19ff4c5495f6b1a2",
+    "recorded_sha_path": "data/stock/stock_swing/facts_phase_a/facts/financial_fact_fanout_batch4_scope.sha256",
+    "recorded_sha_file_sha256": "d6293da618938bdd2c0a0275dcacc26a33a75419d019118d2a48b1795584a491"
+  },
+  "target": {
+    "security_id": "5803",
+    "fiscal_year_label": "2026-03",
+    "metric_name": "revenue",
+    "metric_name_raw": "売上高",
+    "measure_kind": "actual",
+    "periods": [
+      "Q1_cumulative",
+      "Q2_cumulative",
+      "Q3_cumulative"
+    ],
+    "event_count": 3,
+    "document_count": 3,
+    "observation_count": 3,
+    "financial_fact_count": 3
+  },
+  "document_references": [
+    {
+      "event_id": "official-event-51acad93687c5010b1dd6baef0d4faff",
+      "document_id": "doc-8cc5ba087bc65cad9b57aadbb7802607",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120250806532719.pdf",
+      "content_sha256": "32ac32bbac319249264f33c371f45dd5a3c58dd41076f0455cba875f9c912e6c",
+      "selector_id": "batch4-5803-actual-revenue-q1",
+      "numeric_binding_id": "batch4-5803-actual-revenue-q1-numeric"
+    },
+    {
+      "event_id": "official-event-d07fea2491fa5707a32e077f34c83e0d",
+      "document_id": "doc-c13419293b865b8eb1f83311dd0b2660",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120251106589866.pdf",
+      "content_sha256": "b88c7405897f212adf282102818b5cde85762c0c37ff2b83ef3e298a3fa9c1d3",
+      "selector_id": "batch4-5803-actual-revenue-q2",
+      "numeric_binding_id": "batch4-5803-actual-revenue-q2-numeric"
+    },
+    {
+      "event_id": "official-event-d01b67f7bdd85249ac0800fac0ed3bb5",
+      "document_id": "doc-1467205d56d15181a56a163e278528e2",
+      "url": "https://www2.jpx.co.jp/disc/58030/140120260206550168.pdf",
+      "content_sha256": "62596375127db3e3228e846a8d9f94aea52c5c28c787c83246aa235304246bed",
+      "selector_id": "batch4-5803-actual-revenue-q3",
+      "numeric_binding_id": "batch4-5803-actual-revenue-q3-numeric"
+    }
+  ],
+  "implementation_digests": {
+    "scripts/stock_swing/run_financial_fact_batch4.py": "ed9ad8fa14fd1f0563c982b92179bef5eb3a30f6f1a61cf644bd947f14dc2d4d",
+    "scripts/stock_swing/validate_financial_fact_batch4_selectors.py": "e7feabde74b778f6ae6e977e2978d55fffe8930016a2a119a99de108f76b6e39",
+    "scripts/stock_swing/validate_financial_fact_batch4_numeric_bindings.py": "f8588c0435dce91b2425e2be57a4ec6fd12146ffdaed58f655039af6beb00af5",
+    "tests/test_stock_swing_financial_fact_batch4_selectors.py": "d4c2987bd12bd2ddfbdbfe8c5ec606b493c5a2f42efcd3206c30d7d83240c058",
+    "tests/test_stock_swing_financial_fact_batch4_numeric_bindings.py": "7503d6596a24a9eb2fe9bf2b9158ee87deefbcfa20db2776b3a000dfcf4fbe30",
+    "tests/test_stock_swing_financial_fact_batch4_execution.py": "8469e16e540b6cc97532d856c58fd69a76e57878f61938de42ac29d0f40fb3bc"
+  },
+  "output_namespace": "data/stock/stock_swing/facts_phase_a/facts/financial_fact_fanout_batch4_001",
+  "output_digests": {
+    "document_outcome.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "document_results.json": "e64c7930a9b0d3b4afe03465ef3ec9d1e04371f0555e6d52550bfd721f363d78",
+    "financial_document_inventory.jsonl": "75dfdff64c2120961bfea42738faaa8c6af9184df0020b5f7f522c016c6b1e03",
+    "financial_document_source_link.jsonl": "b18c584e47e67d5937bdc7b8e91fe13eea28b80d8db30f8075518d4a476237b2",
+    "financial_observation.jsonl": "82a74c8e9e3b5a6b2ab2ab9a1ea37daf89236c8e96c8a275c5319b926db51836",
+    "financial_observation_reconciliation.jsonl": "bac8e0670217043ff16c9105b6e542a2cb726582092c0b913f3691ef21d63899",
+    "financial_observation_source_link.jsonl": "fafedbcffc4da7aaa60da2c6067842f37354f01f024d382e93a5b2473e7136e1",
+    "selector_evidence_location.jsonl": "c339d9034f107183247b7d18bcd1979bd5257088788b54cc5f3d3c2368182755",
+    "summary.json": "2c4b1a7296ac3f68885d8c6c8caefc0c6988b06cc1e66f8ccb2a0ff0cf626ee6"
+  },
+  "boundaries": {
+    "batch0_3_read_only": true,
+    "v002_merge": false,
+    "event_sot_mutated": false,
+    "gemini_input": false,
+    "output_is_additive": true,
+    "analysis_authorized": false,
+    "ranking_authorized": false,
+    "trading_authorized": false,
+    "pfos_authorized": false,
+    "decision_authorized": false,
+    "commit_authorized": false
+  }
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "document_id": "doc-8cc5ba087bc65cad9b57aadbb7802607",
+    "event_id": "official-event-51acad93687c5010b1dd6baef0d4faff",
+    "observation_count": 1,
+    "security_id": "5803",
+    "selector_id": "batch4-5803-actual-revenue-q1",
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-c13419293b865b8eb1f83311dd0b2660",
+    "event_id": "official-event-d07fea2491fa5707a32e077f34c83e0d",
+    "observation_count": 1,
+    "security_id": "5803",
+    "selector_id": "batch4-5803-actual-revenue-q2",
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-1467205d56d15181a56a163e278528e2",
+    "event_id": "official-event-d01b67f7bdd85249ac0800fac0ed3bb5",
+    "observation_count": 1,
+    "security_id": "5803",
+    "selector_id": "batch4-5803-actual-revenue-q3",
+    "status": "numeric_facts_emitted"
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "cohort_integrity": "PASS",
+  "member_count": 3,
+  "snapshot": "YES",
+  "sha256": "YES",
+  "boundary_check": "PASS",
+  "fact_scope_freeze": "NOT REACHED",
+  "phase1_inventory": "COMPLETED",
+  "work_tracks": {
+    "official-event-51acad93687c5010b1dd6baef0d4faff": {
+      "period_basis": "Q1_cumulative",
+      "document_id": "doc-8cc5ba087bc65cad9b57aadbb7802607",
+      "work_track": "C",
+      "terminal_state": "classified",
+      "content_hash": "32ac32bbac319249264f33c371f45dd5a3c58dd41076f0455cba875f9c912e6c",
+      "fact_scope_ready": false
+    },
+    "official-event-d07fea2491fa5707a32e077f34c83e0d": {
+      "period_basis": "Q2_cumulative",
+      "document_id": "doc-c13419293b865b8eb1f83311dd0b2660",
+      "work_track": "C",
+      "terminal_state": "classified",
+      "content_hash": "b88c7405897f212adf282102818b5cde85762c0c37ff2b83ef3e298a3fa9c1d3",
+      "fact_scope_ready": false
+    },
+    "official-event-d01b67f7bdd85249ac0800fac0ed3bb5": {
+      "period_basis": "Q3_cumulative",
+      "document_id": "doc-1467205d56d15181a56a163e278528e2",
+      "work_track": "C",
+      "terminal_state": "classified",
+      "content_hash": "62596375127db3e3228e846a8d9f94aea52c5c28c787c83246aa235304246bed",
+      "fact_scope_ready": false
+    }
+  }
+}
