@@ -1,0 +1,17 @@
+[
+  {
+    "document_id": "doc-f770b766ffff525fb1d4ac3879967278",
+    "event_id": "official-event-4bda3f4c595f5ba8b34646aada3f7681",
+    "observation_count": 2,
+    "security_id": "285A",
+    "selector_pages": [
+      1,
+      2
+    ],
+    "status": "numeric_facts_emitted",
+    "validated_selectors": [
+      "batch2-285A-actual-revenue-q1",
+      "batch2-285A-forecast-revenue-q2-cumulative"
+    ]
+  }
+]

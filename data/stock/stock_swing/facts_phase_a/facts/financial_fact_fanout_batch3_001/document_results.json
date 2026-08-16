@@ -1,0 +1,16 @@
+[
+  {
+    "document_id": "doc-d17dcc4960ff506e9f866162018e48f0",
+    "event_id": "official-event-6042eaef6808592b8e960199e4a45a90",
+    "observation_count": 1,
+    "security_id": "7011",
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-bfbd66e8e5845552b00af0ceaf23dc05",
+    "event_id": "official-event-5097c451c2e6519c90e9bc23fc52def6",
+    "observation_count": 2,
+    "security_id": "8035",
+    "status": "numeric_facts_emitted"
+  }
+]

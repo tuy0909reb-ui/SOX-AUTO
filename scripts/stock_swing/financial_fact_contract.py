@@ -26,8 +26,15 @@ DOCUMENT_ROLES = (
     "presentation_context", "restatement_or_review", "other",
 )
 FORECAST_SCOPES = ("next_quarter", "interim", "full_year", "multi_year", "other", "unknown")
-GUIDANCE_STATUSES = ("active", "revised", "postponed", "withdrawn", "not_applicable", "unknown")
-REVISION_RELATIONS = ("none", "in_document", "companion_document", "predecessor_chain", "unknown")
+GUIDANCE_STATUSES = ("active", "revised", "deferred", "postponed", "withdrawn", "not_applicable", "unknown")
+REVISION_RELATIONS = (
+    "none", "in_document", "companion_document", "predecessor_chain",
+    "newly_disclosed", "unknown",
+)
+OBSERVATION_POLICIES = (
+    "eligible", "deferred_outlook_no_company_forecast",
+    "review_only_no_auto_merge", "repair_evidence_only",
+)
 RECONCILIATION_STATUSES = (
     "exact", "candidate", "conflict", "official_only", "gemini_only", "unresolved",
 )
@@ -109,11 +116,12 @@ def financial_fact_schemas() -> dict[str, dict[str, Any]]:
                 "document_type": DOCUMENT_TYPES,
                 "timestamp_quality": TIMESTAMP_QUALITIES,
                 "document_role": DOCUMENT_ROLES,
+                "observation_policy": OBSERVATION_POLICIES,
             },
             (
                 "document_role", "related_document_id", "title_raw",
                 "document_identity_key", "link_status", "link_reason",
-                "retrieved_at",
+                "retrieved_at", "issuer", "observation_policy",
             ),
         ),
         "financial_document_link": object_schema(
@@ -121,6 +129,23 @@ def financial_fact_schemas() -> dict[str, dict[str, Any]]:
                 "document_link_id", "document_id", "related_document_id",
                 "link_type", "evidence_text", "quality_status",
             ],
+        ),
+        "financial_document_source_link": object_schema(
+            [
+                "document_source_link_id", "document_id", "source_id",
+                "relation_type", "quality_status",
+            ],
+        ),
+        "financial_guidance_status": object_schema(
+            [
+                "guidance_id", "document_id", "event_id", "forecast_scope",
+                "period_basis", "guidance_status", "evidence_text", "quality_status",
+            ],
+            {
+                "forecast_scope": FORECAST_SCOPES,
+                "period_basis": PERIOD_BASIS,
+                "guidance_status": GUIDANCE_STATUSES,
+            },
         ),
         "financial_observation_source_link": object_schema(
             [
@@ -139,6 +164,13 @@ def financial_fact_schemas() -> dict[str, dict[str, Any]]:
             [
                 "repair_id", "event_id", "field_name", "prior_value", "repaired_value",
                 "repair_method", "repair_source_id", "repaired_at", "quality_status",
+            ],
+        ),
+        "official_event_axis_repair_evidence": object_schema(
+            [
+                "repair_evidence_id", "repair_id", "observation_id",
+                "observation_source_link_id", "document_id", "source_id",
+                "evidence_text", "quality_status",
             ],
         ),
     }

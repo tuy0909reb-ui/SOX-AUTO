@@ -1,0 +1,18 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "document_id": {},
+    "document_source_link_id": {},
+    "quality_status": {},
+    "relation_type": {},
+    "source_id": {}
+  },
+  "required": [
+    "document_source_link_id",
+    "document_id",
+    "source_id",
+    "relation_type",
+    "quality_status"
+  ],
+  "type": "object"
+}

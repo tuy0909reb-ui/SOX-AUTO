@@ -1,0 +1,11 @@
+{
+  "batch_id": "financial-fact-fanout-batch1-001",
+  "canonical_facts_preexisting": 64,
+  "documents": 8,
+  "events": 8,
+  "financial_facts_generated": 10,
+  "gemini_sha256": "0653e78f753dcfd47c09c21f878bcfcacefc9a2abd2a178b9cb9da7185185507",
+  "observations_generated": 10,
+  "review_only_numeric_facts": 0,
+  "scope_sha256": "e6e94cb6299fb5234717caf1941277f2abef0f3359b928fe8d3fefb91545186b"
+}

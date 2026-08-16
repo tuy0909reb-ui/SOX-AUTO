@@ -1,0 +1,57 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "document_id": {},
+    "event_id": {},
+    "evidence_text": {},
+    "forecast_scope": {
+      "enum": [
+        "next_quarter",
+        "interim",
+        "full_year",
+        "multi_year",
+        "other",
+        "unknown"
+      ]
+    },
+    "guidance_id": {},
+    "guidance_status": {
+      "enum": [
+        "active",
+        "revised",
+        "deferred",
+        "postponed",
+        "withdrawn",
+        "not_applicable",
+        "unknown"
+      ]
+    },
+    "period_basis": {
+      "enum": [
+        "Q1_standalone",
+        "Q2_standalone",
+        "Q3_standalone",
+        "Q1_cumulative",
+        "Q2_cumulative",
+        "Q3_cumulative",
+        "full_year",
+        "forecast_only",
+        "revision_only",
+        "other",
+        "unknown"
+      ]
+    },
+    "quality_status": {}
+  },
+  "required": [
+    "guidance_id",
+    "document_id",
+    "event_id",
+    "forecast_scope",
+    "period_basis",
+    "guidance_status",
+    "evidence_text",
+    "quality_status"
+  ],
+  "type": "object"
+}

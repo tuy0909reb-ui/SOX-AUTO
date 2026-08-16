@@ -1,0 +1,8 @@
+{
+  "case_count": 5,
+  "document_count": 7,
+  "event_count": 345,
+  "ledger_sha256": "0653e78f753dcfd47c09c21f878bcfcacefc9a2abd2a178b9cb9da7185185507",
+  "observation_count": 11,
+  "scope_id": "financial-fact-pilot-boundary-001"
+}

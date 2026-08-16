@@ -33,6 +33,15 @@ PILOT_7011 = {
     "document_type": "earnings_release",
     "document_role": "primary_result",
 }
+PILOT_DOCUMENT_METADATA = {
+    "https://www2.jpx.co.jp/disc/68570/140120260728500866.pdf": ("advantest", "primary_result", "eligible"),
+    "https://www.advantest.com/ja/news/2026/qnpuno0000000cmx-att/J_Info_20260729.pdf": ("advantest", "revision_detail", "eligible"),
+    "https://www2.jpx.co.jp/disc/80350/140120260413502285.pdf": ("tokyo_electron", "primary_result", "deferred_outlook_no_company_forecast"),
+    "https://www2.jpx.co.jp/disc/34360/140120260805509445.pdf": ("sumco", "primary_result", "eligible"),
+    "https://www2.jpx.co.jp/disc/83060/140120260731505851.pdf": ("mufg", "primary_result", "eligible"),
+    "https://www2.jpx.co.jp/disc/83060/140120260805510381.pdf": ("mufg", "restatement_or_review", "review_only_no_auto_merge"),
+    "https://www2.jpx.co.jp/disc/70110/140120250425523602.pdf": ("mhi", "primary_result", "repair_evidence_only"),
+}
 
 
 def stable_id(namespace: str, *parts: object) -> str:
@@ -95,6 +104,23 @@ def inventory_rows(
             "quality_status": "confirmed",
         })
     return rows
+
+
+def apply_pilot_metadata(rows: list[dict[str, Any]]) -> None:
+    for row in rows:
+        metadata = PILOT_DOCUMENT_METADATA.get(row["url"])
+        if metadata is None:
+            continue
+        issuer, role, policy = metadata
+        row.update({
+            "issuer": issuer,
+            "document_role": role,
+            "observation_policy": policy,
+            "document_identity_key": f"{issuer}:{row['content_hash']}",
+            "link_status": "confirmed",
+            "link_reason": "Pilot metadata is source-linked by canonical document relation.",
+            "related_document_id": None,
+        })
 
 
 def add_7011_pilot_document(
@@ -192,6 +218,10 @@ def main() -> None:
         )
         inventory.append(row)
         repairs.append(repair)
+    apply_pilot_metadata(inventory)
+    inventory_by_url = {row["url"]: row for row in inventory}
+    inventory_by_url["https://www.advantest.com/ja/news/2026/qnpuno0000000cmx-att/J_Info_20260729.pdf"]["related_document_id"] = inventory_by_url["https://www2.jpx.co.jp/disc/68570/140120260728500866.pdf"]["document_id"]
+    inventory_by_url["https://www2.jpx.co.jp/disc/83060/140120260805510381.pdf"]["related_document_id"] = inventory_by_url["https://www2.jpx.co.jp/disc/83060/140120260731505851.pdf"]["document_id"]
 
     observations = load_jsonl(facts / "financial_observation.jsonl")
     observation_source_links = [{
@@ -205,7 +235,6 @@ def main() -> None:
         "evidence_text": row["raw_value_text"],
         "quality_status": "confirmed",
     } for row in observations]
-    inventory_by_url = {row["url"]: row for row in inventory}
     document_links = [
         {
             "document_link_id": stable_id("document-link", inventory_by_url["https://www.advantest.com/ja/news/2026/qnpuno0000000cmx-att/J_Info_20260729.pdf"]["document_id"]),
@@ -224,6 +253,23 @@ def main() -> None:
             "quality_status": "confirmed",
         },
     ]
+    document_source_links = [{
+        "document_source_link_id": stable_id("document-source-link", row["document_id"], row["source_id"]),
+        "document_id": row["document_id"],
+        "source_id": row["source_id"],
+        "relation_type": "primary_official_source",
+        "quality_status": "confirmed",
+    } for row in inventory if row["url"] in PILOT_DOCUMENT_METADATA]
+    guidance_status = [{
+        "guidance_id": stable_id("guidance-status", inventory_by_url["https://www2.jpx.co.jp/disc/80350/140120260413502285.pdf"]["document_id"], "full_year"),
+        "document_id": inventory_by_url["https://www2.jpx.co.jp/disc/80350/140120260413502285.pdf"]["document_id"],
+        "event_id": inventory_by_url["https://www2.jpx.co.jp/disc/80350/140120260413502285.pdf"]["event_id"],
+        "forecast_scope": "full_year",
+        "period_basis": "full_year",
+        "guidance_status": "deferred",
+        "evidence_text": "通期連結業績予想は、第2四半期(中間期)の決算発表時に開示する予定",
+        "quality_status": "confirmed",
+    }]
     pilot_scope = {
         "scope_id": "financial-fact-pilot-boundary-001",
         "event_ids": [
@@ -251,6 +297,8 @@ def main() -> None:
         write_json(schemas / f"{name}.schema.json", schema)
     write_jsonl(facts / "financial_document_inventory.jsonl", inventory)
     write_jsonl(facts / "financial_document_link.jsonl", document_links)
+    write_jsonl(facts / "financial_document_source_link.jsonl", document_source_links)
+    write_jsonl(facts / "financial_guidance_status.jsonl", guidance_status)
     write_jsonl(facts / "financial_observation_source_link.jsonl", observation_source_links)
     write_jsonl(facts / "official_event_axis_repair.jsonl", repairs)
     write_jsonl(facts / "financial_observation_taxonomy_migration.jsonl", [])

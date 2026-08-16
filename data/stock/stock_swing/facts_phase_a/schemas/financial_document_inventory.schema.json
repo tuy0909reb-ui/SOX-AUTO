@@ -27,9 +27,18 @@
     "event_id": {},
     "inventory_document_id": {},
     "inventory_scope": {},
+    "issuer": {},
     "link_reason": {},
     "link_status": {},
     "local_snapshot_path": {},
+    "observation_policy": {
+      "enum": [
+        "eligible",
+        "deferred_outlook_no_company_forecast",
+        "review_only_no_auto_merge",
+        "repair_evidence_only"
+      ]
+    },
     "provider": {},
     "publication_date": {},
     "publication_time": {},

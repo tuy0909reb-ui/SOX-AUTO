@@ -1,0 +1,85 @@
+[
+  {
+    "document_id": "doc-baaa8c108f185a8d884f783523b64519",
+    "event_id": "official-event-6d99c3c63fb55de8b0ee549104117de9",
+    "observation_count": 1,
+    "security_id": "4062",
+    "selector_pages": [
+      1
+    ],
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-a77612b025395cda840c61b3fe2e2c02",
+    "event_id": "official-event-6fb5278714765655bd9afe512cf9d0e0",
+    "observation_count": 1,
+    "security_id": "5801",
+    "selector_pages": [
+      1
+    ],
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-30d27b92e5515686a4062726da7d133e",
+    "event_id": "official-event-2009bc3271d352c7a495017eb2b61171",
+    "observation_count": 1,
+    "security_id": "5803",
+    "selector_pages": [
+      1
+    ],
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-965719a06e445c2e95e40abc00825c86",
+    "event_id": "official-event-b1ba486755015959afc5fe7efd223a73",
+    "observation_count": 2,
+    "security_id": "6146",
+    "selector_pages": [
+      1,
+      1
+    ],
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-7c4645ac891c52978c6c096bc138beeb",
+    "event_id": "official-event-0ac60da24b9c564aadf788498a1f7a91",
+    "observation_count": 1,
+    "security_id": "6525",
+    "selector_pages": [
+      1
+    ],
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-150bfd73a7b85dbda7b054921cddcc1c",
+    "event_id": "official-event-f155a34b2ebc589a8112369488495e07",
+    "observation_count": 2,
+    "security_id": "6920",
+    "selector_pages": [
+      1,
+      1
+    ],
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-458f162127c354b9b8b80a5416d3fa54",
+    "event_id": "official-event-c9819644b22550688bbf72dc5af37624",
+    "observation_count": 2,
+    "security_id": "7012",
+    "selector_pages": [
+      1,
+      1
+    ],
+    "status": "numeric_facts_emitted"
+  },
+  {
+    "document_id": "doc-520d79d15d665c72ad87fd20f69b611e",
+    "event_id": "official-event-bac0d4c94f1f5746aaacec4968d090a4",
+    "observation_count": 0,
+    "security_id": "7735",
+    "selector_pages": [
+      1
+    ],
+    "status": "review_only_no_numeric_fact"
+  }
+]

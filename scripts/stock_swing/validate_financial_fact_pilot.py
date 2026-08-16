@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -14,11 +15,28 @@ def load_jsonl(path: Path) -> list[dict[str, Any]]:
     return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
 
 
-def validate_observation_document_traceability(facts_dir: Path = DEFAULT_FACTS) -> None:
+def validate_observation_document_traceability(
+    facts_dir: Path = DEFAULT_FACTS,
+    observations_path: Path | None = None,
+    links_path: Path | None = None,
+    require_document_source_links: bool = False,
+) -> None:
     """Reject orphaned typed observations without a resolved primary evidence link."""
     inventory = {row["document_id"]: row for row in load_jsonl(facts_dir / "financial_document_inventory.jsonl")}
-    observations = {row["observation_id"]: row for row in load_jsonl(facts_dir / "financial_observation.jsonl")}
-    links = load_jsonl(facts_dir / "financial_observation_source_link.jsonl")
+    observations = {
+        row["observation_id"]: row
+        for row in load_jsonl(observations_path or facts_dir / "financial_observation.jsonl")
+    }
+    links = load_jsonl(links_path or facts_dir / "financial_observation_source_link.jsonl")
+    document_sources = set()
+    source_links = facts_dir / "financial_document_source_link.jsonl"
+    if require_document_source_links:
+        if not source_links.is_file():
+            raise ValueError("document/source relation is absent")
+        document_sources = {
+            (row["document_id"], row["source_id"])
+            for row in load_jsonl(source_links)
+        }
 
     primary: dict[str, list[dict[str, Any]]] = {}
     for link in links:
@@ -39,6 +57,10 @@ def validate_observation_document_traceability(facts_dir: Path = DEFAULT_FACTS) 
             raise ValueError(f"{observation_id}: source identity mismatch")
         if not (ROOT / document["local_snapshot_path"]).is_file():
             raise ValueError(f"{observation_id}: evidence snapshot is absent")
+        if hashlib.sha256((ROOT / document["local_snapshot_path"]).read_bytes()).hexdigest() != document["content_hash"]:
+            raise ValueError(f"{observation_id}: evidence snapshot hash mismatch")
+        if require_document_source_links and (document["document_id"], document["source_id"]) not in document_sources:
+            raise ValueError(f"{observation_id}: document/source relation is absent")
         if not link["evidence_text"]:
             raise ValueError(f"{observation_id}: evidence token is absent")
 

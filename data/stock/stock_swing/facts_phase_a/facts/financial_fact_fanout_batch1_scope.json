@@ -1,0 +1,27 @@
+{
+  "batch_id": "financial-fact-fanout-batch1-001",
+  "max_documents": 12,
+  "event_ids": [
+    "official-event-6d99c3c63fb55de8b0ee549104117de9",
+    "official-event-6fb5278714765655bd9afe512cf9d0e0",
+    "official-event-2009bc3271d352c7a495017eb2b61171",
+    "official-event-b1ba486755015959afc5fe7efd223a73",
+    "official-event-0ac60da24b9c564aadf788498a1f7a91",
+    "official-event-f155a34b2ebc589a8112369488495e07",
+    "official-event-c9819644b22550688bbf72dc5af37624",
+    "official-event-bac0d4c94f1f5746aaacec4968d090a4"
+  ],
+  "documents": [
+    {"event_id": "official-event-6d99c3c63fb55de8b0ee549104117de9", "security_id": "4062", "candidate_document_id": "doc-baaa8c108f185a8d884f783523b64519", "url": "https://www2.jpx.co.jp/disc/40620/140120260731504718.pdf", "document_type": "earnings_release", "document_role": "primary_result", "observation_policy": "eligible", "issuer": "ibiden", "selection_reason": "JGAAP Q1 semiconductor substrate issuer."},
+    {"event_id": "official-event-6fb5278714765655bd9afe512cf9d0e0", "security_id": "5801", "candidate_document_id": "doc-a77612b025395cda840c61b3fe2e2c02", "url": "https://www2.jpx.co.jp/disc/58010/140120260805510974.pdf", "document_type": "earnings_release", "document_role": "primary_result", "observation_policy": "eligible", "issuer": "furukawa_electric", "selection_reason": "JGAAP Q1 cable issuer; different PDF layout."},
+    {"event_id": "official-event-2009bc3271d352c7a495017eb2b61171", "security_id": "5803", "candidate_document_id": "doc-30d27b92e5515686a4062726da7d133e", "url": "https://www2.jpx.co.jp/disc/58030/140120260806513575.pdf", "document_type": "earnings_release", "document_role": "primary_result", "observation_policy": "eligible", "issuer": "fujikura", "selection_reason": "JGAAP Q1 issuer with likely forecast-update wording."},
+    {"event_id": "official-event-b1ba486755015959afc5fe7efd223a73", "security_id": "6146", "candidate_document_id": "doc-965719a06e445c2e95e40abc00825c86", "url": "https://www2.jpx.co.jp/disc/61460/140120260721597094.pdf", "document_type": "earnings_release", "document_role": "primary_result", "observation_policy": "eligible", "issuer": "disco", "selection_reason": "JGAAP Q1 precision-equipment layout."},
+    {"event_id": "official-event-0ac60da24b9c564aadf788498a1f7a91", "security_id": "6525", "candidate_document_id": "doc-7c4645ac891c52978c6c096bc138beeb", "url": "https://www2.jpx.co.jp/disc/65250/140120260806511194.pdf", "document_type": "earnings_release", "document_role": "primary_result", "observation_policy": "eligible", "issuer": "kokusai_electric", "selection_reason": "IFRS Q1 issuer distinct from Pilot IFRS layouts."},
+    {"event_id": "official-event-f155a34b2ebc589a8112369488495e07", "security_id": "6920", "candidate_document_id": "doc-150bfd73a7b85dbda7b054921cddcc1c", "url": "https://www2.jpx.co.jp/disc/69200/140120260806511603.pdf", "document_type": "earnings_release", "document_role": "primary_result", "observation_policy": "eligible", "issuer": "lasertec", "selection_reason": "JGAAP June fiscal-year full-year results and forecast."},
+    {"event_id": "official-event-c9819644b22550688bbf72dc5af37624", "security_id": "7012", "candidate_document_id": "doc-458f162127c354b9b8b80a5416d3fa54", "url": "https://www2.jpx.co.jp/disc/70120/140120260806511849.pdf", "document_type": "earnings_release", "document_role": "primary_result", "observation_policy": "eligible", "issuer": "kawasaki_heavy", "selection_reason": "IFRS Q1 heavy-industry layout and forecast."},
+    {"event_id": "official-event-bac0d4c94f1f5746aaacec4968d090a4", "security_id": "7735", "candidate_document_id": "doc-520d79d15d665c72ad87fd20f69b611e", "url": "https://www2.jpx.co.jp/disc/77350/140120260812518669.pdf", "document_type": "earnings_release", "document_role": "restatement_or_review", "observation_policy": "review_only_no_auto_merge", "issuer": "screen_holdings", "selection_reason": "JGAAP review-complete exception document."}
+  ],
+  "scope_frozen_at": "2026-08-16T00:38:00+09:00",
+  "fan_out_forbidden": true,
+  "batch2_forbidden": true
+}

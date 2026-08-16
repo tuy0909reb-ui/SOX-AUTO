@@ -36,6 +36,7 @@
       "enum": [
         "active",
         "revised",
+        "deferred",
         "postponed",
         "withdrawn",
         "not_applicable",
@@ -81,6 +82,7 @@
         "in_document",
         "companion_document",
         "predecessor_chain",
+        "newly_disclosed",
         "unknown"
       ]
     },

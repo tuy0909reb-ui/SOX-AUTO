@@ -1,0 +1,24 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "document_id": {},
+    "evidence_text": {},
+    "observation_id": {},
+    "observation_source_link_id": {},
+    "quality_status": {},
+    "repair_evidence_id": {},
+    "repair_id": {},
+    "source_id": {}
+  },
+  "required": [
+    "repair_evidence_id",
+    "repair_id",
+    "observation_id",
+    "observation_source_link_id",
+    "document_id",
+    "source_id",
+    "evidence_text",
+    "quality_status"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,104 @@
+{
+  "batch_id": "financial-fact-fanout-batch3-001",
+  "max_documents": 2,
+  "event_ids": [
+    "official-event-6042eaef6808592b8e960199e4a45a90",
+    "official-event-5097c451c2e6519c90e9bc23fc52def6"
+  ],
+  "documents": [
+    {
+      "event_id": "official-event-6042eaef6808592b8e960199e4a45a90",
+      "security_id": "7011",
+      "candidate_document_id": "doc-d17dcc4960ff506e9f866162018e48f0",
+      "url": "https://www2.jpx.co.jp/disc/70110/140120260726599663.pdf",
+      "document_type": "earnings_release",
+      "document_role": "primary_result",
+      "observation_policy": "eligible",
+      "issuer": "mitsubishi_heavy_industries",
+      "selection_reason": "Batch 1-compatible IFRS Q1 revenue path on an existing local official snapshot; distinct from frozen Batch 0 7011 FY repair Document.",
+      "document_identity": {
+        "scope_key": "doc-d17dcc4960ff506e9f866162018e48f0",
+        "related_financial_document_id": "financial-document-48720411595a52acba60202db3abfe07",
+        "related_financial_document_role": "v002_inventory_and_observation_namespace_citation_only",
+        "auto_equate_doc_and_financial_document_ids": false,
+        "document_title": "2027年3月期第1四半期決算短信〔IFRS〕(連結)",
+        "publication_date": "2026-08-04",
+        "existing_local_snapshot_path": "data/stock/stock_swing/facts_phase_a/raw_external/financial_fact_sample_sources/fccc0be04fbc1b9c927a652801339d92e789d3aac37e79122961681f173fafcc.pdf",
+        "existing_content_hash": "fccc0be04fbc1b9c927a652801339d92e789d3aac37e79122961681f173fafcc",
+        "pdf_reacquisition_forbidden": true
+      },
+      "candidate_fact_boundaries": {
+        "actual_revenue_q1": {
+          "measure_kind": "actual",
+          "metric_name": "revenue",
+          "metric_name_raw": "売上収益",
+          "accounting_standard": "IFRS",
+          "consolidation": "consolidated",
+          "period_basis": "Q1_cumulative",
+          "fiscal_period_end": "2026-06-30",
+          "fiscal_year_label": "2027-03",
+          "unit_code": "JPY_million",
+          "candidate_page": 1
+        }
+      }
+    },
+    {
+      "event_id": "official-event-5097c451c2e6519c90e9bc23fc52def6",
+      "security_id": "8035",
+      "candidate_document_id": "doc-bfbd66e8e5845552b00af0ceaf23dc05",
+      "url": "https://www2.jpx.co.jp/disc/80350/140120241003593212.pdf",
+      "document_type": "earnings_release",
+      "document_role": "primary_result",
+      "observation_policy": "eligible",
+      "issuer": "tokyo_electron",
+      "selection_reason": "Existing local official H1 JGAAP snapshot with source-proved mid-document actual and in-document FY revised forecast axes; blank-cover and revision binding remain mandatory fail-closed checks.",
+      "document_identity": {
+        "scope_key": "doc-bfbd66e8e5845552b00af0ceaf23dc05",
+        "related_financial_document_id": "financial-document-d8af1ffc304451f89b1c10d79cdd6c6a",
+        "related_financial_document_role": "v002_inventory_and_observation_namespace_citation_only",
+        "auto_equate_doc_and_financial_document_ids": false,
+        "document_title": "2025年3月期第2四半期(中間期)決算短信〔日本基準〕(連結)",
+        "publication_date": "2024-11-12",
+        "existing_local_snapshot_path": "data/stock/stock_swing/facts_phase_a/raw_external/financial_fact_sample_sources/88fe102c11e8b98fd7dc34ba0fe8d458d5d3825ebfb207cca8fd6777d6696e4c.pdf",
+        "existing_content_hash": "88fe102c11e8b98fd7dc34ba0fe8d458d5d3825ebfb207cca8fd6777d6696e4c",
+        "pdf_reacquisition_forbidden": true
+      },
+      "candidate_fact_boundaries": {
+        "actual_revenue_h1": {
+          "measure_kind": "actual",
+          "metric_name": "revenue",
+          "metric_name_raw": "売上高",
+          "accounting_standard": "JGAAP",
+          "consolidation": "consolidated",
+          "period_basis": "Q2_cumulative",
+          "fiscal_period_end": "2024-09-30",
+          "fiscal_year_label": "2025-03",
+          "unit_code": "JPY_million",
+          "candidate_page": 5
+        },
+        "revised_forecast_revenue_fy": {
+          "measure_kind": "revised_forecast",
+          "metric_name": "revenue",
+          "metric_name_raw": "売上高",
+          "accounting_standard": "JGAAP",
+          "consolidation": "consolidated",
+          "period_basis": "full_year",
+          "fiscal_period_end": "2025-03-31",
+          "fiscal_year_label": "2025-03",
+          "unit_code": "JPY_million",
+          "candidate_page": 5,
+          "revision_relation": "in_document"
+        }
+      }
+    }
+  ],
+  "treatment_of_existing_v002_facts": "additive_namespace_verification_only",
+  "v002_facts_replace_merge_or_mutate": false,
+  "batch0_immutable": true,
+  "batch1_immutable": true,
+  "batch2_immutable": true,
+  "pdf_acquisition_forbidden": true,
+  "selector_implementation_forbidden_until_scope_freeze": false,
+  "execution_forbidden": true,
+  "fan_out_beyond_this_scope_forbidden": true
+}

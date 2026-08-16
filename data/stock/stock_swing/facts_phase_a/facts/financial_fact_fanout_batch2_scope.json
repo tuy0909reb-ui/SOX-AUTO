@@ -1,0 +1,72 @@
+{
+  "batch_id": "financial-fact-fanout-batch2-001",
+  "max_documents": 1,
+  "event_ids": [
+    "official-event-4bda3f4c595f5ba8b34646aada3f7681"
+  ],
+  "documents": [
+    {
+      "event_id": "official-event-4bda3f4c595f5ba8b34646aada3f7681",
+      "security_id": "285A",
+      "candidate_document_id": "doc-f770b766ffff525fb1d4ac3879967278",
+      "url": "https://www2.jpx.co.jp/disc/285A0/140120260731505265.pdf",
+      "document_type": "earnings_release",
+      "document_role": "primary_result",
+      "observation_policy": "eligible",
+      "issuer": "kioxia_holdings",
+      "selection_reason": "Sole missing Batch 0/1 fan-out issuer path; IFRS Q1 actual and Q2 cumulative company-forecast revenue on one official TDnet PDF; Non-GAAP and 億円 surfaces remain negative-test only.",
+      "document_identity": {
+        "scope_key": "doc-f770b766ffff525fb1d4ac3879967278",
+        "related_financial_document_id": "financial-document-5093eae6342a5d06b7a39bd8961dad3f",
+        "related_financial_document_role": "v002_inventory_and_observation_namespace_citation_only",
+        "auto_equate_doc_and_financial_document_ids": false,
+        "document_title": "2027年3月期第1四半期決算短信〔IFRS〕(連結)",
+        "publication_date": "2026-07-31",
+        "existing_local_snapshot_path": "data/stock/stock_swing/facts_phase_a/raw_external/financial_fact_sample_sources/f78ce549aabdf043201b7592397079b29345cb10808f8ab14bf555e8e4590fe3.pdf",
+        "existing_content_hash": "f78ce549aabdf043201b7592397079b29345cb10808f8ab14bf555e8e4590fe3",
+        "pdf_reacquisition_forbidden": true
+      },
+      "candidate_fact_boundaries": {
+        "actual": {
+          "measure_kind": "actual",
+          "metric_name": "revenue",
+          "accounting_standard": "IFRS",
+          "consolidation": "consolidated",
+          "period_basis": "Q1_cumulative",
+          "fiscal_period_end": "2026-06-30",
+          "fiscal_year_label": "2027-03",
+          "unit_code": "JPY_million",
+          "candidate_page": 1
+        },
+        "company_forecast": {
+          "measure_kind": "company_forecast",
+          "metric_name": "revenue",
+          "accounting_standard": "IFRS",
+          "consolidation": "consolidated",
+          "period_basis": "Q2_cumulative",
+          "fiscal_period_end": "2026-09-30",
+          "fiscal_year_label": "2027-03",
+          "unit_code": "JPY_million",
+          "candidate_page": 2
+        }
+      },
+      "negative_test_boundaries": [
+        "non_gaap_excluded_from_canonical_financial_fact",
+        "no_non_gaap_to_ifrs_conversion",
+        "no_oku_yen_to_million_yen_conversion",
+        "no_actual_forecast_swap",
+        "no_forecast_actual_swap",
+        "no_q1_q2_period_swap",
+        "no_unit_period_or_accounting_basis_inference"
+      ]
+    }
+  ],
+  "treatment_of_existing_v002_facts": "additive_namespace_verification_only",
+  "v002_facts_replace_merge_or_mutate": false,
+  "scope_frozen_at": "2026-08-16T08:00:00+09:00",
+  "batch1_immutable": true,
+  "pdf_acquisition_forbidden": true,
+  "selector_implementation_forbidden": true,
+  "execution_forbidden": true,
+  "fan_out_beyond_this_scope_forbidden": true
+}
