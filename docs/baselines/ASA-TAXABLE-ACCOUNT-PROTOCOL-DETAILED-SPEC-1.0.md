@@ -343,6 +343,20 @@ STOP reach
 - 新規Sensor追加
 - 282A / 野村への同Stop適用
 
+### 5.6 Integrated BT Evidence（2026-09-02）
+
+| Item | Value |
+|---|---|
+| Script | `run_nomura_1570_risk_stop_validation.py` |
+| Report | `data/common_backtest/reports/nomura_1570_risk_stop_validation/risk_stop_validation_report.md` |
+| Compare | B_LUMP（Stopなし）vs B_LUMP_STOP（一括 + raw_entry×0.85） |
+| Result | STOP 税引後優位（9.68億 → 11.28億；CAGR +1.17pt；Stop発動 2） |
+| Freeze meaning | **変更なし**（本節仕様の採用維持。PROTO100 Headline 9.68億は Stop 未実装系） |
+| Human Confirmation | **2026-09-02 CONFIRMED** — 採用維持 / 閾値・60/40再探索なし |
+
+日次終値近似。事前逆指値の日中約定スリッページは未モデル。  
+Confirmation: `docs/reports/ASA-CONFIRM-TAXABLE-1570-RISK-STOP-INTEGRATED-BT-EVIDENCE-1.0.md`
+
 ---
 
 ## 6. State Management — Single Source of Truth

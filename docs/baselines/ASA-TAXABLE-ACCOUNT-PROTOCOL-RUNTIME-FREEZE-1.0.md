@@ -21,7 +21,11 @@ The following are **frozen for normal operations**. Changes require a new change
 - `crash_15` / `semi_signal`
 - Asset Selection priority (Growth→野村; Swing 1570 > 282A > CASH)
 - Freeze Entry / Exit / ReEntry conditions
-- 1570 Position Risk Stop: `stop_price = entry × 0.85`
+- 1570 Position Risk Stop: `stop_price = entry × 0.85`  
+  Evidence（統合 BT・2026-09-02）: `data/common_backtest/reports/nomura_1570_risk_stop_validation/`  
+  （B_LUMP 9.68億 vs B_LUMP_STOP 11.28億；Stop発動2回）  
+  **Human Confirmation 2026-09-02:** 採用維持 / Freeze意味変更なし / 閾値変更なし  
+  Confirmation: `docs/reports/ASA-CONFIRM-TAXABLE-1570-RISK-STOP-INTEGRATED-BT-EVIDENCE-1.0.md`
 - ViewModel schema **2.1** display contract (projection only)
 
 ### Frozen interface (ops)

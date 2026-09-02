@@ -169,6 +169,49 @@ Swing Protocol 100%
 |---|---|---|
 | Transfer ratio optimization | `nomura_swing_transfer_ratio_optimization/` | Alert比率感度（100%が税引後首位） |
 | 282A rotation validation | `nomura_282A_rotation_validation/` | 282A単独移管は不適；PROTO100優位 |
+| 1570 Risk Stop integrated BT | `nomura_1570_risk_stop_validation/` | 一括 Entry ± Entry×0.85 の税引後差分 |
+
+### 6.4 Additive Evidence — 1570 Entry×0.85 Risk Stop（2026-09-02）
+
+```text
+対象: PROTO100 スイング袖・1570 一括 + Risk Stop
+期間: 2009-08-27 → 2026-07-31（初期1350万・税引後）
+N: 1570 trades 44（Stopなし）/ 45（Stopあり）；Stop発動 2
+評価目的: RUNTIME-FREEZE 済み Risk Stop の統合 BT Evidence
+判断可能範囲: 影響量の記述（採用/不採用の覆しではない）
+判断禁止範囲: 閾値再探索・60/40再導入・PROTO100 不採用化
+```
+
+| Case | Final（税引後） | CAGR | MaxDD | Stop発動 |
+|---|---:|---:|---:|---:|
+| B_LUMP（§6.2 相当・Stopなし） | 9.68億円 | 28.71% | −41.5% | 0 |
+| B_LUMP_STOP（一括 + Entry×0.85） | **11.28億円** | **29.88%** | −41.5% | **2** |
+
+差分（LUMP → STOP）: 最終 **+1.60億円（+16.5%）** / CAGR **+1.17pt** / MaxDD 変化なし。  
+期間CAGR: STOP勝 3 / LUMP勝 1 / 全5（主要差は 2013–2016）。
+
+```text
+§6.2 Headline（9.68億）は Risk Stop 未実装 BT。
+運用プロトコル（RUNTIME-FREEZE）の Entry×0.85 は採用維持。
+本表は統合パフォーマンス Evidence。Stop 採用を覆す材料ではない。
+Swing FREEZE「固定損切: 採用しない」はコンポーネント層のまま（Risk Control は上乗せ層）。
+```
+
+### 6.5 Human Judgment Confirmation（2026-09-02）
+
+**Authority:** HUMAN_ARCHITECT  
+**Decision:** **CONFIRMED**
+
+| Item | Decision |
+|---|---|
+| Entry×0.85 Risk Stop | **採用維持** |
+| RUNTIME-FREEZE 意味 | **変更なし**（閾値・条件の Unfreeze なし） |
+| Swing FREEZE「固定損切不採用」 | **触らない**（Risk Control は上乗せ層） |
+| §6.2 Headline 9.68億 | **歴史 Headline として維持**（Stop 未実装系と明記） |
+| 60/40 ナンピン / Stop 閾値再探索 | **実施しない** |
+
+Report: `data/common_backtest/reports/nomura_1570_risk_stop_validation/risk_stop_validation_report.md`  
+Confirmation: `docs/reports/ASA-CONFIRM-TAXABLE-1570-RISK-STOP-INTEGRATED-BT-EVIDENCE-1.0.md`
 
 ---
 
