@@ -6,9 +6,10 @@ name: Maintenance
 # Does not deploy, rollback, or modify tools/secretary/.
 
 on:
-  schedule:
-    # Daily 00:00 UTC
-    - cron: "0 0 * * *"
+  # Daily schedule paused (was: cron "0 0 * * *" UTC).
+  # Re-enable when Health Check mail is wanted again.
+  # schedule:
+  #   - cron: "0 0 * * *"
   workflow_dispatch:
 
 permissions:
@@ -56,6 +57,7 @@ jobs:
           collect_one() {
             local name="$1"
             local file="$2"
+            local critical="${3:-0}"  # 1 = missing/fail closes the job
             local note=""
             local conclusion="unknown"
             local status="unknown"
@@ -63,10 +65,10 @@ jobs:
             local json=""
 
             if [[ ! -f ".github/workflows/${file}" ]]; then
-              note="workflow file missing"
+              note="workflow file missing (skipped)"
               conclusion="missing"
               status="n/a"
-              COLLECT_ERROR=1
+              # Do not fail closed on absent optional workflows (e.g. retired test.yml).
               echo "| ${name} | ${conclusion} | ${status} | | ${note} |" >> "$REPORT"
               return
             fi
@@ -98,18 +100,21 @@ jobs:
             echo "| ${name} | ${conclusion} | ${status} | ${url} | ${note} |" >> "$REPORT"
 
             if [[ "$conclusion" == "failure" || "$conclusion" == "timed_out" || "$conclusion" == "cancelled" ]]; then
-              # Record for Failure Summary; fail closed on deploy/maintenance failures.
-              if [[ "$name" == "Deploy" || "$name" == "Maintenance" || "$name" == "Operations" ]]; then
+              # Fail closed only on Deploy / Operations.
+              # Never on Maintenance itself — that sticky-fails every later schedule.
+              if [[ "$critical" == "1" ]]; then
                 FAIL_FLAG=1
               fi
             fi
           }
 
-          collect_one "Test" "test.yml"
-          collect_one "Release" "release.yml"
-          collect_one "Deploy" "deploy.yml"
-          collect_one "Maintenance" "maintenance.yml"
-          collect_one "Operations" "operations.yml"
+          # Optional / retired: record only (no COLLECT_ERROR)
+          collect_one "Test" "test.yml" 0
+          collect_one "Release" "release.yml" 0
+          collect_one "Deploy" "deploy.yml" 1
+          # Self-status is informational only (critical=0) to avoid fail loops.
+          collect_one "Maintenance" "maintenance.yml" 0
+          collect_one "Operations" "operations.yml" 1
 
           {
             echo
@@ -188,7 +193,7 @@ jobs:
             exit 1
           fi
           if [[ "$FAIL_FLAG" -ne 0 ]]; then
-            echo "Recent critical Workflow Failure detected (Deploy/Maintenance/Operations). Failing for notification."
+            echo "Recent critical Workflow Failure detected (Deploy/Operations). Failing for notification."
             exit 1
           fi
 
