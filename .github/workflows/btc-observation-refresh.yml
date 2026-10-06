@@ -1,0 +1,60 @@
+name: BTC Observation Refresh
+
+# Monthly sample extension for BTC DCA × Halving observation track.
+# Policy: docs/reports/BTC-OPERATIONS-OBSERVATION-POLICY-1.0.md
+# Does NOT refit candidate_set / E·X·R / adoption.
+
+on:
+  # Schedule owned by monthly-data-refresh.yml (common + BTC together).
+  # Keep dispatch for BTC-only manual runs.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: btc-observation-refresh
+  cancel-in-progress: false
+
+jobs:
+  observation_refresh:
+    name: A1 panel + frozen C/D re-apply
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas numpy yfinance matplotlib
+
+      - name: Run Observation Refresh
+        run: python research/btc_dca_halving/run_observation_refresh.py
+
+      - name: Commit dated artifacts (if any)
+        run: |
+          set -euo pipefail
+          git config user.name "btc-observation-bot"
+          git config user.email "btc-observation-bot@users.noreply.github.com"
+          git add \
+            research/btc_dca_halving/a1 \
+            research/btc_dca_halving/c \
+            research/btc_dca_halving/d \
+            research/btc_dca_halving/obs \
+            docs/reports/BTC-COMPLETE-A1-DESCRIPTIVE-STATISTICS-001.md \
+            docs/reports/BTC-COMPLETE-C-FIXED-APPLICATION-001.md \
+            docs/reports/BTC-COMPLETE-D-DIFFERENCE-EXPLANATION-001.md \
+            || true
+          if git diff --cached --quiet; then
+            echo "No observation artifacts to commit."
+            exit 0
+          fi
+          DAY="$(date -u +%Y-%m-%d)"
+          git commit -m "chore(btc): observation refresh ${DAY}"
+          git push

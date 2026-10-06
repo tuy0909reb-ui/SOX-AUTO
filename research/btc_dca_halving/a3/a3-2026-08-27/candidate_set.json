@@ -1,0 +1,195 @@
+{
+  "candidate_set_id": "btc-dca-halving-candset-a3-2026-08-27",
+  "frozen_at": "2026-08-27T22:02:41Z",
+  "phase": "A3",
+  "contract_version": "btc-dca-halving-contracts-v1.1-sm-once-per-cycle",
+  "status": "FROZEN",
+  "source_a1_data_version": "a1-2026-08-27",
+  "source_a2_data_version": "a2-2026-08-27",
+  "selection_window": {
+    "eval_start": "2016-07-09",
+    "eval_end": "2024-01-10",
+    "note": "Same as A2; no H2024 / no post_etf in selection"
+  },
+  "optimization_objective_declared": {
+    "primary_for_C": "Test whether calendar once-per-cycle full-exit + re-DCA structure remains comparable post-ETF — NOT maximize full-window ROI vs pure DCA",
+    "not_used_as_sole_gate": "beat_pure_dca_full_window",
+    "also_tracked": [
+      "cycle_local_roi_vs_cycle_pure",
+      "full_window_roi_vs_pure",
+      "cash_wait_days",
+      "equity_mdd",
+      "exit_timing_vs_halving"
+    ]
+  },
+  "k_policy": {
+    "contract_K_max": 5,
+    "actual_K": 3,
+    "meaning": "K≤5 is an upper bound to prevent carrying the full exploration grid into C; it is not a quota to fill."
+  },
+  "parameters_held_constant_across_set": {
+    "e_start": 0,
+    "r_wait": 180,
+    "r_selection_basis": "Policy/mid-grid + contract BENCH_CAL_SIMPLE uses R=180; NOT chosen by maximizing A2 full-window ROI (that would pick R=365).",
+    "mode": "once_per_cycle"
+  },
+  "explicitly_not_frozen": {
+    "E0_X540_R365": "Higher A2 full ROI within X=540 family but R was not an optimization target",
+    "E90_*": "Dominated on A2; no policy reason to delay Entry",
+    "X=450/630/900": "Interior/weak on A2 grid; excluded to keep C interpretable",
+    "threshold_repeat": "Rejected; mismatches next-cycle re-DCA intent"
+  },
+  "state_machine_binding": {
+    "required_mode_for_these_candidates": "once_per_cycle",
+    "approved_contract_sm_gap": false,
+    "aligned_with_sot": true,
+    "gate": "B may proceed; C still requires explicit later authorization"
+  },
+  "candidates": [
+    {
+      "rank_in_set": 1,
+      "rule_id": "E0_X540_R180",
+      "e_start": 0,
+      "x_exit": 540,
+      "r_wait": 180,
+      "a2_full_window_roi": 7.053759128769404,
+      "a2_excess_roi_vs_pure_full": -6.092150964849221,
+      "a2_min_cycle_roi": 2.369947189729269,
+      "a2_H2016_roi": 11.207244623272482,
+      "a2_H2020_roi": 2.369947189729269,
+      "a2_cash_wait_days": 1840,
+      "a2_equity_mdd": -0.3486455348922417,
+      "a2_sell_count": 2,
+      "a2_cum_invested": 4500000.0,
+      "a2_terminal_equity": 36241916.07946232,
+      "role_in_set": "primary_cycle_pattern_probe",
+      "selection_reason": "A2: X=540 is the only Exit on the contract grid that beat cycle-local pure DCA on both H2016 and H2020 with E=0. Carried to C as the cycle-structure probe — NOT as an adopted max-ROI rule. R=180 fixed (mid-grid / BENCH_CAL_SIMPLE), not R-optimized.",
+      "strengths": [
+        "Both-cycle cycle-local outperformance vs segment pure DCA in A2 window",
+        "Clear once-per-cycle full-exit timing (dsh=540) aligned with strategy narrative",
+        "E=0 matches A2 dominance without delayed-entry complexity"
+      ],
+      "weaknesses": [
+        "Full-window ROI trails pure DCA substantially (A2 excess ≈ -609pp)",
+        "Long cash wait after each exit",
+        "X=540 near H2016 descriptive peak (~525d) — peak-proximity overfit concern"
+      ],
+      "overfit_concerns": [
+        "N=2 explore cycles only",
+        "Do not interpret proximity to A1 peak days as validation",
+        "H2020 truncated pre-ETF in A2"
+      ],
+      "vs_pure_dca": "Loses on full-window wealth path; wins on cycle-segment ROI at X=540",
+      "what_C_tests": "Does the X=540 once-per-cycle exit+re-DCA structure remain timing-comparable and economically non-degraded post-ETF / into H2024 (without refit)?",
+      "mode": "once_per_cycle",
+      "refit_after_etf": false,
+      "used_h2024_for_selection": false
+    },
+    {
+      "rank_in_set": 2,
+      "rule_id": "E0_X365_R180",
+      "e_start": 0,
+      "x_exit": 365,
+      "r_wait": 180,
+      "a2_full_window_roi": 1.566566038903375,
+      "a2_excess_roi_vs_pure_full": -11.57934405471525,
+      "a2_min_cycle_roi": 1.964258528127735,
+      "a2_H2016_roi": 1.964258528127735,
+      "a2_H2020_roi": 2.6300138561495463,
+      "a2_cash_wait_days": 2190,
+      "a2_equity_mdd": -0.3221362557963636,
+      "a2_sell_count": 2,
+      "a2_cum_invested": 2750000.0,
+      "a2_terminal_equity": 7058056.606984281,
+      "role_in_set": "early_exit_contrast",
+      "selection_reason": "A2 early-exit contrast on same E/R. Weaker cycle-local results than X=540 but still a valid full-exit regimen. Included so C does not only test the A2 'winner' X.",
+      "strengths": [
+        "Earlier risk-off / shorter hold after halving",
+        "Still once-per-cycle full exit (not a hold proxy)",
+        "Controls for 'only X=540 was cherry-picked for C'"
+      ],
+      "weaknesses": [
+        "Worse A2 cycle-local and full-window metrics than X=540",
+        "Even longer cash wait in A2 (earlier exit → longer flat into next cycle)",
+        "May crystallize gains earlier (tax sensitivity later)"
+      ],
+      "overfit_concerns": [
+        "Not an A2 champion — present only as structural contrast"
+      ],
+      "vs_pure_dca": "Larger full-window shortfall than X=540 in A2",
+      "what_C_tests": "If early calendar exits degrade differently post-ETF than X=540, the cycle pattern is X-sensitive rather than a generic full-exit effect.",
+      "mode": "once_per_cycle",
+      "refit_after_etf": false,
+      "used_h2024_for_selection": false
+    },
+    {
+      "rank_in_set": 3,
+      "rule_id": "E0_X730_R180",
+      "e_start": 0,
+      "x_exit": 730,
+      "r_wait": 180,
+      "a2_full_window_roi": 1.8931305408665389,
+      "a2_excess_roi_vs_pure_full": -11.252779552752086,
+      "a2_min_cycle_roi": 0.491908742766368,
+      "a2_H2016_roi": 3.414209628616436,
+      "a2_H2020_roi": 0.491908742766368,
+      "a2_cash_wait_days": 1460,
+      "a2_equity_mdd": -0.688962850953668,
+      "a2_sell_count": 2,
+      "a2_cum_invested": 6400000.0,
+      "a2_terminal_equity": 18516035.461545847,
+      "role_in_set": "late_exit_contrast",
+      "selection_reason": "A2 late-exit contrast. Closer to 'hold longer then exit once'. Poor A2 cycle-local H2020 ROI — useful degraded baseline for C comparison.",
+      "strengths": [
+        "Shorter flat period after exit within-cycle path vs early X",
+        "Stress-tests whether 'almost hold' calendar exits behave differently post-ETF"
+      ],
+      "weaknesses": [
+        "Weak A2 min-cycle ROI (H2020 especially)",
+        "Still trails pure DCA full-window",
+        "Less distinctive as a cycle-timing strategy"
+      ],
+      "overfit_concerns": [
+        "Included for contrast breadth, not because A2 favored it"
+      ],
+      "vs_pure_dca": "Large full-window shortfall; weak cycle-local vs X=540",
+      "what_C_tests": "Whether late exits look more 'comparable' to a hold path post-ETF, vs the X=540 cycle-timed exit.",
+      "mode": "once_per_cycle",
+      "refit_after_etf": false,
+      "used_h2024_for_selection": false
+    }
+  ],
+  "benchmarks_for_later_C": [
+    {
+      "id": "BENCH_PURE_DCA",
+      "role": "never-exit wealth path"
+    },
+    {
+      "id": "BENCH_CAL_SIMPLE",
+      "params": "E0_X540_R180",
+      "role": "aligned with primary candidate"
+    }
+  ],
+  "prohibitions": [
+    "Do not refit E/X/R on H2024 or post_etf",
+    "Do not treat this freeze as investment adoption",
+    "Do not interpret pure-DCA underperformance alone as strategy failure",
+    "Do not interpret cycle-local X=540 edge alone as adoption"
+  ],
+  "formally_frozen_at": "2026-08-27T22:20:45Z",
+  "sm_sot_alignment": {
+    "resolved": true,
+    "resolved_at": "2026-08-27T22:20:45Z",
+    "human_decision": "Adopt once_per_cycle into Strategy State Machine SoT",
+    "contract_version": "btc-dca-halving-contracts-v1.1-sm-once-per-cycle",
+    "r_semantics": "R_wait counts calendar days in the NEW cycle_id after transition; not from exit date. Frozen set uses R_wait=180.",
+    "constraints": {
+      "exit_per_cycle_max": 1,
+      "same_cycle_reentry_after_exit": false,
+      "reentry_only_in_next_cycle": true,
+      "e_start_frozen": 0,
+      "r_wait_frozen": 180,
+      "candidate_rules_unchanged": true
+    }
+  }
+}

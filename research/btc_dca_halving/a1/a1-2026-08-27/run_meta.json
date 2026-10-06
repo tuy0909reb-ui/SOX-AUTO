@@ -1,0 +1,74 @@
+{
+  "phase": "A1",
+  "contract_version": "btc-dca-halving-contracts-v1.0-approved",
+  "data_version": "a1-2026-08-27",
+  "retrieved_at": "2026-08-27T21:14:30Z",
+  "retrieval_date_utc": "2026-08-27",
+  "price_source": "Yahoo Finance BTC-USD (auto_adjust=True)",
+  "fx_source": "Yahoo Finance JPY=X (USDJPY, auto_adjust=True)",
+  "btc_ticker": "BTC-USD",
+  "fx_ticker": "JPY=X",
+  "bar_tz_policy": "utc_calendar_date_yahoo_daily_close",
+  "timezone": "UTC calendar date labels from Yahoo daily bars (tz stripped)",
+  "execution_price": "Close",
+  "jpy_conversion": "btc_jpy = btc_usd * usdjpy",
+  "missing_treatment": {
+    "btc": "drop rows with missing BTC",
+    "usdjpy": "reindex to BTC spine; forward-fill only; no linear interpolation"
+  },
+  "halving_calendar_sot": [
+    {
+      "cycle_id": "H2012",
+      "halving_date": "2012-11-28",
+      "role": "descriptive_only_if_in_panel"
+    },
+    {
+      "cycle_id": "H2016",
+      "halving_date": "2016-07-09",
+      "role": "explore_select"
+    },
+    {
+      "cycle_id": "H2020",
+      "halving_date": "2020-05-11",
+      "role": "explore_select"
+    },
+    {
+      "cycle_id": "H2024",
+      "halving_date": "2024-04-19",
+      "role": "post_etf_validation_incomplete"
+    }
+  ],
+  "T_approve": "2024-01-10",
+  "T_primary": "2024-01-11",
+  "first_date": "2014-09-17",
+  "last_date": "2026-08-27",
+  "row_count": 4363,
+  "content_fingerprints": {
+    "btc_usd_daily.csv": "722a0b84f2fc1f33848f0ea73251f8674e38016f5718b76df9c15d187e2feb56",
+    "usdjpy_daily.csv": "c97085ccde8a58896fe0fa9cbb6a20311b18b312e072665e4be9ebc32cf46a0e",
+    "panel_daily.csv": "11314e7ea5fbad1eb7849c652527a9cd90118ab052832aeecc955346fc4d126e"
+  },
+  "quality": {
+    "btc_start": "2014-09-17",
+    "btc_end": "2026-08-27",
+    "btc_rows_raw_after_align": 4363,
+    "fx_first_valid_on_spine": "2014-09-17",
+    "fx_ffill_non_trading_days": true,
+    "btc_dropna": true,
+    "linear_interpolation": false
+  },
+  "figures": [
+    "btc_usd_halving_timeline.png",
+    "btc_usd_normalized_from_halving.png",
+    "btc_jpy_halving_timeline.png"
+  ],
+  "prohibited_in_a1": [
+    "E/X/R exploration",
+    "candidate_set",
+    "MVRV and other overlays",
+    "ETF flow",
+    "Nasdaq/DXY/rates",
+    "adoption judgment",
+    "using peaks as exit rules"
+  ]
+}

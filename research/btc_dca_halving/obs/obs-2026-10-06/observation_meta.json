@@ -1,0 +1,31 @@
+{
+  "record_type": "Observation Refresh",
+  "policy_id": "BTC-OPERATIONS-OBSERVATION-POLICY-1.0",
+  "contract_version": "btc-dca-halving-contracts-v1.1-sm-once-per-cycle",
+  "candidate_set_id": "btc-dca-halving-candset-a3-2026-08-27",
+  "mode": "observation_continuation",
+  "retrieved_at": "2026-10-06T14:25:56Z",
+  "before": {
+    "data_version": "a1-2026-08-27",
+    "first_date": "2014-09-17",
+    "last_date": "2026-08-27",
+    "row_count": 4363
+  },
+  "after": {
+    "data_version": "a1-2026-10-06",
+    "first_date": "2014-09-17",
+    "last_date": "2026-10-06",
+    "row_count": 4403
+  },
+  "rows_added": 40,
+  "a1_data_version": "a1-2026-10-06",
+  "cd_data_version": "cd-2026-10-06",
+  "previous_cd_data_version": "cd-2026-08-27",
+  "prohibited": [
+    "candidate_set change",
+    "E/X/R re-optimization",
+    "new trading rules",
+    "investment adoption",
+    "causation claims"
+  ]
+}

@@ -9,7 +9,23 @@
     "test": "jest",
     "test:runtime_execution": "jest --config jest.config.cjs",
     "test:asa_minimum_runtime": "jest --config jest.config.cjs tests/asa_minimum_runtime",
-    "asa": "node dist/src/asa_minimum_runtime/cli/main.js"
+    "asa": "node dist/src/asa_minimum_runtime/cli/main.js",
+    "sidecar:build": "tsc -p tools/chatgpt_activity_sidecar/tsconfig.json",
+    "sidecar:test": "jest --config jest.config.cjs tests/chatgpt_activity_sidecar",
+    "sidecar:spike": "npm run sidecar:build && node tools/chatgpt_activity_sidecar/dist/scripts/day0Spike.js",
+    "sidecar:spike:fixture": "npm run sidecar:build && node tools/chatgpt_activity_sidecar/dist/scripts/day0Spike.js fixture",
+    "sidecar:harness": "npm run sidecar:build && npm run build && node tools/chatgpt_activity_sidecar/dist/scripts/runHarness.js",
+    "sidecar:verify": "npm run sidecar:build && node tools/chatgpt_activity_sidecar/dist/scripts/verifyPoc.js",
+    "sidecar:real-env-spike": "npm run sidecar:build && node tools/chatgpt_activity_sidecar/dist/scripts/realEnvSpike.js",
+    "sidecar:install": "powershell -ExecutionPolicy Bypass -File tools/chatgpt_activity_sidecar/install/register_native_host.ps1",
+    "sidecar:real-env": "powershell -ExecutionPolicy Bypass -File tools/chatgpt_activity_sidecar/install/run_real_env_validation.ps1 -Browser Edge",
+    "sidecar:extension-spike": "npm run sidecar:build && powershell -ExecutionPolicy Bypass -File tools/chatgpt_activity_sidecar/install/run_extension_spike.ps1",
+    "sidecar:extension-monitor": "npm run sidecar:build && powershell -ExecutionPolicy Bypass -File tools/chatgpt_activity_sidecar/install/run_extension_monitor.ps1",
+    "asa:chatgpt": "npm run sidecar:build && powershell -ExecutionPolicy Bypass -File tools/chatgpt_activity_sidecar/install/open_chatgpt.ps1",
+    "sidecar:session-probe": "npm run sidecar:build && node tools/chatgpt_activity_sidecar/dist/scripts/sessionProbe.js",
+    "btc:obs-refresh": "python research/btc_dca_halving/run_observation_refresh.py",
+    "data:monthly-refresh": "python scripts/common_backtest/run_monthly_refresh.py"
+
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",

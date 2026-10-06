@@ -1,0 +1,16 @@
+{
+  "phase": "A3",
+  "contract_version": "btc-dca-halving-contracts-v1.1-sm-once-per-cycle",
+  "data_version": "a3-2026-08-27",
+  "frozen_at": "2026-08-27T22:02:41Z",
+  "candidate_set_id": "btc-dca-halving-candset-a3-2026-08-27",
+  "status": "FROZEN",
+  "source_a1": "a1-2026-08-27",
+  "source_a2": "a2-2026-08-27",
+  "a2_grid_fingerprint": "5e6bb7a53e26badcd7af27ab46c8d46ce6cff434a254c71a005a786b19716cd0",
+  "candidate_set_fingerprint": "1a57d5f622e263fcbb736e2f847270c34957726e0516bdef368118bdb2acb7ff",
+  "K": 3,
+  "sm_gap_blocks_BCD": false,
+  "formally_frozen_at": "2026-08-27T22:20:45Z",
+  "sm_gap_blocks_C_until_authorized": true
+}

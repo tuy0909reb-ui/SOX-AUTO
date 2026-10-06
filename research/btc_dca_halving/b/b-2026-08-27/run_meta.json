@@ -1,0 +1,13 @@
+{
+  "phase": "B",
+  "contract_version": "btc-dca-halving-contracts-v1.1-sm-once-per-cycle",
+  "data_version": "b-2026-08-27",
+  "retrieved_at": "2026-08-27T22:20:49Z",
+  "overall_pass": true,
+  "candidate_set_id": "btc-dca-halving-candset-a3-2026-08-27",
+  "content_fingerprints": {
+    "b_confirmation_results.csv": "d45a5929bb30e9c94d2c7a958f935d16f71db4f2be83c578b41a705688c6b112"
+  },
+  "no_adoption": true,
+  "no_C": true
+}

@@ -1,0 +1,3 @@
+# Official / Fact JSONL digests are pinned as LF. Prevent Windows autocrlf
+# from rewriting working-tree bytes and fail-closing P1 ops on digest alone.
+data/stock/stock_swing/facts_phase_a/facts/*.jsonl text eol=lf

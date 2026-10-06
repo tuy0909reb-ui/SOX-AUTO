@@ -1,0 +1,131 @@
+{
+  "phase": "B",
+  "contract_version": "btc-dca-halving-contracts-v1.1-sm-once-per-cycle",
+  "data_version": "b-2026-08-27",
+  "candidate_set_id": "btc-dca-halving-candset-a3-2026-08-27",
+  "candidate_set_status": "FROZEN",
+  "eval_start": "2016-07-09",
+  "eval_end": "2024-01-10",
+  "source_a1": "a1-2026-08-27",
+  "source_a2": "a2-2026-08-27",
+  "source_a3": "a3-2026-08-27",
+  "overall_pass": true,
+  "pure_dca_roi": 13.145910093618625,
+  "pure_dca_H2016_roi": 2.5153621315409014,
+  "pure_dca_H2020_roi": 1.350841321215769,
+  "checks": [
+    {
+      "rule_id": "E0_X540_R180",
+      "sm_ok": true,
+      "repro": {
+        "roi": true,
+        "excess": true,
+        "min_cycle": true,
+        "wait": true,
+        "sells": true,
+        "invested": true,
+        "equity": true
+      },
+      "params_ok": true,
+      "overall_pass": true,
+      "sells": [
+        {
+          "date": "2017-12-31",
+          "cycle_id": "H2016",
+          "dsh": 540.0,
+          "units": 20.64739768601862,
+          "price_jpy": 1597903.6940917969,
+          "proceeds_net": 32959560.482835703,
+          "lot_cost": 2697300.0
+        },
+        {
+          "date": "2021-11-02",
+          "cycle_id": "H2020",
+          "dsh": 540.0,
+          "units": 0.455469035192028,
+          "price_jpy": 7213753.26091978,
+          "proceeds_net": 3282355.5966266138,
+          "lot_cost": 1798200.0
+        }
+      ]
+    },
+    {
+      "rule_id": "E0_X365_R180",
+      "sm_ok": true,
+      "repro": {
+        "roi": true,
+        "excess": true,
+        "min_cycle": true,
+        "wait": true,
+        "sells": true,
+        "invested": true,
+        "equity": true
+      },
+      "params_ok": true,
+      "overall_pass": true,
+      "sells": [
+        {
+          "date": "2017-07-09",
+          "cycle_id": "H2016",
+          "dsh": 365.0,
+          "units": 19.003392221254902,
+          "price_jpy": 284958.96615643054,
+          "proceeds_net": 5409771.813833117,
+          "lot_cost": 1823175.0
+        },
+        {
+          "date": "2021-05-11",
+          "cycle_id": "H2020",
+          "dsh": 365.0,
+          "units": 0.26732782760838214,
+          "price_jpy": 6171952.776633829,
+          "proceeds_net": 1648284.7931511647,
+          "lot_cost": 924075.0
+        }
+      ]
+    },
+    {
+      "rule_id": "E0_X730_R180",
+      "sm_ok": true,
+      "repro": {
+        "roi": true,
+        "excess": true,
+        "min_cycle": true,
+        "wait": true,
+        "sells": true,
+        "invested": true,
+        "equity": true
+      },
+      "params_ok": true,
+      "overall_pass": true,
+      "sells": [
+        {
+          "date": "2018-07-09",
+          "cycle_id": "H2016",
+          "dsh": 730.0,
+          "units": 21.664670525994275,
+          "price_jpy": 744437.4987487793,
+          "proceeds_net": 16111865.144449992,
+          "lot_cost": 3646350.0
+        },
+        {
+          "date": "2022-05-11",
+          "cycle_id": "H2020",
+          "dsh": 730.0,
+          "units": 0.6380306637712606,
+          "price_jpy": 3771882.811658442,
+          "proceeds_net": 2404170.317095855,
+          "lot_cost": 2747250.0
+        }
+      ]
+    }
+  ],
+  "negative_control_threshold_repeat": {
+    "rule_id": "E0_X540_R180",
+    "threshold_repeat_sell_count": 10,
+    "once_per_cycle_sell_count": 2,
+    "pass_if_churn_gt_once": true
+  },
+  "adoption_judgment": false,
+  "proceeded_to_C": false
+}

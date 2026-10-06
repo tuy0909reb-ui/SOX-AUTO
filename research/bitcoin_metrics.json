@@ -1,0 +1,1428 @@
+{
+  "data_quality": {
+    "requested_start": "2013-01-01",
+    "actual_starts": {
+      "BTC": "2014-09-17",
+      "ETH": "2017-11-09",
+      "QQQ": "2013-01-02",
+      "SOXX": "2013-01-02",
+      "SPY": "2013-01-02",
+      "GLD": "2013-01-02"
+    },
+    "lengths": {
+      "BTC": 4403,
+      "ETH": 3254,
+      "QQQ": 3461,
+      "SOXX": 3461,
+      "SPY": 3461,
+      "GLD": 3461
+    },
+    "timezone": "Calendar dates derived from Yahoo timestamps (tz stripped to date)",
+    "spine": "BTC-USD calendar (includes weekends)",
+    "equity_alignment": "reindex to BTC spine + forward-fill last close across non-trading days",
+    "missing_treatment": "ffill equities; dropna on BTC+QQQ+SOXX+SPY+GLD after ffill",
+    "no_interpolation": "No linear interpolation; weekends use prior equity close",
+    "panel_start": "2014-09-17",
+    "panel_end": "2026-10-06",
+    "panel_rows": 4403,
+    "meets_min_2017": true
+  },
+  "data_sources": {
+    "prices": "Yahoo Finance (yfinance), auto_adjust=True",
+    "tickers": {
+      "BTC": "BTC-USD",
+      "ETH": "ETH-USD",
+      "QQQ": "QQQ",
+      "SOXX": "SOXX",
+      "SPY": "SPY",
+      "GLD": "GLD"
+    },
+    "not_used": [
+      "FRED (macro levels not required for price/RSI study)",
+      "CoinGecko / Binance (Yahoo sufficient for daily research)"
+    ],
+    "events": "Curated public calendar dates (approx); not tick-level",
+    "halvings": [
+      {
+        "name": "Halving_2016",
+        "date": "2016-07-09"
+      },
+      {
+        "name": "Halving_2020",
+        "date": "2020-05-11"
+      },
+      {
+        "name": "Halving_2024",
+        "date": "2024-04-19"
+      }
+    ]
+  },
+  "stats": {
+    "BTC": {
+      "name": "BTC",
+      "start": "2014-09-17",
+      "end": "2026-10-06",
+      "n": 4403,
+      "cagr": 0.5438188435513582,
+      "total_return": 186.48506361404148,
+      "ytd": -0.033682189359917625,
+      "ret_3m": 0.37723478550143774,
+      "ret_6m": 0.19473166619531157,
+      "ret_1y": -0.312692928825843,
+      "vol_ann": 0.6606354608119114,
+      "mdd": -0.8339900882218974,
+      "sharpe": 0.9596727811886523,
+      "vol_ann_method": "std * sqrt(365) on calendar-aligned series"
+    },
+    "ETH": {
+      "name": "ETH",
+      "start": "2017-11-09",
+      "end": "2026-10-06",
+      "n": 3254,
+      "cagr": 0.270326244096182,
+      "total_return": 7.423511138234973,
+      "ytd": -0.09912841045061216,
+      "ret_3m": 0.5510441814469935,
+      "ret_6m": 0.23471544934867028,
+      "ret_1y": -0.42339980101152475,
+      "vol_ann": 0.8416563672984234,
+      "mdd": -0.9396254038538314,
+      "sharpe": 0.6855367495753559,
+      "vol_ann_method": "std * sqrt(365) on calendar-aligned series"
+    },
+    "QQQ": {
+      "name": "QQQ",
+      "start": "2014-09-17",
+      "end": "2026-10-06",
+      "n": 4403,
+      "cagr": 0.19304234366713224,
+      "total_return": 7.391853038553863,
+      "ytd": 0.24431392726305146,
+      "ret_3m": 0.07190173564294366,
+      "ret_6m": 0.2511379580338098,
+      "ret_1y": 0.259448234831372,
+      "vol_ann": 0.21733040519364893,
+      "mdd": -0.3511872651879714,
+      "sharpe": 0.8285845021525541,
+      "vol_ann_method": "std * sqrt(365) on calendar-aligned series"
+    },
+    "SOXX": {
+      "name": "SOXX",
+      "start": "2014-09-17",
+      "end": "2026-10-06",
+      "n": 4403,
+      "cagr": 0.2967617285161084,
+      "total_return": 21.918865096460674,
+      "ytd": 0.9744189481452681,
+      "ret_3m": 0.05679068987554503,
+      "ret_6m": 0.5694216940655643,
+      "ret_1y": 1.0650139780243864,
+      "vol_ann": 0.3309060706096204,
+      "mdd": -0.45753719226586775,
+      "sharpe": 0.8901355159898572,
+      "vol_ann_method": "std * sqrt(365) on calendar-aligned series"
+    },
+    "SPY": {
+      "name": "SPY",
+      "start": "2014-09-17",
+      "end": "2026-10-06",
+      "n": 4403,
+      "cagr": 0.1384195542512141,
+      "total_return": 3.7704238049610383,
+      "ytd": 0.15438894575747342,
+      "ret_3m": 0.050495785594657505,
+      "ret_6m": 0.1546482888344456,
+      "ret_1y": 0.1755736845054432,
+      "vol_ann": 0.17422704566875963,
+      "mdd": -0.337172440604246,
+      "sharpe": 0.7162306374682044,
+      "vol_ann_method": "std * sqrt(365) on calendar-aligned series"
+    },
+    "GLD": {
+      "name": "GLD",
+      "start": "2014-09-17",
+      "end": "2026-10-06",
+      "n": 4403,
+      "cagr": 0.10266491354584484,
+      "total_return": 2.247360819534833,
+      "ytd": -0.03687821136851599,
+      "ret_3m": 0.019347793451626405,
+      "ret_6m": -0.12837160487503518,
+      "ret_1y": 0.047518493293637,
+      "vol_ann": 0.1630604356752576,
+      "mdd": -0.26404517857029663,
+      "sharpe": 0.5581115372913088,
+      "vol_ann_method": "std * sqrt(365) on calendar-aligned series"
+    }
+  },
+  "correlations": {
+    "daily": {
+      "BTC": {
+        "BTC": 1.0,
+        "QQQ": 0.221,
+        "SOXX": 0.202,
+        "SPY": 0.213,
+        "GLD": 0.095
+      },
+      "QQQ": {
+        "BTC": 0.221,
+        "QQQ": 1.0,
+        "SOXX": 0.864,
+        "SPY": 0.932,
+        "GLD": 0.084
+      },
+      "SOXX": {
+        "BTC": 0.202,
+        "QQQ": 0.864,
+        "SOXX": 1.0,
+        "SPY": 0.798,
+        "GLD": 0.105
+      },
+      "SPY": {
+        "BTC": 0.213,
+        "QQQ": 0.932,
+        "SOXX": 0.798,
+        "SPY": 1.0,
+        "GLD": 0.069
+      },
+      "GLD": {
+        "BTC": 0.095,
+        "QQQ": 0.084,
+        "SOXX": 0.105,
+        "SPY": 0.069,
+        "GLD": 1.0
+      }
+    },
+    "weekly": {
+      "BTC": {
+        "BTC": 1.0,
+        "QQQ": 0.179,
+        "SOXX": 0.156,
+        "SPY": 0.168,
+        "GLD": 0.092
+      },
+      "QQQ": {
+        "BTC": 0.179,
+        "QQQ": 1.0,
+        "SOXX": 0.854,
+        "SPY": 0.924,
+        "GLD": 0.108
+      },
+      "SOXX": {
+        "BTC": 0.156,
+        "QQQ": 0.854,
+        "SOXX": 1.0,
+        "SPY": 0.79,
+        "GLD": 0.1
+      },
+      "SPY": {
+        "BTC": 0.168,
+        "QQQ": 0.924,
+        "SOXX": 0.79,
+        "SPY": 1.0,
+        "GLD": 0.133
+      },
+      "GLD": {
+        "BTC": 0.092,
+        "QQQ": 0.108,
+        "SOXX": 0.1,
+        "SPY": 0.133,
+        "GLD": 1.0
+      }
+    },
+    "monthly": {
+      "BTC": {
+        "BTC": 1.0,
+        "QQQ": 0.325,
+        "SOXX": 0.178,
+        "SPY": 0.345,
+        "GLD": 0.061
+      },
+      "QQQ": {
+        "BTC": 0.325,
+        "QQQ": 1.0,
+        "SOXX": 0.834,
+        "SPY": 0.915,
+        "GLD": 0.044
+      },
+      "SOXX": {
+        "BTC": 0.178,
+        "QQQ": 0.834,
+        "SOXX": 1.0,
+        "SPY": 0.748,
+        "GLD": 0.001
+      },
+      "SPY": {
+        "BTC": 0.345,
+        "QQQ": 0.915,
+        "SOXX": 0.748,
+        "SPY": 1.0,
+        "GLD": 0.077
+      },
+      "GLD": {
+        "BTC": 0.061,
+        "QQQ": 0.044,
+        "SOXX": 0.001,
+        "SPY": 0.077,
+        "GLD": 1.0
+      }
+    }
+  },
+  "rolling_corr_latest_30d": {
+    "btc_qqq_30d": 0.5983611917374989,
+    "btc_soxx_30d": 0.4261481717626361,
+    "btc_gld_30d": 0.19133145420051245,
+    "btc_spy_30d": 0.4866418068836007
+  },
+  "rolling_corr_latest_90d": {
+    "btc_qqq_90d": 0.3530922931932483,
+    "btc_soxx_90d": 0.2701665525836195,
+    "btc_gld_90d": 0.48224534774658445,
+    "btc_spy_90d": 0.30166791791281283
+  },
+  "rsi": {
+    "BTC": {
+      "n": 4389,
+      "mean": 52.93372372505933,
+      "std": 13.966279988995337,
+      "frac_le20": 0.007063112326270221,
+      "frac_le30": 0.03873319662793347,
+      "frac_ge70": 0.12303485987696514,
+      "frac_ge80": 0.039644565960355434,
+      "between_30_70": 0.8382319434951014
+    },
+    "QQQ": {
+      "n": 4389,
+      "mean": 56.52101420496823,
+      "std": 14.003822054098631,
+      "frac_le20": 0.001594896331738437,
+      "frac_le30": 0.03212576896787423,
+      "frac_ge70": 0.1872863978127136,
+      "frac_ge80": 0.03417634996582365,
+      "between_30_70": 0.7805878332194122
+    },
+    "SOXX": {
+      "n": 4389,
+      "mean": 55.05527841689476,
+      "std": 13.515137909386434,
+      "frac_le20": 0.003417634996582365,
+      "frac_le30": 0.03508771929824561,
+      "frac_ge70": 0.14080656185919344,
+      "frac_ge80": 0.019594440647072227,
+      "between_30_70": 0.8241057188425609
+    },
+    "GLD": {
+      "n": 4389,
+      "mean": 52.53060052062978,
+      "std": 14.818448381576761,
+      "frac_le20": 0.015493278651173389,
+      "frac_le30": 0.06971975393028025,
+      "frac_ge70": 0.12599681020733652,
+      "frac_ge80": 0.03167008430166325,
+      "between_30_70": 0.8042834358623833
+    }
+  },
+  "rsi_backtest": {
+    "BTC": {
+      "rsi_ge70": [
+        {
+          "horizon_days": 1,
+          "n": 540,
+          "mean": 0.007678256960703586,
+          "median": 0.004362319592261521,
+          "win_rate": 0.5611111111111111
+        },
+        {
+          "horizon_days": 5,
+          "n": 540,
+          "mean": 0.03165573389321543,
+          "median": 0.01953881623486642,
+          "win_rate": 0.6148148148148148
+        },
+        {
+          "horizon_days": 20,
+          "n": 538,
+          "mean": 0.0963486905271719,
+          "median": 0.056736917472083315,
+          "win_rate": 0.6895910780669146
+        }
+      ],
+      "rsi_dead_cross": [
+        {
+          "horizon_days": 1,
+          "n": 120,
+          "mean": 0.002656931012683323,
+          "median": 0.0014312752561148612,
+          "win_rate": 0.55
+        },
+        {
+          "horizon_days": 5,
+          "n": 119,
+          "mean": 0.011420692935298798,
+          "median": 0.005028922350461151,
+          "win_rate": 0.5630252100840336
+        },
+        {
+          "horizon_days": 20,
+          "n": 117,
+          "mean": 0.06643155280708903,
+          "median": 0.020454786273263137,
+          "win_rate": 0.5555555555555556
+        }
+      ],
+      "rsi_le45": [
+        {
+          "horizon_days": 1,
+          "n": 1336,
+          "mean": 0.0009176196847339016,
+          "median": 0.0017371888470402164,
+          "win_rate": 0.5291916167664671
+        },
+        {
+          "horizon_days": 5,
+          "n": 1336,
+          "mean": 0.003194803167488235,
+          "median": 0.0047026825410370066,
+          "win_rate": 0.5523952095808383
+        },
+        {
+          "horizon_days": 20,
+          "n": 1336,
+          "mean": 0.013537567775551833,
+          "median": 0.011153414699429987,
+          "win_rate": 0.5479041916167665
+        }
+      ],
+      "rsi_le30": [
+        {
+          "horizon_days": 1,
+          "n": 170,
+          "mean": 0.008951362950164014,
+          "median": 0.005674303209046827,
+          "win_rate": 0.6
+        },
+        {
+          "horizon_days": 5,
+          "n": 170,
+          "mean": 0.03088686890724337,
+          "median": 0.02253898289676759,
+          "win_rate": 0.6529411764705882
+        },
+        {
+          "horizon_days": 20,
+          "n": 170,
+          "mean": 0.03107829624546135,
+          "median": 0.012960162001521058,
+          "win_rate": 0.5529411764705883
+        }
+      ]
+    },
+    "QQQ": {
+      "rsi_ge70": [
+        {
+          "horizon_days": 1,
+          "n": 821,
+          "mean": 0.00027366528377156216,
+          "median": 0.0,
+          "win_rate": 0.39585870889159563
+        },
+        {
+          "horizon_days": 5,
+          "n": 820,
+          "mean": 0.001236125796920667,
+          "median": 0.0028857987578516653,
+          "win_rate": 0.5914634146341463
+        },
+        {
+          "horizon_days": 20,
+          "n": 818,
+          "mean": 0.0077586330256371626,
+          "median": 0.013502403093264337,
+          "win_rate": 0.6674816625916871
+        }
+      ],
+      "rsi_dead_cross": [
+        {
+          "horizon_days": 1,
+          "n": 157,
+          "mean": -0.00016737501215399405,
+          "median": 0.0,
+          "win_rate": 0.4840764331210191
+        },
+        {
+          "horizon_days": 5,
+          "n": 157,
+          "mean": 0.001811711215739584,
+          "median": 0.004022332843833354,
+          "win_rate": 0.6114649681528662
+        },
+        {
+          "horizon_days": 20,
+          "n": 156,
+          "mean": 0.009434567477215192,
+          "median": 0.016481661426029803,
+          "win_rate": 0.6474358974358975
+        }
+      ],
+      "rsi_le45": [
+        {
+          "horizon_days": 1,
+          "n": 1020,
+          "mean": 0.001075646015301338,
+          "median": 0.0,
+          "win_rate": 0.3813725490196078
+        },
+        {
+          "horizon_days": 5,
+          "n": 1020,
+          "mean": 0.004742690555150406,
+          "median": 0.005717678853774277,
+          "win_rate": 0.5705882352941176
+        },
+        {
+          "horizon_days": 20,
+          "n": 1020,
+          "mean": 0.016122921815573867,
+          "median": 0.021877157470194697,
+          "win_rate": 0.6617647058823529
+        }
+      ],
+      "rsi_le30": [
+        {
+          "horizon_days": 1,
+          "n": 141,
+          "mean": 0.007091053091564405,
+          "median": 0.0,
+          "win_rate": 0.48226950354609927
+        },
+        {
+          "horizon_days": 5,
+          "n": 141,
+          "mean": 0.017754952498603104,
+          "median": 0.018477823530007598,
+          "win_rate": 0.7304964539007093
+        },
+        {
+          "horizon_days": 20,
+          "n": 141,
+          "mean": 0.021789626398088506,
+          "median": 0.026369206703075854,
+          "win_rate": 0.6595744680851063
+        }
+      ]
+    },
+    "SOXX": {
+      "rsi_ge70": [
+        {
+          "horizon_days": 1,
+          "n": 617,
+          "mean": 2.7910963017452635e-06,
+          "median": 0.0,
+          "win_rate": 0.3581847649918963
+        },
+        {
+          "horizon_days": 5,
+          "n": 613,
+          "mean": 0.0013953886788372989,
+          "median": 0.000781014712660788,
+          "win_rate": 0.5171288743882545
+        },
+        {
+          "horizon_days": 20,
+          "n": 612,
+          "mean": 0.015553853163273474,
+          "median": 0.009421241545212067,
+          "win_rate": 0.6013071895424836
+        }
+      ],
+      "rsi_dead_cross": [
+        {
+          "horizon_days": 1,
+          "n": 170,
+          "mean": 0.0012737851652051507,
+          "median": 0.0,
+          "win_rate": 0.3941176470588235
+        },
+        {
+          "horizon_days": 5,
+          "n": 170,
+          "mean": 0.003053338214443265,
+          "median": 0.002614530822954375,
+          "win_rate": 0.5352941176470588
+        },
+        {
+          "horizon_days": 20,
+          "n": 169,
+          "mean": 0.016150551763270835,
+          "median": 0.014564950873446225,
+          "win_rate": 0.591715976331361
+        }
+      ],
+      "rsi_le45": [
+        {
+          "horizon_days": 1,
+          "n": 1086,
+          "mean": 0.0016345958870040487,
+          "median": 0.0,
+          "win_rate": 0.39042357274401474
+        },
+        {
+          "horizon_days": 5,
+          "n": 1086,
+          "mean": 0.007474668016576838,
+          "median": 0.008932686764497322,
+          "win_rate": 0.5865561694290976
+        },
+        {
+          "horizon_days": 20,
+          "n": 1086,
+          "mean": 0.02590902836404083,
+          "median": 0.02550664340797648,
+          "win_rate": 0.6565377532228361
+        }
+      ],
+      "rsi_le30": [
+        {
+          "horizon_days": 1,
+          "n": 154,
+          "mean": 0.0063726013058635666,
+          "median": 0.0,
+          "win_rate": 0.4675324675324675
+        },
+        {
+          "horizon_days": 5,
+          "n": 154,
+          "mean": 0.016980223931059045,
+          "median": 0.014306855871525359,
+          "win_rate": 0.6298701298701299
+        },
+        {
+          "horizon_days": 20,
+          "n": 154,
+          "mean": 0.026185194123828505,
+          "median": 0.0345373814036225,
+          "win_rate": 0.6753246753246753
+        }
+      ]
+    }
+  },
+  "halving": [
+    {
+      "halving": "Halving_2016",
+      "halving_date": "2016-07-09",
+      "anchor": "2016-07-09",
+      "window": "pre_6m",
+      "return": 0.45429856053428175,
+      "vol_ann": 0.5881172239914113,
+      "mdd": -0.2220934131622062,
+      "n": 183
+    },
+    {
+      "halving": "Halving_2016",
+      "halving_date": "2016-07-09",
+      "anchor": "2016-07-09",
+      "window": "post_6m",
+      "return": 0.3957616309820353,
+      "vol_ann": 0.4377983314786186,
+      "mdd": -0.21869094590988913,
+      "n": 183
+    },
+    {
+      "halving": "Halving_2016",
+      "halving_date": "2016-07-09",
+      "anchor": "2016-07-09",
+      "window": "pre_12m",
+      "return": 1.2849199825995803,
+      "vol_ann": 0.6091651075614094,
+      "mdd": -0.3228776546190101,
+      "n": 366
+    },
+    {
+      "halving": "Halving_2016",
+      "halving_date": "2016-07-09",
+      "anchor": "2016-07-09",
+      "window": "post_12m",
+      "return": 2.8688089228189773,
+      "vol_ann": 0.5808221306750906,
+      "mdd": -0.3264598371930667,
+      "n": 366
+    },
+    {
+      "halving": "Halving_2016",
+      "halving_date": "2016-07-09",
+      "anchor": "2016-07-09",
+      "window": "post_6m_from_halving",
+      "return": 0.3957616309820353,
+      "n": 182
+    },
+    {
+      "halving": "Halving_2016",
+      "halving_date": "2016-07-09",
+      "anchor": "2016-07-09",
+      "window": "post_12m_from_halving",
+      "return": 2.8688089228189773,
+      "n": 365
+    },
+    {
+      "halving": "Halving_2020",
+      "halving_date": "2020-05-11",
+      "anchor": "2020-05-11",
+      "window": "pre_6m",
+      "return": -0.017811824854551905,
+      "vol_ann": 0.8652937617485864,
+      "mdd": -0.5186169126186414,
+      "n": 183
+    },
+    {
+      "halving": "Halving_2020",
+      "halving_date": "2020-05-11",
+      "anchor": "2020-05-11",
+      "window": "post_6m",
+      "return": 0.7824551536351363,
+      "vol_ann": 0.4870651400194374,
+      "mdd": -0.1732345391181167,
+      "n": 183
+    },
+    {
+      "halving": "Halving_2020",
+      "halving_date": "2020-05-11",
+      "anchor": "2020-05-11",
+      "window": "pre_12m",
+      "return": 0.23369728610068607,
+      "vol_ann": 0.8335404100558087,
+      "mdd": -0.618108504998379,
+      "n": 366
+    },
+    {
+      "halving": "Halving_2020",
+      "halving_date": "2020-05-11",
+      "anchor": "2020-05-11",
+      "window": "post_12m",
+      "return": 5.592178527399177,
+      "vol_ann": 0.6666137196724962,
+      "mdd": -0.25406053586932753,
+      "n": 366
+    },
+    {
+      "halving": "Halving_2020",
+      "halving_date": "2020-05-11",
+      "anchor": "2020-05-11",
+      "window": "post_6m_from_halving",
+      "return": 0.7824551536351363,
+      "n": 182
+    },
+    {
+      "halving": "Halving_2020",
+      "halving_date": "2020-05-11",
+      "anchor": "2020-05-11",
+      "window": "post_12m_from_halving",
+      "return": 5.592178527399177,
+      "n": 365
+    },
+    {
+      "halving": "Halving_2024",
+      "halving_date": "2024-04-19",
+      "anchor": "2024-04-19",
+      "window": "pre_6m",
+      "return": 1.1508499658171285,
+      "vol_ann": 0.5534462932631318,
+      "mdd": -0.16155231473246356,
+      "n": 183
+    },
+    {
+      "halving": "Halving_2024",
+      "halving_date": "2024-04-19",
+      "anchor": "2024-04-19",
+      "window": "post_6m",
+      "return": 0.07166295255113919,
+      "vol_ann": 0.4928553864856647,
+      "mdd": -0.24492489040081378,
+      "n": 183
+    },
+    {
+      "halving": "Halving_2024",
+      "halving_date": "2024-04-19",
+      "anchor": "2024-04-19",
+      "window": "pre_12m",
+      "return": 1.260270367487197,
+      "vol_ann": 0.46538249368545975,
+      "mdd": -0.200577733429132,
+      "n": 366
+    },
+    {
+      "halving": "Halving_2024",
+      "halving_date": "2024-04-19",
+      "anchor": "2024-04-19",
+      "window": "post_12m",
+      "return": 0.33237244794007625,
+      "vol_ann": 0.5120502186841713,
+      "mdd": -0.2814447811620787,
+      "n": 366
+    },
+    {
+      "halving": "Halving_2024",
+      "halving_date": "2024-04-19",
+      "anchor": "2024-04-19",
+      "window": "post_6m_from_halving",
+      "return": 0.07166295255113919,
+      "n": 182
+    },
+    {
+      "halving": "Halving_2024",
+      "halving_date": "2024-04-19",
+      "anchor": "2024-04-19",
+      "window": "post_12m_from_halving",
+      "return": 0.33237244794007625,
+      "n": 365
+    }
+  ],
+  "event_summary": [
+    {
+      "event": "CPI",
+      "asset": "BTC",
+      "window": "-1:1",
+      "mean": -0.005109829388022069,
+      "median": -0.00265065695844946,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "BTC",
+      "window": "-20:20",
+      "mean": 0.12578709821756254,
+      "median": 0.09562480631772097,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "BTC",
+      "window": "-5:5",
+      "mean": 0.0018905633223449542,
+      "median": 0.011768454626139735,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "GLD",
+      "window": "-1:1",
+      "mean": 0.0029190156318232435,
+      "median": -0.0002788218858358338,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "GLD",
+      "window": "-20:20",
+      "mean": 0.011694147327473786,
+      "median": 0.0017040887242510405,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "GLD",
+      "window": "-5:5",
+      "mean": 0.0036992426192092726,
+      "median": -0.007709269167500921,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "QQQ",
+      "window": "-1:1",
+      "mean": 0.0023732513902527397,
+      "median": -0.006548643228865003,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "QQQ",
+      "window": "-20:20",
+      "mean": 0.025462128536132278,
+      "median": 0.04629116308959902,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "QQQ",
+      "window": "-5:5",
+      "mean": 0.004055500218696134,
+      "median": -0.0023833825586419555,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "SOXX",
+      "window": "-1:1",
+      "mean": 0.010152273112809515,
+      "median": -0.009758645778355057,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "SOXX",
+      "window": "-20:20",
+      "mean": 0.0370528757544598,
+      "median": 0.04072816482698732,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "SOXX",
+      "window": "-5:5",
+      "mean": 0.015314624621985767,
+      "median": 0.02026251518332911,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "SPY",
+      "window": "-1:1",
+      "mean": 0.0015698968888713943,
+      "median": -0.0035900309594070756,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "SPY",
+      "window": "-20:20",
+      "mean": 0.029798449919508127,
+      "median": 0.049015108623417514,
+      "count": 8
+    },
+    {
+      "event": "CPI",
+      "asset": "SPY",
+      "window": "-5:5",
+      "mean": 0.0025507976198993337,
+      "median": 0.01040716091789029,
+      "count": 8
+    },
+    {
+      "event": "FOMC",
+      "asset": "BTC",
+      "window": "-1:1",
+      "mean": 0.007327135627152431,
+      "median": 0.007801506982798356,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "BTC",
+      "window": "-20:20",
+      "mean": 0.06430906050555836,
+      "median": 0.04620092882014215,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "BTC",
+      "window": "-5:5",
+      "mean": 0.00832181411503878,
+      "median": 0.007997246187195106,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "GLD",
+      "window": "-1:1",
+      "mean": 0.006270527284825043,
+      "median": 0.007710465405288858,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "GLD",
+      "window": "-20:20",
+      "mean": 0.03329655898069971,
+      "median": 0.03876503157503319,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "GLD",
+      "window": "-5:5",
+      "mean": -0.004869276232663523,
+      "median": 0.0009332167887223797,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "QQQ",
+      "window": "-1:1",
+      "mean": 0.008299620184882466,
+      "median": 0.016645211412972927,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "QQQ",
+      "window": "-20:20",
+      "mean": 0.017312182199233087,
+      "median": 0.04106472522007798,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "QQQ",
+      "window": "-5:5",
+      "mean": 0.023165069070460686,
+      "median": 0.02445834517690293,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "SOXX",
+      "window": "-1:1",
+      "mean": 0.014687317409207722,
+      "median": 0.017041320915530456,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "SOXX",
+      "window": "-20:20",
+      "mean": -0.008668776920895566,
+      "median": 0.034302704077942,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "SOXX",
+      "window": "-5:5",
+      "mean": 0.02352248836712537,
+      "median": 0.022088490351688694,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "SPY",
+      "window": "-1:1",
+      "mean": 0.004238536975965424,
+      "median": 0.010242961832922282,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "SPY",
+      "window": "-20:20",
+      "mean": 0.014514099656253932,
+      "median": 0.029691348094760928,
+      "count": 11
+    },
+    {
+      "event": "FOMC",
+      "asset": "SPY",
+      "window": "-5:5",
+      "mean": 0.018145862840951522,
+      "median": 0.019496777868032167,
+      "count": 11
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "BTC",
+      "window": "-1:1",
+      "mean": 0.004960052137820803,
+      "median": 0.004960052137820803,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "BTC",
+      "window": "-20:20",
+      "mean": -0.02089265280459829,
+      "median": -0.02089265280459829,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "BTC",
+      "window": "-5:5",
+      "mean": -0.037378216854246915,
+      "median": -0.037378216854246915,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "GLD",
+      "window": "-1:1",
+      "mean": -0.00031925483388517417,
+      "median": -0.00031925483388517417,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "GLD",
+      "window": "-20:20",
+      "mean": -0.004434336537869843,
+      "median": -0.004434336537869843,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "GLD",
+      "window": "-5:5",
+      "mean": 0.0019012442500516702,
+      "median": 0.0019012442500516702,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "QQQ",
+      "window": "-1:1",
+      "mean": 0.008872369245118694,
+      "median": 0.008872369245118694,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "QQQ",
+      "window": "-20:20",
+      "mean": 0.04353868227927182,
+      "median": 0.04353868227927182,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "QQQ",
+      "window": "-5:5",
+      "mean": 0.03228729176229006,
+      "median": 0.03228729176229006,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "SOXX",
+      "window": "-1:1",
+      "mean": 0.00032150285313026217,
+      "median": 0.00032150285313026217,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "SOXX",
+      "window": "-20:20",
+      "mean": 0.046807590229008156,
+      "median": 0.046807590229008156,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "SOXX",
+      "window": "-5:5",
+      "mean": 0.028698451372347167,
+      "median": 0.028698451372347167,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "SPY",
+      "window": "-1:1",
+      "mean": 0.005212340716945096,
+      "median": 0.005212340716945096,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "SPY",
+      "window": "-20:20",
+      "mean": 0.038480971034111855,
+      "median": 0.038480971034111855,
+      "count": 1
+    },
+    {
+      "event": "US_spot_BTC_ETF_approval",
+      "asset": "SPY",
+      "window": "-5:5",
+      "mean": 0.018721097998718683,
+      "median": 0.018721097998718683,
+      "count": 1
+    },
+    {
+      "event": "major_regulation",
+      "asset": "BTC",
+      "window": "-1:1",
+      "mean": 0.002501456318149834,
+      "median": 0.0044144881347172316,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "BTC",
+      "window": "-20:20",
+      "mean": 0.05090795528385391,
+      "median": 0.12736826782799526,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "BTC",
+      "window": "-5:5",
+      "mean": -0.052637811818298075,
+      "median": -0.05027315032901103,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "GLD",
+      "window": "-1:1",
+      "mean": 0.006403978196126629,
+      "median": 0.006606324071935177,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "GLD",
+      "window": "-20:20",
+      "mean": 0.011902037616815334,
+      "median": -0.01702410934239862,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "GLD",
+      "window": "-5:5",
+      "mean": 0.013722222878574794,
+      "median": -0.0015358382340781018,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "QQQ",
+      "window": "-1:1",
+      "mean": 0.008169958448575562,
+      "median": 0.005547966302867469,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "QQQ",
+      "window": "-20:20",
+      "mean": 0.08012197775171481,
+      "median": 0.06644365614718684,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "QQQ",
+      "window": "-5:5",
+      "mean": 0.0445134419945478,
+      "median": 0.036398490140087336,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "SOXX",
+      "window": "-1:1",
+      "mean": 0.0031941353097612035,
+      "median": -0.0035968717874709233,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "SOXX",
+      "window": "-20:20",
+      "mean": 0.12492448067576012,
+      "median": 0.15291119453722346,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "SOXX",
+      "window": "-5:5",
+      "mean": 0.05938896195611972,
+      "median": 0.03395215356928616,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "SPY",
+      "window": "-1:1",
+      "mean": 0.006294869367340139,
+      "median": 0.008949154074662236,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "SPY",
+      "window": "-20:20",
+      "mean": 0.06907866287570918,
+      "median": 0.05988853826823792,
+      "count": 3
+    },
+    {
+      "event": "major_regulation",
+      "asset": "SPY",
+      "window": "-5:5",
+      "mean": 0.033433476022711815,
+      "median": 0.028838134171437657,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "BTC",
+      "window": "-1:1",
+      "mean": -0.008622758580471864,
+      "median": 0.011983203126855857,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "BTC",
+      "window": "-20:20",
+      "mean": 0.15401877170020936,
+      "median": 0.04620092882014215,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "BTC",
+      "window": "-5:5",
+      "mean": 0.08272849424830853,
+      "median": 0.04554136966551492,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "GLD",
+      "window": "-1:1",
+      "mean": -0.0002941768305540678,
+      "median": 0.007710465405288858,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "GLD",
+      "window": "-20:20",
+      "mean": 0.004623183039002332,
+      "median": 0.004394398296811097,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "GLD",
+      "window": "-5:5",
+      "mean": -0.015355466851874722,
+      "median": -0.01363128520931789,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "QQQ",
+      "window": "-1:1",
+      "mean": -0.0008644234798275882,
+      "median": 0.016931067500379315,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "QQQ",
+      "window": "-20:20",
+      "mean": 0.028054631211656817,
+      "median": 0.021902128680928445,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "QQQ",
+      "window": "-5:5",
+      "mean": 0.0190173246753698,
+      "median": 0.01762707945843167,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "SOXX",
+      "window": "-1:1",
+      "mean": -0.0029534277649535903,
+      "median": 0.013225837728666923,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "SOXX",
+      "window": "-20:20",
+      "mean": 0.00878250455426155,
+      "median": 0.03567883239324354,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "SOXX",
+      "window": "-5:5",
+      "mean": 0.003916297344222534,
+      "median": 0.0075836348004436616,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "SPY",
+      "window": "-1:1",
+      "mean": -0.0013187624862488108,
+      "median": 0.012097513747246769,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "SPY",
+      "window": "-20:20",
+      "mean": 0.013441739023544175,
+      "median": 0.024359006677721506,
+      "count": 3
+    },
+    {
+      "event": "rate_cut",
+      "asset": "SPY",
+      "window": "-5:5",
+      "mean": 0.016527033357597826,
+      "median": 0.016738575154297886,
+      "count": 3
+    }
+  ],
+  "dca": {
+    "daily": {
+      "freq": "D",
+      "n_buys": 4403,
+      "invested": 440300.0,
+      "final_value": 23532899.221979164,
+      "total_return": 52.44742044510371
+    },
+    "weekly": {
+      "freq": "W",
+      "n_buys": 630,
+      "invested": 63000.0,
+      "final_value": 3362180.1065532845,
+      "total_return": 52.36793819925848
+    },
+    "monthly": {
+      "freq": "M",
+      "n_buys": 146,
+      "invested": 14600.0,
+      "final_value": 774459.1372252746,
+      "total_return": 52.04514638529278
+    },
+    "vs_rsi_gate": {
+      "weekly_always": {
+        "freq": "W",
+        "n_buys": 630,
+        "invested": 63000.0,
+        "final_value": 3362180.1065532845,
+        "total_return": 52.36793819925848
+      },
+      "weekly_rsi_le45_only": {
+        "n_buys": 198,
+        "invested": 19800.0,
+        "final_value": 1072859.994348658,
+        "total_return": 53.18484819942717
+      }
+    }
+  },
+  "figures": [
+    "btc_cumulative_returns.png",
+    "btc_drawdown.png",
+    "btc_halving_timeline.png",
+    "btc_rolling_corr_30d.png",
+    "btc_rolling_corr_90d.png",
+    "btc_rolling_vol_30d.png",
+    "btc_rsi.png"
+  ]
+}

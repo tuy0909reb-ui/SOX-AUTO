@@ -1,0 +1,57 @@
+{
+  "phase": "A2",
+  "contract_version": "btc-dca-halving-contracts-v1.0-approved",
+  "a2_amendment": "A2 is discovery: full grid + marginal sweeps allowed; K<=5 freeze deferred to A3; staged E→X→R not required as sole method.",
+  "data_version": "a2-2026-08-27",
+  "source_a1_data_version": "a1-2026-08-27",
+  "retrieved_at": "2026-08-27T21:28:03Z",
+  "eval_start": "2016-07-09",
+  "eval_end": "2024-01-10",
+  "eval_end_rationale": "Last calendar day with date < T_primary so A2 selection uses no post_etf / no H2024 bars. H2020 segment is truncated ~3 months before next halving.",
+  "T_approve": "2024-01-10",
+  "T_primary": "2024-01-11",
+  "grids": {
+    "E": [
+      0,
+      90,
+      180
+    ],
+    "X": [
+      365,
+      450,
+      540,
+      630,
+      730,
+      900
+    ],
+    "R": [
+      30,
+      90,
+      180,
+      365
+    ]
+  },
+  "assumptions": {
+    "dca_amount_jpy": 5000.0,
+    "fee_rate": 0.001,
+    "tax_scenario": "tax_none_in_a2_primary",
+    "price_field": "btc_jpy",
+    "reentry_mode": "once_per_cycle",
+    "reentry_mode_note": "Exit at most once per cycle at dsh>=X; remain flat until next cycle_id; then wait R_wait days before DCA. threshold_repeat (intra-cycle re-exit) is rejected as mismatched to strategy intent."
+  },
+  "prohibited": [
+    "H2024 in selection/optimization",
+    "post_etf bars in eval window",
+    "peak/bottom rule inputs",
+    "lookahead",
+    "MVRV/ETF flow/Nasdaq/DXY/rates",
+    "adoption judgment",
+    "A3/B/C/D in this run"
+  ],
+  "content_fingerprints": {
+    "grid_results.csv": "5e6bb7a53e26badcd7af27ab46c8d46ce6cff434a254c71a005a786b19716cd0",
+    "cycle_segment_results.csv": "f9dbd370494c362cc613f0b9681d8e8dc05a5fc57db63e86447008b25bd26cc7"
+  },
+  "n_rules": 72,
+  "panel_rows": 2742
+}

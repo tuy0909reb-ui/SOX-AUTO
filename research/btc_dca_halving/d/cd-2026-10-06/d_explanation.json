@@ -1,0 +1,103 @@
+{
+  "purpose": "Explain observed C differences descriptively; not trading signals; no causation claims",
+  "confound_reminder": "H2024: T_primary=2024-01-11, halving SoT=2024-04-19 (user also notes 2024-04-20). ETF start and halving are proximate; do not attribute to ETF alone.",
+  "periods": {
+    "pre_halving_post_etf_H2020_tail": {
+      "label": "pre_halving_post_etf",
+      "start": "2024-01-11",
+      "end": "2024-04-18",
+      "n_bars": 99,
+      "btc_return": 0.4506422981878355,
+      "btc_vol_ann": 0.619864496705502,
+      "btc_mdd": -0.1440972317553857
+    },
+    "H2024_post_halving": {
+      "label": "H2024_post_halving",
+      "start": "2024-04-19",
+      "end": "2026-10-06",
+      "n_bars": 901,
+      "btc_return": 0.37395856232815206,
+      "btc_vol_ann": 0.468558574051292,
+      "btc_mdd": -0.4944599053790377
+    }
+  },
+  "macro_period_changes": {
+    "QQQ_pre_halving_post_etf": {
+      "start": "2024-01-11",
+      "end": "2024-04-18",
+      "level_change_pct": 0.03571472599696346
+    },
+    "QQQ_H2024_post_halving": {
+      "start": "2024-04-19",
+      "end": "2026-10-06",
+      "level_change_pct": 0.8588757835683645
+    },
+    "US10Y_pre_halving_post_etf": {
+      "start": "2024-01-11",
+      "end": "2024-04-18",
+      "level_change_pct": 0.16846865431146463
+    },
+    "US10Y_H2024_post_halving": {
+      "start": "2024-04-19",
+      "end": "2026-10-06",
+      "level_change_pct": 0.14712891321625277
+    },
+    "DXY_pre_halving_post_etf": {
+      "start": "2024-01-11",
+      "end": "2024-04-18",
+      "level_change_pct": 0.03773585468573026
+    },
+    "DXY_H2024_post_halving": {
+      "start": "2024-04-19",
+      "end": "2026-10-06",
+      "level_change_pct": -0.04012249292816594
+    }
+  },
+  "correlations_descriptive": {
+    "btc_qqq_daily_post_h24_halving": 0.373345528080269,
+    "btc_us10y_daily_post_h24_halving": 0.025859213084860288,
+    "btc_dxy_daily_post_h24_halving": -0.05779151596279965
+  },
+  "ibit_proxy": {
+    "ibit_avg_daily_notional_proxy": 2167288641.2734675,
+    "ibit_notional_proxy_sum": 1486760007913.5989,
+    "note": "Volume×Close proxy; not official ETF flow SoT"
+  },
+  "unavailable_series": {
+    "MVRV": "Not fetched — no v1 Yahoo SoT; would require external on-chain source",
+    "Realized_Price": "Not fetched — same",
+    "OI_Funding_Netflow_FNG": "Not fetched — no v1 data contract path in repo"
+  },
+  "c_differences_to_explain": [
+    {
+      "comparison": "H2024 E0_X365_R180 vs E0_X540_R180 excess_vs_pure",
+      "delta": -0.28820101349773775
+    },
+    {
+      "comparison": "H2024 E0_X730_R180 vs E0_X540_R180 excess_vs_pure",
+      "delta": -0.42901556187776957
+    },
+    {
+      "comparison": "H2024 E0_X540_R180 exit_dsh vs X",
+      "exit_dsh": 540,
+      "X": 540
+    },
+    {
+      "comparison": "H2024 E0_X365_R180 exit_dsh vs X",
+      "exit_dsh": 365,
+      "X": 365
+    },
+    {
+      "comparison": "H2024 E0_X730_R180 exit_dsh vs X",
+      "exit_dsh": 730,
+      "X": 730
+    }
+  ],
+  "limitations": [
+    "Correlation ≠ causation",
+    "IBIT proxy ≠ official net flow",
+    "MVRV/OI/F&G not in v1 pipeline",
+    "H2024 incomplete vs completed historical cycles"
+  ],
+  "retrieved_at": "2026-10-06T14:25:49Z"
+}

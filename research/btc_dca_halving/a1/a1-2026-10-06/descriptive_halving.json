@@ -1,0 +1,362 @@
+{
+  "note": "Peaks/bottoms are DESCRIPTIVE ONLY. They MUST NOT be used as Entry/Exit/Re-entry rule inputs (contract §4.3 / §9).",
+  "cycles": [
+    {
+      "cycle_id": "H2012",
+      "halving_date": "2012-11-28",
+      "role": "descriptive_only_if_in_panel",
+      "status": "in_panel",
+      "cycle_complete_flag": false,
+      "coverage": "partial_mid_cycle",
+      "covers_halving_date": false,
+      "panel_start": "2014-09-17",
+      "panel_end": "2016-07-08",
+      "n_bars": 661,
+      "btc_usd_start": 457.3340148925781,
+      "btc_usd_end": 666.5230102539062,
+      "btc_usd_cycle_return": 0.4574096580383682,
+      "btc_jpy_cycle_return": 0.3709035807387089,
+      "mdd_usd": -0.610562540667337,
+      "mdd_jpy": -0.5719742206632912,
+      "vol_ann_usd": 0.6518782922761229,
+      "vol_ann_jpy": 0.6526263642669796,
+      "peak_date_in_available_segment_usd": "2016-06-16",
+      "peak_price_usd": 766.3079833984375,
+      "trough_date_in_available_segment_usd": "2015-01-14",
+      "trough_price_usd": 178.10299682617188,
+      "days_halving_to_in_cycle_peak": null,
+      "return_halving_to_in_cycle_peak_usd": null,
+      "peak_date_post_halving_usd": null,
+      "match_windows_usd": [],
+      "match_windows_jpy": [],
+      "etf_confound_descriptive": null,
+      "rule_input_forbidden": true
+    },
+    {
+      "cycle_id": "H2016",
+      "halving_date": "2016-07-09",
+      "role": "explore_select",
+      "status": "in_panel",
+      "cycle_complete_flag": true,
+      "coverage": "full_from_halving",
+      "covers_halving_date": true,
+      "panel_start": "2016-07-09",
+      "panel_end": "2020-05-10",
+      "n_bars": 1402,
+      "btc_usd_start": 650.9600219726562,
+      "btc_usd_end": 8756.4306640625,
+      "btc_usd_cycle_return": 12.451564410249324,
+      "btc_jpy_cycle_return": 13.19481041485583,
+      "mdd_usd": -0.8339900882218974,
+      "mdd_jpy": -0.8322708588228774,
+      "vol_ann_usd": 0.7976358039547323,
+      "vol_ann_jpy": 0.8010922400398454,
+      "peak_date_in_available_segment_usd": "2017-12-16",
+      "peak_price_usd": 19497.400390625,
+      "trough_date_in_available_segment_usd": "2016-08-02",
+      "trough_price_usd": 547.4650268554688,
+      "days_halving_to_in_cycle_peak": 525,
+      "return_halving_to_in_cycle_peak_usd": 28.951763138296062,
+      "peak_date_post_halving_usd": "2017-12-16",
+      "match_windows_usd": [
+        {
+          "window_days": 180,
+          "n_bars": 181,
+          "start": "2016-07-09",
+          "end": "2017-01-05",
+          "return": 0.5567469132925951,
+          "vol_ann_sqrt365": 0.4100445874756437,
+          "mdd": -0.19426331913315686
+        },
+        {
+          "window_days": 365,
+          "n_bars": 366,
+          "start": "2016-07-09",
+          "end": "2017-07-09",
+          "return": 2.8688089228189773,
+          "vol_ann_sqrt365": 0.5808221306750906,
+          "mdd": -0.3264598371930667
+        },
+        {
+          "window_days": 400,
+          "n_bars": 401,
+          "start": "2016-07-09",
+          "end": "2017-08-13",
+          "return": 5.257312081043163,
+          "vol_ann_sqrt365": 0.6704355888092911,
+          "mdd": -0.3476172704162839
+        },
+        {
+          "window_days": 540,
+          "n_bars": 541,
+          "start": "2016-07-09",
+          "end": "2017-12-31",
+          "return": 20.74695820447733,
+          "vol_ann_sqrt365": 0.8087162870295341,
+          "mdd": -0.3550810193918734
+        }
+      ],
+      "match_windows_jpy": [
+        {
+          "window_days": 180,
+          "n_bars": 181,
+          "start": "2016-07-09",
+          "end": "2017-01-05",
+          "return": 0.8088629624476162,
+          "vol_ann_sqrt365": 0.44120015541999436,
+          "mdd": -0.2159557341621049
+        },
+        {
+          "window_days": 365,
+          "n_bars": 366,
+          "start": "2016-07-09",
+          "end": "2017-07-09",
+          "return": 3.3432073108468456,
+          "vol_ann_sqrt365": 0.6013231764150252,
+          "mdd": -0.3366895084787438
+        },
+        {
+          "window_days": 400,
+          "n_bars": 401,
+          "start": "2016-07-09",
+          "end": "2017-08-13",
+          "return": 5.773591658706459,
+          "vol_ann_sqrt365": 0.682587951281478,
+          "mdd": -0.3366895084787438
+        },
+        {
+          "window_days": 540,
+          "n_bars": 541,
+          "start": "2016-07-09",
+          "end": "2017-12-31",
+          "return": 23.354478470415593,
+          "vol_ann_sqrt365": 0.8163819469208802,
+          "mdd": -0.35282058158791163
+        }
+      ],
+      "etf_confound_descriptive": null,
+      "rule_input_forbidden": true
+    },
+    {
+      "cycle_id": "H2020",
+      "halving_date": "2020-05-11",
+      "role": "explore_select",
+      "status": "in_panel",
+      "cycle_complete_flag": true,
+      "coverage": "full_from_halving",
+      "covers_halving_date": true,
+      "panel_start": "2020-05-11",
+      "panel_end": "2024-04-18",
+      "n_bars": 1439,
+      "btc_usd_start": 8601.7958984375,
+      "btc_usd_end": 63512.75390625,
+      "btc_usd_cycle_return": 6.383662046409049,
+      "btc_jpy_cycle_return": 9.658621443117848,
+      "mdd_usd": -0.7663456370856909,
+      "mdd_jpy": -0.715457947762327,
+      "vol_ann_usd": 0.6252056885012068,
+      "vol_ann_jpy": 0.6327008566237435,
+      "peak_date_in_available_segment_usd": "2024-03-13",
+      "peak_price_usd": 73083.5,
+      "trough_date_in_available_segment_usd": "2020-05-11",
+      "trough_price_usd": 8601.7958984375,
+      "days_halving_to_in_cycle_peak": 1402,
+      "return_halving_to_in_cycle_peak_usd": 7.496307150612058,
+      "peak_date_post_halving_usd": "2024-03-13",
+      "match_windows_usd": [
+        {
+          "window_days": 180,
+          "n_bars": 181,
+          "start": "2020-05-11",
+          "end": "2020-11-07",
+          "return": 0.7244949870229451,
+          "vol_ann_sqrt365": 0.48606709376135715,
+          "mdd": -0.1732345391181167
+        },
+        {
+          "window_days": 365,
+          "n_bars": 366,
+          "start": "2020-05-11",
+          "end": "2021-05-11",
+          "return": 5.592178527399177,
+          "vol_ann_sqrt365": 0.6666137196724962,
+          "mdd": -0.25406053586932753
+        },
+        {
+          "window_days": 400,
+          "n_bars": 401,
+          "start": "2020-05-11",
+          "end": "2021-06-15",
+          "return": 3.6974224927366297,
+          "vol_ann_sqrt365": 0.7264290155262788,
+          "mdd": -0.47290062026027746
+        },
+        {
+          "window_days": 540,
+          "n_bars": 541,
+          "start": "2020-05-11",
+          "end": "2021-11-02",
+          "return": 6.350372304838686,
+          "vol_ann_sqrt365": 0.7193378681393888,
+          "mdd": -0.5306185040984174
+        }
+      ],
+      "match_windows_jpy": [
+        {
+          "window_days": 180,
+          "n_bars": 181,
+          "start": "2020-05-11",
+          "end": "2020-11-07",
+          "return": 0.6710112403696871,
+          "vol_ann_sqrt365": 0.49107153636605794,
+          "mdd": -0.17580447513389075
+        },
+        {
+          "window_days": 365,
+          "n_bars": 366,
+          "start": "2020-05-11",
+          "end": "2021-05-11",
+          "return": 5.7108661688389795,
+          "vol_ann_sqrt365": 0.6722371582313792,
+          "mdd": -0.2554045355703931
+        },
+        {
+          "window_days": 400,
+          "n_bars": 401,
+          "start": "2020-05-11",
+          "end": "2021-06-15",
+          "return": 3.8345857746532666,
+          "vol_ann_sqrt365": 0.7331210157712653,
+          "mdd": -0.4733825367433485
+        },
+        {
+          "window_days": 540,
+          "n_bars": 541,
+          "start": "2020-05-11",
+          "end": "2021-11-02",
+          "return": 6.843633038206982,
+          "vol_ann_sqrt365": 0.7260000732252547,
+          "mdd": -0.5299318767756822
+        }
+      ],
+      "etf_confound_descriptive": null,
+      "rule_input_forbidden": true
+    },
+    {
+      "cycle_id": "H2024",
+      "halving_date": "2024-04-19",
+      "role": "post_etf_validation_incomplete",
+      "status": "in_panel",
+      "cycle_complete_flag": false,
+      "coverage": "full_from_halving",
+      "covers_halving_date": true,
+      "panel_start": "2024-04-19",
+      "panel_end": "2026-10-06",
+      "n_bars": 901,
+      "btc_usd_start": 63843.5703125,
+      "btc_usd_end": 85981.1171875,
+      "btc_usd_cycle_return": 0.34674669299730043,
+      "btc_jpy_cycle_return": 0.37395856232815206,
+      "mdd_usd": -0.5305998300134691,
+      "mdd_jpy": -0.4944599053790377,
+      "vol_ann_usd": 0.45598976207016684,
+      "vol_ann_jpy": 0.46855857405129203,
+      "peak_date_in_available_segment_usd": "2025-10-06",
+      "peak_price_usd": 124752.53125,
+      "trough_date_in_available_segment_usd": "2024-09-06",
+      "trough_price_usd": 53948.75390625,
+      "days_halving_to_in_cycle_peak": 535,
+      "return_halving_to_in_cycle_peak_usd": 0.9540343787066459,
+      "peak_date_post_halving_usd": "2025-10-06",
+      "match_windows_usd": [
+        {
+          "window_days": 180,
+          "n_bars": 181,
+          "start": "2024-04-19",
+          "end": "2024-10-16",
+          "return": 0.05903724398636956,
+          "vol_ann_sqrt365": 0.4951418377258901,
+          "mdd": -0.24492489040081378
+        },
+        {
+          "window_days": 365,
+          "n_bars": 366,
+          "start": "2024-04-19",
+          "end": "2025-04-19",
+          "return": 0.33237244794007625,
+          "vol_ann_sqrt365": 0.5120502186841713,
+          "mdd": -0.2814447811620787
+        },
+        {
+          "window_days": 400,
+          "n_bars": 401,
+          "start": "2024-04-19",
+          "end": "2025-05-24",
+          "return": 0.688363537978631,
+          "vol_ann_sqrt365": 0.5031001947000007,
+          "mdd": -0.2814447811620787
+        },
+        {
+          "window_days": 540,
+          "n_bars": 541,
+          "start": "2024-04-19",
+          "end": "2025-10-11",
+          "return": 0.7356153841353199,
+          "vol_ann_sqrt365": 0.46266835775709014,
+          "mdd": -0.2814447811620787
+        }
+      ],
+      "match_windows_jpy": [
+        {
+          "window_days": 180,
+          "n_bars": 181,
+          "start": "2024-04-19",
+          "end": "2024-10-16",
+          "return": 0.02128835381645877,
+          "vol_ann_sqrt365": 0.5254884449654671,
+          "mdd": -0.30484937289722325
+        },
+        {
+          "window_days": 365,
+          "n_bars": 366,
+          "start": "2024-04-19",
+          "end": "2025-04-19",
+          "return": 0.2230835505460773,
+          "vol_ann_sqrt365": 0.5273358290403507,
+          "mdd": -0.31597264309350914
+        },
+        {
+          "window_days": 400,
+          "n_bars": 401,
+          "start": "2024-04-19",
+          "end": "2025-05-24",
+          "return": 0.5709501569955691,
+          "vol_ann_sqrt365": 0.518855017507703,
+          "mdd": -0.31597264309350914
+        },
+        {
+          "window_days": 540,
+          "n_bars": 541,
+          "start": "2024-04-19",
+          "end": "2025-10-11",
+          "return": 0.7171489543378908,
+          "vol_ann_sqrt365": 0.4782643410448533,
+          "mdd": -0.31597264309350914
+        }
+      ],
+      "etf_confound_descriptive": {
+        "days_T_primary_to_halving": 99,
+        "bars_post_etf_before_halving": 99,
+        "btc_usd_return_T_primary_to_halving": 0.37687119461771923
+      },
+      "rule_input_forbidden": true
+    }
+  ],
+  "h2024_etf_confound": {
+    "required": true,
+    "T_approve": "2024-01-10",
+    "T_primary": "2024-01-11",
+    "H2024_halving": "2024-04-19",
+    "statement": "H2024 halving (2024-04-19) is close to US spot BTC ETF public trading start (T_primary=2024-01-11; T_approve=2024-01-10). post_etf early period and post-halving path overlap. Do not attribute outcomes to a single factor (ETF vs halving)."
+  }
+}
