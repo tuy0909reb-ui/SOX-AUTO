@@ -20,7 +20,10 @@ data/common_backtest/catalog.json
 data/common_backtest/reports/
 data/asa_minimum_runtime/
 data/autoscribe/
-data/ops/
+# Local ops runtime (track NISA annual notify config + idempotency for Actions)
+data/ops/*
+!data/ops/nisa_annual_notify.json
+!data/ops/nisa_annual_notify_sent.json
 auto-scribe-ai/data/
 
 # Local debug leftovers / scrape residue

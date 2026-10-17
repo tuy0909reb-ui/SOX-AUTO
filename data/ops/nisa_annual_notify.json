@@ -1,0 +1,20 @@
+{
+  "schema": "nisa_annual_notify_config_v1",
+  "purpose": "P0 calendar notify for NISA next-year plan (kick / credit deadline)",
+  "rules_sot": "docs/baselines/ASA-NISA-ANNUAL-PLAN-CONFIRMATION-RULES-1.0.md",
+  "response_sot": "docs/reports/NISA-ANNUAL-PLAN-AI-TEAM-RESPONSE-2026-10-17.md",
+  "schedule_jst": {
+    "kick": "11-01 09:00",
+    "remind_dec1": "12-01 09:00",
+    "remind_dec8": "12-08 09:00",
+    "hard_deadline_january_lump": "previous-month day 10 (Jan deploy → Dec 10)"
+  },
+  "discord": {
+    "env": "NISA_ANNUAL_DISCORD_WEBHOOK",
+    "file": "logs/nisa_annual/discord_webhook.json",
+    "channel_policy": "Human-authorized reuse of a former unused Discord channel (2026-10-17). Must NOT reuse #一般 monthly, #投資レビュー, Swing, or NDX sell webhooks.",
+    "note": "Must NOT reuse MONTHLY_DATA_DISCORD_WEBHOOK or 投資レビュー webhooks"
+  },
+  "idempotency_log": "data/ops/nisa_annual_notify_sent.json",
+  "cli": "python scripts/nisa_annual/run_notify.py"
+}
