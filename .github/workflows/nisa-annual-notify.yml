@@ -1,0 +1,81 @@
+name: NISA Annual Plan Notify (P0)
+
+# Kick Nov 1 / remind Dec 1 / remind Dec 8 (09:00 JST = 00:00 UTC).
+# Materials only. No auto-adopt / no trade authorization.
+
+on:
+  schedule:
+    - cron: "0 0 1 11 *"
+    - cron: "0 0 1 12 *"
+    - cron: "0 0 8 12 *"
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: "kick | remind_dec1 | remind_dec8 | auto"
+        required: true
+        default: "auto"
+        type: choice
+        options:
+          - auto
+          - kick
+          - remind_dec1
+          - remind_dec8
+      force:
+        description: "Re-send even if already recorded"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: nisa-annual-notify
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    name: Discord P0 notify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Run notify
+        env:
+          NISA_ANNUAL_DISCORD_WEBHOOK: ${{ secrets.NISA_ANNUAL_DISCORD_WEBHOOK }}
+        run: |
+          set -euo pipefail
+          KIND="${{ github.event.inputs.kind || 'auto' }}"
+          FORCE_FLAG=""
+          if [ "${{ github.event.inputs.force || false }}" = "true" ]; then
+            FORCE_FLAG="--force"
+          fi
+          if [ "$KIND" = "auto" ]; then
+            python scripts/nisa_annual/run_notify.py --auto --discord-live $FORCE_FLAG
+          else
+            python scripts/nisa_annual/run_notify.py --kind "$KIND" --discord-live $FORCE_FLAG
+          fi
+
+      - name: Commit idempotency log
+        run: |
+          set -euo pipefail
+          git config user.name "nisa-annual-notify-bot"
+          git config user.email "nisa-annual-notify-bot@users.noreply.github.com"
+          git add data/ops/nisa_annual_notify_sent.json || true
+          if git diff --cached --quiet; then
+            echo "No sent-log changes."
+            exit 0
+          fi
+          git commit -m "chore(nisa): record annual notify sent $(date -u +%Y-%m-%d)"
+          git push

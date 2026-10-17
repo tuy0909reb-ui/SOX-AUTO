@@ -24,8 +24,10 @@
     "asa:chatgpt": "npm run sidecar:build && powershell -ExecutionPolicy Bypass -File tools/chatgpt_activity_sidecar/install/open_chatgpt.ps1",
     "sidecar:session-probe": "npm run sidecar:build && node tools/chatgpt_activity_sidecar/dist/scripts/sessionProbe.js",
     "btc:obs-refresh": "python research/btc_dca_halving/run_observation_refresh.py",
-    "data:monthly-refresh": "python scripts/common_backtest/run_monthly_refresh.py"
-
+    "data:monthly-refresh": "python scripts/common_backtest/run_monthly_refresh.py",
+    "nisa:annual-notify": "python scripts/nisa_annual/run_notify.py",
+    "nisa:annual-notify:kick": "python scripts/nisa_annual/run_notify.py --kind kick",
+    "nisa:annual-notify:live": "python scripts/nisa_annual/run_notify.py --discord-live"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
