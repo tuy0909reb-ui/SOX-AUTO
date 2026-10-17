@@ -36,9 +36,20 @@ from webhook_config import destination_help, resolve_nisa_annual_webhook_url  # 
 
 
 def _send(text: str, *, webhook_url: str) -> bool:
-    from sox_utils import send_discord
+    """Post to Discord with requests only (no sox_utils / yfinance import)."""
+    import requests
 
-    return bool(send_discord(text, webhook_url=webhook_url))
+    try:
+        response = requests.post(
+            webhook_url,
+            json={"content": text},
+            timeout=10,
+        )
+        response.raise_for_status()
+        return True
+    except requests.RequestException as exc:
+        print("Discord送信エラー:", exc)
+        return False
 
 
 def main(argv: list[str] | None = None) -> int:
