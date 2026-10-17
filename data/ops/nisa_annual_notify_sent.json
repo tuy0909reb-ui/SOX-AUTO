@@ -1,4 +1,11 @@
 {
   "schema": "nisa_annual_notify_sent_v1",
-  "sent": {}
+  "sent": {
+    "2027:kick": {
+      "kind": "kick",
+      "plan_year": 2027,
+      "sent_at": "2026-10-17T11:35:12Z",
+      "as_of": "2026-10-17"
+    }
+  }
 }
