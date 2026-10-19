@@ -24,6 +24,7 @@ data/autoscribe/
 data/ops/*
 !data/ops/nisa_annual_notify.json
 !data/ops/nisa_annual_notify_sent.json
+!data/ops/silicon_cycle_watch.json
 auto-scribe-ai/data/
 
 # Local debug leftovers / scrape residue

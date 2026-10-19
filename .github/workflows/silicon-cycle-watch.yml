@@ -1,0 +1,83 @@
+name: Silicon Cycle Watch Notify
+
+# Normal: 1st of month 09:00 JST (= 00:00 UTC).
+# Elevated cadence is decided inside the script (weekly Mondays when mode=elevated).
+# Daily 09:00 JST cron lets auto pick the right days; non-due days exit 0.
+# Materials only. No auto-adopt / no trade authorization.
+# Does NOT use sealed legacy DISCORD_WEBHOOK_URL.
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+    inputs:
+      force_today:
+        description: "Notify even if not a cadence day"
+        required: false
+        default: false
+        type: boolean
+      force:
+        description: "Re-send even if already recorded"
+        required: false
+        default: false
+        type: boolean
+      no_legacy:
+        description: "Skip WSTS/TSMC network fetch"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: silicon-cycle-watch
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    name: Silicon cycle materials + Discord
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pandas yfinance
+
+      - name: Run watch notify
+        env:
+          SILICON_CYCLE_DISCORD_WEBHOOK: ${{ secrets.SILICON_CYCLE_DISCORD_WEBHOOK }}
+        run: |
+          set -euo pipefail
+          FLAGS="--auto --discord-live"
+          if [ "${{ github.event.inputs.force_today || false }}" = "true" ]; then
+            FLAGS="$FLAGS --force-today"
+          fi
+          if [ "${{ github.event.inputs.force || false }}" = "true" ]; then
+            FLAGS="$FLAGS --force"
+          fi
+          if [ "${{ github.event.inputs.no_legacy || false }}" = "true" ]; then
+            FLAGS="$FLAGS --no-legacy"
+          fi
+          python scripts/silicon_cycle/run_notify.py $FLAGS
+
+      - name: Commit watch state
+        run: |
+          set -euo pipefail
+          git config user.name "silicon-cycle-watch-bot"
+          git config user.email "silicon-cycle-watch-bot@users.noreply.github.com"
+          git add data/ops/silicon_cycle_watch.json || true
+          if git diff --cached --quiet; then
+            echo "No watch-state changes."
+            exit 0
+          fi
+          git commit -m "chore(silicon-cycle): record watch notify $(date -u +%Y-%m-%d)"
+          git push

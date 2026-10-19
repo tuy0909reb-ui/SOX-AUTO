@@ -164,7 +164,16 @@ T3 / T4 は独立メーターではない。
 翌年の買い方にだけ効く。A とは別トラック、11月にセットで見る。
 ```
 
-**実装:** サイクル判定ゲート自体は **未定義／未実装**。
+**実装（2026-10-20）:** 共有材料コア＋年次投影。
+
+| Item | Path |
+|---|---|
+| Shared materials | `scripts/silicon_cycle/materials.py` |
+| ③ builder | `scripts/nisa_annual/build_cycle_gate.py` |
+| Output | `data/nisa/annual/<plan_year>/cycle_gate_YYYYMM.{md,json}` |
+| Baseline | `ASA-SILICON-CYCLE-MONITOR-MATERIALS-1.0` |
+
+出力は **材料のみ**（一括／再設計の自動断定なし）。継続監視の定期通知は同 baseline の投影B。
 
 ---
 
@@ -212,7 +221,7 @@ T3 / T4 は独立メーターではない。
 `scripts/nisa_annual/run_notify.py` ＋ `.github/workflows/nisa-annual-notify.yml`  
 （11/1キック・12/1・12/8リマインド。専用 webhook。月次と分離）
 
-P1（①②レポート）・T1/T2・③ゲートは後続。  
+P1（①②レポート）は既存。③ゲート材料は `ASA-SILICON-CYCLE-MONITOR-MATERIALS-1.0` で実装。T1/T2表示は後続。  
 **P1未実装を「ルールが無い」と誤読しない。**
 
 ---

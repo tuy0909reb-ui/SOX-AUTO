@@ -82,3 +82,15 @@ Emergency override env: `LEGACY_SOX_SENSOR_SEAL=active` (forces ACTIVE for one p
 Companion: `docs/baselines/ASA-TAXABLE-ACCOUNT-PROTOCOL-LEGACY-BOUNDARY-1.0.md`  
 
 This seal is an **operational freeze of Discord outbound**, not a deletion of LEGACY knowledge warehouse.
+
+---
+
+## 6. Successor (silicon cycle materials — not an unseal)
+
+Operational successor for silicon-cycle **materials + dedicated notify**:
+
+- Baseline: `docs/baselines/ASA-SILICON-CYCLE-MONITOR-MATERIALS-1.0.md`
+- Code: `scripts/silicon_cycle/` + `scripts/nisa_annual/build_cycle_gate.py`
+- Discord: dedicated `SILICON_CYCLE_DISCORD_WEBHOOK` only
+
+This does **not** unseal `silicon_protocol.py` / legacy `DISCORD_WEBHOOK_URL`.

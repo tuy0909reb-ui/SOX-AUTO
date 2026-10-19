@@ -1,0 +1,75 @@
+{
+  "schema": "silicon_cycle_materials_v1",
+  "layer": "Review_materials",
+  "as_of": "2026-10-17",
+  "generated_at": "2026-10-19T20:07:09Z",
+  "sources": {
+    "sox": "C:/Users/User/SOX-AUTO/data/common_backtest/datasets/index_daily/sox_daily.csv",
+    "spy": "yfinance SPY auto_adjust=True",
+    "wsts": "unavailable",
+    "tsmc": "unavailable"
+  },
+  "price": {
+    "sox_close": 11137.2900390625,
+    "sox_high_250d": 14634.7197265625,
+    "drop_from_high_pct": 23.9,
+    "defense_exit_threshold_pct": 25.0,
+    "defense_exit_line_reached": false,
+    "ma200": 10597.636506347657,
+    "ma200_trend": 507.29410644531345,
+    "below_200ma": false,
+    "ma200_downward": false,
+    "percentile_12m": 0.5634920634920635,
+    "vs_sp500": [
+      {
+        "months": 3,
+        "sox_return": -0.06153022632715399,
+        "spy_return": 0.01921531324166148,
+        "vs_sp500": -0.08074553956881547
+      },
+      {
+        "months": 6,
+        "sox_return": 0.19379061835893818,
+        "spy_return": 0.09328807155482921,
+        "vs_sp500": 0.10050254680410897
+      },
+      {
+        "months": 12,
+        "sox_return": 0.6378319485933268,
+        "spy_return": 0.1677833759805505,
+        "vs_sp500": 0.4700485726127763
+      }
+    ],
+    "effective_end": "2026-10-16"
+  },
+  "legacy_compat": {
+    "wsts_3m_minus": null,
+    "tsmc_yoy_pct": null,
+    "tsmc_yoy_soft_threshold_pct": 10.0,
+    "sensor_lights": {
+      "wsts": "N/A",
+      "tsmc_yoy": "N/A",
+      "ma200": "GREEN"
+    }
+  },
+  "watch_hint": {
+    "elevated": true,
+    "reasons": [
+      "drop_from_high_ge_15pct"
+    ],
+    "note": "Schedule cadence only. Not a buy-method recommendation."
+  },
+  "data_gaps": [],
+  "judgment_scope": {
+    "対象": "シリコンサイクル監視材料（年次③ゲート＋継続監視共通）",
+    "期間": "as_of=2026-10-17",
+    "N": "SOX価格必須；WSTS/TSMCは任意",
+    "評価目的": "年次の買い方確認材料と警戒年の定期確認材料",
+    "判断可能範囲": "材料の把握・Humanによる年初一括／再設計の検討開始",
+    "判断禁止範囲": "一括／再設計の自動断定、発注・入替、Decision接続"
+  },
+  "footer": "材料のみ。推奨・自動入替・発注なし。レガシーsilicon_protocol Discord封印は解除しない。",
+  "plan_year": 2027,
+  "gate": "nisa_annual_cycle_gate",
+  "schema_annual": "nisa_annual_cycle_gate_v1"
+}

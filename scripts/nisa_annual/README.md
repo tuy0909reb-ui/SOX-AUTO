@@ -1,9 +1,32 @@
-# NISA annual plan — P0 notify
+# NISA annual plan — P0 notify + P1/P2 materials
 
 Rules: `docs/baselines/ASA-NISA-ANNUAL-PLAN-CONFIRMATION-RULES-1.0.md`  
-Scope reply: `docs/reports/NISA-ANNUAL-PLAN-AI-TEAM-RESPONSE-2026-10-17.md`
+Scope reply: `docs/reports/NISA-ANNUAL-PLAN-AI-TEAM-RESPONSE-2026-10-17.md`  
+③ cycle baseline: `docs/baselines/ASA-SILICON-CYCLE-MONITOR-MATERIALS-1.0.md`
 
-## What this does
+## P1 materials (① market + ② item compare)
+
+```bash
+python scripts/nisa_annual/build_p1_reports.py --as-of 2026-10-17 --plan-year 2027
+```
+
+Output: `data/nisa/annual/<plan_year>/market_trend_YYYYMM.{md,json}`  
+and `item_compare_YYYYMM.{md,json}` (+ `data/nisa/annual/latest/pointer.json`).
+
+Materials only. No adopt / switch / order.
+
+## P2 materials (③ silicon cycle gate)
+
+Shared core: `scripts/silicon_cycle/` (also feeds ongoing watch notify).
+
+```bash
+python scripts/nisa_annual/build_cycle_gate.py --as-of 2026-10-17 --plan-year 2027 --no-legacy
+```
+
+Output: `data/nisa/annual/<plan_year>/cycle_gate_YYYYMM.{md,json}`  
+Pointer key: `cycle_gate`. Human judgment checkboxes only — no auto 一括／再設計.
+
+## What P0 does
 
 | Schedule (JST 09:00) | Kind | Purpose |
 |---|---|---|

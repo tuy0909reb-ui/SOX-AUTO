@@ -1,0 +1,15 @@
+{
+  "schema": "silicon_cycle_watch_v1",
+  "mode": "elevated",
+  "human_force_elevated": false,
+  "elevated_reason": "drop_from_high_ge_15pct",
+  "last_materials_as_of": "2026-10-20",
+  "last_watch_hint_elevated": true,
+  "sent": {
+    "2026-10-20:elevated": {
+      "recorded_at": "2026-10-19T20:16:12Z",
+      "plan_year": 2027
+    }
+  },
+  "updated_at": "2026-10-19T20:16:12Z"
+}
