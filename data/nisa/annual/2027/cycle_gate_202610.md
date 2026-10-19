@@ -9,13 +9,13 @@
 
 **Schema:** `silicon_cycle_materials_v1`  
 **Layer:** Review_materials  
-**Generated:** 2026-10-19T20:07:09Z
+**Generated:** 2026-10-19T21:16:23Z
 
 ## 判断スコープ
 
 - 対象: シリコンサイクル監視材料（年次③ゲート＋継続監視共通）
 - 期間: as_of=2026-10-17
-- N: SOX価格必須；WSTS/TSMCは任意
+- N: SOX価格必須；WSTS/TSMCはG3生数値（灯なし）
 - 評価目的: 年次の買い方確認材料と警戒年の定期確認材料
 - 判断可能範囲: 材料の把握・Humanによる年初一括／再設計の検討開始
 - 判断禁止範囲: 一括／再設計の自動断定、発注・入替、Decision接続
@@ -24,8 +24,9 @@
 
 - SOX終値: 11137.29（effective_end=2026-10-16）
 - 250日高値: 14634.72
-- 高値下落率: 23.90%
-- 全売却ライン表示（材料）: 閾値 -25% / 到達=NO
+- 高値からの下落率: 23.90%
+- 参考水準: -25% （到達=NO）
+- 参考水準の注釈: 旧防衛プロトコル由来の参考水準。未再検証。自動売却なし。elevated発火には使わない。
 - 200DMA: 10597.64 （終値下回り=NO / 傾き下落=NO）
 - 12M分位: 0.563
 
@@ -37,17 +38,18 @@
 | 6M | 19.38% | 9.33% | 10.05% |
 | 12M | 63.78% | 16.78% | 47.00% |
 
-## レガシー互換センサー（任意）
+## ファンダ材料（G3: 生数値のみ・灯色なし）
 
-- WSTS 3M MoMマイナス連: N/A （raw=None）
-- TSMC YoY: N/A （raw=None / soft_threshold=10%）
-- 200MA判定灯: GREEN
+- WSTS 3M MoMマイナス連（raw）: None
+- TSMC YoY %（raw）: None
+- TSMC YoY 旧閾値メモ: 旧プロトコル由来の暫定ラベル。自動判定・elevatedには未使用。
+- 200DMAトレンド記述: TREND_OK（elevated判定の入力表示。売買灯ではない）
 
-## 監視ヒント（スケジュール用）
+## 監視ヒント（文面フラグ・頻度は月次固定）
 
-- elevated: **YES**
-- reasons: drop_from_high_ge_15pct
-- note: Schedule cadence only. Not a buy-method recommendation.
+- elevated: **NO**
+- reasons: —
+- note: Human採択C/F2: elevatedは文面フラグのみ（頻度は常に月次）。買い方推奨ではない。
 
 ## データ欠落
 

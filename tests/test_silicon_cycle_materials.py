@@ -58,23 +58,27 @@ class SiliconCycleMaterialsTests(unittest.TestCase):
         self.assertIn("watch_hint", payload)
         self.assertIn("footer", payload)
         self.assertNotIn("一括推奨", json.dumps(payload, ensure_ascii=False))
-        self.assertEqual(payload["legacy_compat"]["sensor_lights"]["wsts"], "GREEN")
-        self.assertEqual(payload["legacy_compat"]["sensor_lights"]["tsmc_yoy"], "GREEN")
+        self.assertEqual(payload["legacy_compat"]["sensor_lights"]["wsts"], "RAW_ONLY")
+        self.assertEqual(payload["legacy_compat"]["sensor_lights"]["tsmc_yoy"], "RAW_ONLY")
+        self.assertEqual(payload["legacy_compat"]["wsts_3m_minus"], False)
+        self.assertEqual(payload["legacy_compat"]["tsmc_yoy_pct"], 25.0)
         md = materials.render_materials_md(payload)
         self.assertIn("Human判断欄", md)
         self.assertIn("材料のみ", md)
+        self.assertIn("参考水準", md)
+        self.assertNotIn("全売却ライン", md)
 
-    def test_watch_hint_elevated_on_drawdown(self):
+    def test_watch_hint_not_elevated_on_drawdown_alone(self):
+        """採択C: DD alone must not elevate when still above non-down 200DMA."""
         as_of = date(2025, 6, 1)
         idx = pd.bdate_range(start="2024-01-02", periods=280)
-        # Rise then crash >15% from 250d high
         values = []
         px = 100.0
         for i in range(280):
-            if i < 200:
-                px *= 1.003
+            if i < 250:
+                px *= 1.004  # steady climb → 200DMA rising and below price
             else:
-                px *= 0.985
+                px *= 0.992  # mild pullback (~16% from peak, still above MA)
             values.append(px)
         sox = pd.Series(values, index=idx, dtype=float)
         spy = _synthetic_series(n=280, drift=0.001)
@@ -86,12 +90,11 @@ class SiliconCycleMaterialsTests(unittest.TestCase):
             wsts_gap="skip_wsts",
             tsmc_gap="skip_tsmc",
         )
-        self.assertTrue(payload["watch_hint"]["elevated"])
-        self.assertTrue(
-            any("drop_from_high" in r for r in payload["watch_hint"]["reasons"])
-        )
+        self.assertGreaterEqual(payload["price"]["drop_from_high_pct"], 15.0)
+        self.assertFalse(payload["price"]["below_200ma"])
+        self.assertFalse(payload["watch_hint"]["elevated"])
 
-    def test_legacy_lights_red(self):
+    def test_g3_raw_no_lights(self):
         as_of = date(2025, 1, 15)
         sox = _synthetic_series()
         spy = _synthetic_series(start_px=200.0)
@@ -104,16 +107,20 @@ class SiliconCycleMaterialsTests(unittest.TestCase):
             tsmc_yoy_pct=5.0,
         )
         lights = payload["legacy_compat"]["sensor_lights"]
-        self.assertEqual(lights["wsts"], "RED")
-        self.assertEqual(lights["tsmc_yoy"], "RED")
+        self.assertEqual(lights["wsts"], "RAW_ONLY")
+        self.assertEqual(lights["tsmc_yoy"], "RAW_ONLY")
+        self.assertEqual(payload["legacy_compat"]["wsts_3m_minus"], True)
+        self.assertEqual(payload["legacy_compat"]["tsmc_yoy_pct"], 5.0)
+        self.assertEqual(payload["adoption"]["Q3"], "G3")
 
 
 class WatchStateTests(unittest.TestCase):
-    def test_cadence_normal_and_elevated(self):
+    def test_cadence_f2_monthly_only(self):
+        # F2: elevated does not unlock weekly Mondays
         self.assertTrue(watch_state.should_notify_today(date(2026, 11, 1), "normal"))
+        self.assertTrue(watch_state.should_notify_today(date(2026, 11, 1), "elevated"))
         self.assertFalse(watch_state.should_notify_today(date(2026, 11, 2), "normal"))
-        # 2026-11-02 is Monday
-        self.assertTrue(watch_state.should_notify_today(date(2026, 11, 2), "elevated"))
+        self.assertFalse(watch_state.should_notify_today(date(2026, 11, 2), "elevated"))
         self.assertFalse(watch_state.should_notify_today(date(2026, 11, 3), "elevated"))
 
     def test_human_force_elevated_mode(self):

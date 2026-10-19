@@ -26,8 +26,7 @@ Outputs:
 
 | Mode | Cadence |
 |---|---|
-| `normal` | 1st of month |
-| `elevated` | Mondays (`watch_hint` or Human force) |
+| `normal` / `elevated` | 1st of month only (F2). `elevated` is a message flag (policy C: 200DMA break + slope) |
 
 ```bash
 python scripts/silicon_cycle/run_notify.py --auto

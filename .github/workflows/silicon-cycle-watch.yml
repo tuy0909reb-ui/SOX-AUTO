@@ -1,8 +1,8 @@
 name: Silicon Cycle Watch Notify
 
-# Normal: 1st of month 09:00 JST (= 00:00 UTC).
-# Elevated cadence is decided inside the script (weekly Mondays when mode=elevated).
-# Daily 09:00 JST cron lets auto pick the right days; non-due days exit 0.
+# F2: notify on 1st of month 09:00 JST (= 00:00 UTC) only.
+# elevated is a message flag (policy C); does not change cadence.
+# Daily 09:00 JST cron lets auto pick the 1st; non-due days exit 0.
 # Materials only. No auto-adopt / no trade authorization.
 # Does NOT use sealed legacy DISCORD_WEBHOOK_URL.
 

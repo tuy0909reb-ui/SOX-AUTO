@@ -37,21 +37,25 @@ Purpose = 共有 Review 材料の定義と投影面（年次ゲート / 定期�
 | Schema | `silicon_cycle_materials_v1` |
 | CLI | `scripts/silicon_cycle/build_materials.py` |
 
+**Human採択（2026-10-20）:** Q1=C / Q2=F2 / Q3=G3 / Q4=H2  
+詳: `docs/reports/SILICON-CYCLE-SENSOR-SETTINGS-AI-TEAM-RESPONSE-2026-10-20.md`
+
 **Price-required:**
 
-- SOX vs 200DMA（位置・傾き）
+- SOX vs 200DMA（位置・傾き）— **elevated 発火はこれのみ（割れ∧傾き下落）**
 - SOX vs S&P（SPY）相対 3M / 6M / 12M
 - SOX 12M 分位
-- 高値下落率（全売却ライン **-25%** は表示ラベルのみ）
+- 高値からの下落率（表示専用。elevated に使わない）
+- 参考水準 **-25%**（旧防衛由来・**未再検証**・自動売却なし。H2文言）
 
-**Legacy-compat (best-effort):**
+**ファンダ（G3）:**
 
-- WSTS 3M MoM マイナス連
-- TSMC YoY %
+- WSTS 3M MoM マイナス連 — 生数値のみ（灯色なし）
+- TSMC YoY % — 生数値のみ（灯色なし）
 
 欠落時は `data_gaps` に記録し、価格材料は fail-open で出す。
 
-`watch_hint.elevated` は **通知頻度用**のみ。買い方推奨ではない。
+`watch_hint.elevated` は **文面フラグのみ**（頻度は常に月次＝F2）。買い方推奨ではない。
 
 ---
 
@@ -72,8 +76,7 @@ Human reply: materials only（`NISA-ANNUAL-PLAN-AI-TEAM-RESPONSE-2026-10-17`）�
 
 | Mode | Cadence |
 |---|---|
-| `normal` | 毎月1日 |
-| `elevated` | 毎週月曜（`watch_hint` または Human `human_force_elevated`） |
+| `normal` / `elevated` | **どちらも毎月1日**（F2）。elevated は文面フラグのみ |
 
 | Item | Path |
 |---|---|

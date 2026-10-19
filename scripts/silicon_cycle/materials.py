@@ -17,7 +17,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SOX_INDEX_PATH = ROOT / "data" / "common_backtest" / "datasets" / "index_daily" / "sox_daily.csv"
 
 SCHEMA = "silicon_cycle_materials_v1"
-DEFENSE_DROP_EXIT_PCT = 25.0
+DEFENSE_DROP_EXIT_PCT = 25.0  # reference display only (H2); not for elevated
+# Deprecated: pre-adoption elevated used DD>=15. Kept for grep/history only.
 WATCH_DD_HINT_PCT = 15.0
 
 REL_WINDOWS_MONTHS = (3, 6, 12)
@@ -176,17 +177,23 @@ def _compute_price_block(
             }
         )
 
-    defense_reached = drop_pct is not None and drop_pct >= DEFENSE_DROP_EXIT_PCT
-    watch_from_ma = below_200ma and downward
-    watch_from_dd = drop_pct is not None and drop_pct >= WATCH_DD_HINT_PCT
-    watch_hint = bool(watch_from_ma or watch_from_dd)
+    # Human採択 C: elevated = 200DMA割れ∧傾き下落のみ。DDは表示専用。
+    watch_hint = bool(below_200ma and downward)
+    ref_25_reached = drop_pct is not None and drop_pct >= DEFENSE_DROP_EXIT_PCT
 
     block = {
         "sox_close": sox_close,
         "sox_high_250d": sox_high,
         "drop_from_high_pct": drop_pct,
+        "reference_drop_pct": DEFENSE_DROP_EXIT_PCT,
+        "reference_drop_note": (
+            "旧防衛プロトコル由来の参考水準。未再検証。"
+            "自動売却なし。elevated発火には使わない。"
+        ),
+        "reference_drop_reached": ref_25_reached,
+        # Backward-compatible aliases (deprecated wording)
         "defense_exit_threshold_pct": DEFENSE_DROP_EXIT_PCT,
-        "defense_exit_line_reached": defense_reached,
+        "defense_exit_line_reached": ref_25_reached,
         "ma200": ma_now,
         "ma200_trend": ma_trend,
         "below_200ma": below_200ma,
@@ -230,13 +237,18 @@ def build_materials(
     price, price_gaps, watch_hint = _compute_price_block(sox, spy, as_of=as_of)
     data_gaps.extend(price_gaps)
 
+    # Human採択 G3: 自動取得するが灯色（RED/GREEN）は出さない。生数値のみ。
     legacy: dict[str, Any] = {
+        "mode": "g3_raw_values_no_lights",
         "wsts_3m_minus": None,
         "tsmc_yoy_pct": None,
-        "tsmc_yoy_soft_threshold_pct": 10.0,
+        "tsmc_yoy_legacy_threshold_pct": 10.0,
+        "tsmc_yoy_legacy_threshold_note": (
+            "旧プロトコル由来の暫定ラベル。自動判定・elevatedには未使用。"
+        ),
         "sensor_lights": {
-            "wsts": "N/A",
-            "tsmc_yoy": "N/A",
+            "wsts": "RAW_ONLY",
+            "tsmc_yoy": "RAW_ONLY",
             "ma200": "N/A",
         },
     }
@@ -254,33 +266,16 @@ def build_materials(
     legacy["wsts_3m_minus"] = wsts_3m_minus
     legacy["tsmc_yoy_pct"] = tsmc_yoy_pct
 
-    if wsts_3m_minus is None:
-        legacy["sensor_lights"]["wsts"] = "N/A"
-    else:
-        legacy["sensor_lights"]["wsts"] = "RED" if wsts_3m_minus else "GREEN"
-
-    if tsmc_yoy_pct is None:
-        legacy["sensor_lights"]["tsmc_yoy"] = "N/A"
-    else:
-        legacy["sensor_lights"]["tsmc_yoy"] = (
-            "RED" if float(tsmc_yoy_pct) < 10.0 else "GREEN"
-        )
-
     if price:
-        ma_red = bool(price["below_200ma"] and price["ma200_downward"])
-        legacy["sensor_lights"]["ma200"] = "RED" if ma_red else "GREEN"
+        # Descriptive only (not a trade light): mirrors watch_hint inputs.
+        ma_flag = bool(price["below_200ma"] and price["ma200_downward"])
+        legacy["sensor_lights"]["ma200"] = "TREND_DOWN" if ma_flag else "TREND_OK"
     else:
         data_gaps.append("price_block_unavailable")
 
     watch_reasons: list[str] = []
-    if price:
-        if price["below_200ma"] and price["ma200_downward"]:
-            watch_reasons.append("below_200ma_and_downward")
-        if (
-            price["drop_from_high_pct"] is not None
-            and price["drop_from_high_pct"] >= WATCH_DD_HINT_PCT
-        ):
-            watch_reasons.append(f"drop_from_high_ge_{WATCH_DD_HINT_PCT:g}pct")
+    if price and price["below_200ma"] and price["ma200_downward"]:
+        watch_reasons.append("below_200ma_and_downward")
 
     return {
         "schema": SCHEMA,
@@ -298,13 +293,24 @@ def build_materials(
         "watch_hint": {
             "elevated": bool(watch_hint),
             "reasons": watch_reasons,
-            "note": "Schedule cadence only. Not a buy-method recommendation.",
+            "note": (
+                "Human採択C/F2: elevatedは文面フラグのみ（頻度は常に月次）。"
+                "買い方推奨ではない。"
+            ),
+            "policy": "C_ma200_only_F2_monthly",
+        },
+        "adoption": {
+            "Q1": "C",
+            "Q2": "F2",
+            "Q3": "G3",
+            "Q4": "H2",
+            "as_of": "2026-10-20",
         },
         "data_gaps": data_gaps,
         "judgment_scope": {
             "対象": "シリコンサイクル監視材料（年次③ゲート＋継続監視共通）",
             "期間": f"as_of={as_of.isoformat()}",
-            "N": "SOX価格必須；WSTS/TSMCは任意",
+            "N": "SOX価格必須；WSTS/TSMCはG3生数値（灯なし）",
             "評価目的": "年次の買い方確認材料と警戒年の定期確認材料",
             "判断可能範囲": "材料の把握・Humanによる年初一括／再設計の検討開始",
             "判断禁止範囲": "一括／再設計の自動断定、発注・入替、Decision接続",
@@ -358,9 +364,10 @@ def render_materials_md(payload: dict[str, Any]) -> str:
             [
                 f"- SOX終値: {_num(price.get('sox_close'), 2)}（effective_end={price.get('effective_end')}）",
                 f"- 250日高値: {_num(price.get('sox_high_250d'), 2)}",
-                f"- 高値下落率: {_num(price.get('drop_from_high_pct'), 2)}%",
-                f"- 全売却ライン表示（材料）: 閾値 -{DEFENSE_DROP_EXIT_PCT:g}% / "
-                f"到達={'YES' if price.get('defense_exit_line_reached') else 'NO'}",
+                f"- 高値からの下落率: {_num(price.get('drop_from_high_pct'), 2)}%",
+                f"- 参考水準: -{DEFENSE_DROP_EXIT_PCT:g}% "
+                f"（到達={'YES' if price.get('reference_drop_reached', price.get('defense_exit_line_reached')) else 'NO'}）",
+                f"- 参考水準の注釈: {price.get('reference_drop_note', '')}",
                 f"- 200DMA: {_num(price.get('ma200'), 2)} "
                 f"（終値下回り={'YES' if price.get('below_200ma') else 'NO'} / "
                 f"傾き下落={'YES' if price.get('ma200_downward') else 'NO'}）",
@@ -385,15 +392,14 @@ def render_materials_md(payload: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
-            "## レガシー互換センサー（任意）",
+            "## ファンダ材料（G3: 生数値のみ・灯色なし）",
             "",
-            f"- WSTS 3M MoMマイナス連: {lights.get('wsts', 'N/A')} "
-            f"（raw={legacy.get('wsts_3m_minus')}）",
-            f"- TSMC YoY: {lights.get('tsmc_yoy', 'N/A')} "
-            f"（raw={legacy.get('tsmc_yoy_pct')} / soft_threshold=10%）",
-            f"- 200MA判定灯: {lights.get('ma200', 'N/A')}",
+            f"- WSTS 3M MoMマイナス連（raw）: {legacy.get('wsts_3m_minus')}",
+            f"- TSMC YoY %（raw）: {legacy.get('tsmc_yoy_pct')}",
+            f"- TSMC YoY 旧閾値メモ: {legacy.get('tsmc_yoy_legacy_threshold_note', '')}",
+            f"- 200DMAトレンド記述: {lights.get('ma200', 'N/A')}（elevated判定の入力表示。売買灯ではない）",
             "",
-            "## 監視ヒント（スケジュール用）",
+            "## 監視ヒント（文面フラグ・頻度は月次固定）",
             "",
             f"- elevated: **{'YES' if watch.get('elevated') else 'NO'}**",
             f"- reasons: {', '.join(watch.get('reasons') or []) or '—'}",

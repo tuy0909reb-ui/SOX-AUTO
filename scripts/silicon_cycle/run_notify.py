@@ -55,8 +55,8 @@ def _send(text: str, *, webhook_url: str) -> bool:
 def _why(mode: str, state: dict) -> str:
     if mode == "elevated":
         reason = state.get("elevated_reason") or "watch_hint"
-        return f"警戒モード週次確認（{reason}）"
-    return "通常モード月次確認（毎月1日）"
+        return f"月次確認（警戒フラグON: {reason}）"
+    return "月次確認（毎月1日）"
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -2,7 +2,7 @@
   "schema": "silicon_cycle_materials_v1",
   "layer": "Review_materials",
   "as_of": "2026-10-17",
-  "generated_at": "2026-10-19T20:07:09Z",
+  "generated_at": "2026-10-19T21:16:23Z",
   "sources": {
     "sox": "C:/Users/User/SOX-AUTO/data/common_backtest/datasets/index_daily/sox_daily.csv",
     "spy": "yfinance SPY auto_adjust=True",
@@ -13,6 +13,9 @@
     "sox_close": 11137.2900390625,
     "sox_high_250d": 14634.7197265625,
     "drop_from_high_pct": 23.9,
+    "reference_drop_pct": 25.0,
+    "reference_drop_note": "旧防衛プロトコル由来の参考水準。未再検証。自動売却なし。elevated発火には使わない。",
+    "reference_drop_reached": false,
     "defense_exit_threshold_pct": 25.0,
     "defense_exit_line_reached": false,
     "ma200": 10597.636506347657,
@@ -43,27 +46,35 @@
     "effective_end": "2026-10-16"
   },
   "legacy_compat": {
+    "mode": "g3_raw_values_no_lights",
     "wsts_3m_minus": null,
     "tsmc_yoy_pct": null,
-    "tsmc_yoy_soft_threshold_pct": 10.0,
+    "tsmc_yoy_legacy_threshold_pct": 10.0,
+    "tsmc_yoy_legacy_threshold_note": "旧プロトコル由来の暫定ラベル。自動判定・elevatedには未使用。",
     "sensor_lights": {
-      "wsts": "N/A",
-      "tsmc_yoy": "N/A",
-      "ma200": "GREEN"
+      "wsts": "RAW_ONLY",
+      "tsmc_yoy": "RAW_ONLY",
+      "ma200": "TREND_OK"
     }
   },
   "watch_hint": {
-    "elevated": true,
-    "reasons": [
-      "drop_from_high_ge_15pct"
-    ],
-    "note": "Schedule cadence only. Not a buy-method recommendation."
+    "elevated": false,
+    "reasons": [],
+    "note": "Human採択C/F2: elevatedは文面フラグのみ（頻度は常に月次）。買い方推奨ではない。",
+    "policy": "C_ma200_only_F2_monthly"
+  },
+  "adoption": {
+    "Q1": "C",
+    "Q2": "F2",
+    "Q3": "G3",
+    "Q4": "H2",
+    "as_of": "2026-10-20"
   },
   "data_gaps": [],
   "judgment_scope": {
     "対象": "シリコンサイクル監視材料（年次③ゲート＋継続監視共通）",
     "期間": "as_of=2026-10-17",
-    "N": "SOX価格必須；WSTS/TSMCは任意",
+    "N": "SOX価格必須；WSTS/TSMCはG3生数値（灯なし）",
     "評価目的": "年次の買い方確認材料と警戒年の定期確認材料",
     "判断可能範囲": "材料の把握・Humanによる年初一括／再設計の検討開始",
     "判断禁止範囲": "一括／再設計の自動断定、発注・入替、Decision接続"

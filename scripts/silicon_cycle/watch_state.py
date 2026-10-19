@@ -81,9 +81,8 @@ def apply_materials_observation(
 
 
 def should_notify_today(as_of: date, mode: str) -> bool:
-    """normal: 1st of month; elevated: Monday."""
-    if mode == "elevated":
-        return as_of.weekday() == 0  # Monday
+    """Human採択 F2: cadence is always monthly (1st). mode is message flag only."""
+    _ = mode  # elevated does not change schedule
     return as_of.day == 1
 
 
